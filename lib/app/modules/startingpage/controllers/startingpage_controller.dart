@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
 
-class HomeController extends GetxController {
+class StartingpageController extends GetxController {
   // Controller logic here
 }

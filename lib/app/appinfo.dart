@@ -1,6 +1,6 @@
 class AppInfo {
-  static String appName = "";
-  static String appImage = "";
+  static String appName = "Fatsa Belediyesi";
+  static String appImage = "assets/images/applogo.png";
   static String appCreators = "";
   static String appReleaseDate = "";
   static String appVersion = "";

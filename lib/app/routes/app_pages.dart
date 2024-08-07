@@ -1,13 +1,15 @@
-import 'package:feedbackstation/app/modules/home/home_module.dart';
+import 'package:feedbackstation/app/modules/homepage/homepage_module.dart';
+import 'package:feedbackstation/app/modules/startingpage/startingpage_module.dart';
 import 'package:feedbackstation/app/modules/login/login_module.dart';
 import 'package:feedbackstation/app/modules/user/user_module.dart';
 
 class AppPages {
-  static const initial = HomeModule.route;
+  static const initial = StartingpageModule.route;
 
   static final routes = [
-    ...HomeModule.routes,
+    ...StartingpageModule.routes,
     ...LoginModule.routes,
     ...UserModule.routes, // Yeni eklenen modül rotaları
+    ...HomepageModule.routes
   ];
 }

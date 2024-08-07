@@ -22,8 +22,8 @@ class UserView extends StatelessWidget {
             itemBuilder: (context, index) {
               final user = userController.userList[index];
               return ListTile(
-                title: Text(user.name),
-                subtitle: Text(user.email),
+                title: Text(user.name!),
+                subtitle: Text(user.email!),
               );
             },
           );
