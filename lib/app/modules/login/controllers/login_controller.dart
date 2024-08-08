@@ -7,11 +7,25 @@ class LoginController extends GetxController {
   final TextEditingController loginController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  var selectedIndex = 0.obs;
+
+  // Seçili butonu güncelleyen fonksiyon
+  void updateSelectedIndex(int index) {
+    selectedIndex.value = index;
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    loginController.text = "00000000000";
+    passwordController.text = "123";
+  }
+
   @override
   void onClose() {
-    // Controller kapanırken temizlemek için
+    super.onClose();
+
     loginController.dispose();
     passwordController.dispose();
-    super.onClose();
   }
 }

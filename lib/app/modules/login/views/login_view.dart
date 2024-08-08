@@ -3,6 +3,7 @@ import 'package:feedbackstation/app/modules/homepage/views/homepage_view.dart';
 import 'package:feedbackstation/app/modules/login/controllers/login_controller.dart';
 import 'package:feedbackstation/app/modules/user/views/user_view.dart';
 import 'package:feedbackstation/app/widgets/textfields_widget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,15 +14,14 @@ class LoginView extends GetView<LoginController> {
   Widget build(BuildContext context) {
     final LoginController controller = Get.put(LoginController());
 
+    // return Obx(() {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Fatsa Belediyesi'),
-      ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width / 3,
-        ),
-        child: SingleChildScrollView(
+      backgroundColor: const Color.fromARGB(255, 2, 45, 80),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width / 4,
+          ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -34,6 +34,30 @@ class LoginView extends GetView<LoginController> {
                 scale: 3,
               ),
               const SizedBox(height: 15),
+              Obx(() {
+                return ToggleButtons(
+                  color: Colors.grey,
+                  borderColor: Colors.grey,
+                  selectedColor: Colors.white,
+                  selectedBorderColor: Colors.blue,
+                  fillColor: Colors.blue,
+                  isSelected: List.generate(
+                      2, (index) => index == controller.selectedIndex.value),
+                  onPressed: (int index) {
+                    controller.updateSelectedIndex(index);
+                  },
+                  children: const <Widget>[
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text('Vatandaş Girişi'),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text('Personel Girişi'),
+                    ),
+                  ],
+                );
+              }),
               TextfieldWidget.costum1(
                 controller: controller.loginController,
                 label: "TC Kimlik",
@@ -79,7 +103,7 @@ class LoginView extends GetView<LoginController> {
                         return;
                       }
 
-                      Get.to(() => const HomepageView());
+                      Get.off(() => const HomepageView());
                     },
                     child: const Text(
                       "Giriş YAP",
@@ -88,7 +112,7 @@ class LoginView extends GetView<LoginController> {
                   const Spacer(),
                   ElevatedButton(
                     onPressed: () {
-                      Get.to(() => const UserView());
+                      Get.off(() => const UserView());
                     },
                     child: const Text("Kayıt Ol"),
                   )
@@ -99,5 +123,6 @@ class LoginView extends GetView<LoginController> {
         ),
       ),
     );
+    // });
   }
 }

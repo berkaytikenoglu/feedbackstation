@@ -9,6 +9,9 @@ class TextfieldWidget {
     bool isDigitalNumber = false,
     bool isPassword = false,
     int? maxLength,
+    String? hinttext,
+    int maxline = 1,
+    int? minline,
   }) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -29,6 +32,8 @@ class TextfieldWidget {
             controller: controller,
             obscureText: isPassword,
             maxLength: maxLength,
+            maxLines: maxline,
+            minLines: minline,
             keyboardType: isDigitalNumber == true ? TextInputType.number : null,
             inputFormatters: isDigitalNumber == true
                 ? [FilteringTextInputFormatter.digitsOnly]
@@ -38,6 +43,7 @@ class TextfieldWidget {
               fontSize: 20,
             ),
             decoration: InputDecoration(
+              hintText: hinttext,
               contentPadding: const EdgeInsets.all(10.0),
               counterText: "", //Limiti gizler
               prefixIcon: icon == null ? null : Icon(icon),
