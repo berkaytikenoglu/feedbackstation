@@ -3,7 +3,6 @@ import 'package:feedbackstation/app/modules/homepage/views/homepage_view.dart';
 import 'package:feedbackstation/app/modules/login/controllers/login_controller.dart';
 import 'package:feedbackstation/app/modules/user/views/user_view.dart';
 import 'package:feedbackstation/app/widgets/textfields_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -58,7 +57,7 @@ class LoginView extends GetView<LoginController> {
                   ],
                 );
               }),
-              TextfieldWidget.costum1(
+              TextfieldWidget.costum2(
                 controller: controller.loginController,
                 label: "TC Kimlik",
                 icon: Icons.person,
@@ -66,7 +65,7 @@ class LoginView extends GetView<LoginController> {
                 maxLength: 11,
               ),
               const SizedBox(height: 15),
-              TextfieldWidget.costum1(
+              TextfieldWidget.costum2(
                 controller: controller.passwordController,
                 label: "Parola",
                 icon: Icons.security,
@@ -103,18 +102,18 @@ class LoginView extends GetView<LoginController> {
                         return;
                       }
 
-                      Get.off(() => const HomepageView());
+                      Get.off(() => const UserView());
                     },
                     child: const Text(
-                      "Giriş YAP",
+                      "Kayıt ol",
                     ),
                   ),
                   const Spacer(),
                   ElevatedButton(
                     onPressed: () {
-                      Get.off(() => const UserView());
+                      Get.off(() => const HomepageView());
                     },
-                    child: const Text("Kayıt Ol"),
+                    child: const Text("Giriş Yap"),
                   )
                 ],
               ),

@@ -10,9 +10,4 @@ class StartingpageController extends GetxController {
     super.onInit();
     particles.value = ParticalWidget.createParticles();
   }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
 }

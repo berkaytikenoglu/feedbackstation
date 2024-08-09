@@ -80,24 +80,27 @@ class HomepageView extends StatelessWidget {
           itemBuilder: (context, index) {
             return ListTile(
               leading: FeedbackCategory.values[index].homepgIcon,
-              title: Text(
-                FeedbackCategory.values[index].title,
-                style: const TextStyle(color: Colors.white),
+              title: SizedBox(
+                child: Text(
+                  FeedbackCategory.values[index].title,
+                  style: const TextStyle(color: Colors.white),
+                ),
               ),
-              subtitle: Text(
-                FeedbackCategory.values[index].subtitle,
-                style: const TextStyle(color: Colors.white),
+              subtitle: SizedBox(
+                height: 100,
+                child: SingleChildScrollView(
+                  child: Text(
+                    FeedbackCategory.values[index].subtitle,
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ),
               ),
               tileColor: FeedbackCategory.values[index].backGrndcolor,
               onTap: () {
-                Get.to(
-                  () => const CreateRequestspageView(),
-                  arguments: {
-                    "page": FeedbackCategory.values[index].title,
-                    "content": FeedbackCategory.values[index].title,
-                  },
-                );
-                // Get.toNamed('/requests/create/13231');
+                Get.to(() => const CreateRequestspageView(), arguments: {
+                  "page": FeedbackCategory.values[index].title,
+                  "content": FeedbackCategory.values[index].title,
+                });
               },
             );
           },

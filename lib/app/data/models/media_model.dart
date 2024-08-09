@@ -1,7 +1,7 @@
 enum MediaType { image, video }
 
 class Media {
-  final String id; // Medyanın benzersiz kimliği
+  final int id; // Medyanın benzersiz kimliği
   final MediaType type; // Medya türü (görsel veya video)
   final String bigUrl; // Büyük boyutlu görsel URL'si
   final String normalUrl; // Normal boyutlu görsel URL'si

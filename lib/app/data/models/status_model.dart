@@ -21,17 +21,34 @@ extension StatusExtension on AppStatus {
   Icon get icon {
     switch (this) {
       case AppStatus.open:
-        return Icon(Icons.remove);
+        return const Icon(Icons.remove);
       case AppStatus.close:
-        return Icon(Icons.remove);
+        return const Icon(Icons.remove);
       case AppStatus.pending:
-        return Icon(Icons.remove);
+        return const Icon(Icons.remove);
       case AppStatus.approved:
-        return Icon(Icons.check);
+        return const Icon(Icons.check);
       case AppStatus.denied:
-        return Icon(Icons.cancel_outlined);
+        return const Icon(Icons.cancel_outlined);
       case AppStatus.ongoing:
-        return Icon(Icons.remove_circle_outline_sharp);
+        return const Icon(Icons.remove_circle_outline_sharp);
+    }
+  }
+
+  Color get color {
+    switch (this) {
+      case AppStatus.open:
+        return Colors.purple;
+      case AppStatus.close:
+        return Colors.blue;
+      case AppStatus.pending:
+        return Colors.black;
+      case AppStatus.approved:
+        return Colors.green;
+      case AppStatus.denied:
+        return Colors.red;
+      case AppStatus.ongoing:
+        return Colors.yellow;
     }
   }
 }

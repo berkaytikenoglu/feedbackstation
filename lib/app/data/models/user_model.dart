@@ -36,7 +36,7 @@ class User {
       // 'lastname': lastname,
       'email': email,
       'serialNumber': serialNumber,
-      'avatar': avatar != null ? avatar!.toJson() : null,
+      'avatar': avatar?.toJson(),
     };
   }
 }

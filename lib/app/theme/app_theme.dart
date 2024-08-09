@@ -11,7 +11,7 @@ final ThemeData appThemeData = ThemeData(
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ButtonStyle(
-      backgroundColor: WidgetStateProperty.all(Colors.black),
+      backgroundColor: WidgetStateProperty.all(const Color(0xFF3C4CBD)),
       foregroundColor: WidgetStateProperty.all(Colors.white),
     ),
   ),
@@ -19,7 +19,7 @@ final ThemeData appThemeData = ThemeData(
     buttonColor: Colors.red,
   ),
   snackBarTheme: const SnackBarThemeData(
-    backgroundColor: Colors.blue, // SnackBar arka plan rengi
+    backgroundColor: Color(0xFF3C4CBD), // SnackBar arka plan rengi
     contentTextStyle: TextStyle(
       color: Colors.white,
     ), // SnackBar metin rengi
@@ -51,5 +51,10 @@ final ThemeData appThemeData = ThemeData(
   dividerTheme: const DividerThemeData(
     color: Colors.black,
     thickness: 3,
+  ),
+  listTileTheme: const ListTileThemeData(
+    tileColor: Color(0xFF3C4CBD),
+    textColor: Colors.white,
+    iconColor: Colors.white,
   ),
 );

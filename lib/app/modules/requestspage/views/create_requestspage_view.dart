@@ -1,9 +1,8 @@
 import 'dart:developer';
-
+import 'dart:io';
 import 'package:feedbackstation/app/appinfo.dart';
 import 'package:feedbackstation/app/modules/requestspage/controllers/create_requestspage_controller.dart';
 import 'package:feedbackstation/app/widgets/textfields_widget.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -12,30 +11,10 @@ class CreateRequestspageView extends GetView<CreateRequestspageController> {
 
   @override
   Widget build(BuildContext context) {
-    // URL'den gelen 'id' parametresini alıyoruz
-    Map<dynamic, String> data = Get.arguments;
+    final controller = Get.find<CreateRequestspageController>();
 
+    Map<String, dynamic> data = Get.arguments;
     final requestId = data["page"];
-    log(data.length.toString());
-
-    Future<void> pickFile() async {
-      // Dosya seçici açılır
-      final result = await FilePicker.platform.pickFiles(allowMultiple: true);
-
-      // Seçilen dosya varsa işlemler yapılır
-      if (result != null) {
-        for (var file in result.files) {
-          // Dosya bilgilerini yazdırabilirsiniz
-          print('Dosya Adı: ${file.name}');
-          print('Dosya Uzantısı: ${file.extension}');
-          print('Dosya Yolu: ${file.path}');
-          print('Dosya İçeriği: ${file.size}'); // Bytes olarak dosya içeriği
-        }
-      } else {
-        // Kullanıcı dosya seçmezse
-        print('Hiçbir dosya seçilmedi.');
-      }
-    }
 
     return Scaffold(
       appBar: AppBar(
@@ -53,14 +32,14 @@ class CreateRequestspageView extends GetView<CreateRequestspageController> {
                   scale: 3,
                 ),
               ),
-              Text(
+              const Text(
                 "Adres Bilgileri",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
                 ),
               ),
-              Divider(),
+              const Divider(),
               TextfieldWidget.costum1(
                 controller: TextEditingController(),
                 label: "Mahalle",
@@ -85,17 +64,17 @@ class CreateRequestspageView extends GetView<CreateRequestspageController> {
                 controller: TextEditingController(),
                 label: "Adres Tarifi",
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
-              Text(
+              const Text(
                 "Talep",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
                 ),
               ),
-              Divider(),
+              const Divider(),
               TextfieldWidget.costum1(
                 controller: TextEditingController(),
                 label: "Başvuru Metni",
@@ -104,12 +83,64 @@ class CreateRequestspageView extends GetView<CreateRequestspageController> {
                 minline: 5,
               ),
               ElevatedButton(
-                onPressed: () async => await pickFile(),
-                child: Text('Dosya Seç'),
+                onPressed: () async => await controller.addmedialist(),
+                child: const Text('Dosya Seç'),
               ),
-              const SizedBox(
-                height: 100,
-              )
+              const SizedBox(height: 10),
+              Obx(() => SizedBox(
+                    height: 300,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: controller.mediaList.length,
+                      itemBuilder: (context, index) {
+                        final file = controller.mediaList[index];
+                        log("$index - ${file.extension}");
+                        return Padding(
+                          padding: const EdgeInsets.all(1.0),
+                          child: SizedBox(
+                            width: 300,
+                            child: Column(
+                              children: [
+                                if (file.path != null &&
+                                    (file.extension!.toLowerCase() == 'jpg' ||
+                                        file.extension!.toLowerCase() ==
+                                            'png' ||
+                                        file.extension!.toLowerCase() ==
+                                            'jpeg'))
+                                  Container(
+                                    color: Colors.black,
+                                    child: Image.file(
+                                      File(file.path!),
+                                      height: 200,
+                                      width: 300,
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                ListTile(
+                                  title: Text(
+                                    controller.mediaList[index].name,
+                                  ),
+                                  trailing: IconButton(
+                                    icon: const Icon(Icons.close),
+                                    onPressed: () => controller.removemedia(
+                                      controller.mediaList[index],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  )),
+              const SizedBox(height: 200),
+              ElevatedButton(
+                onPressed: () {
+                  Get.back();
+                },
+                child: const Text("Gönder"),
+              ),
             ],
           ),
         ),

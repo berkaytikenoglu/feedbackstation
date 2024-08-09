@@ -14,12 +14,10 @@ class StartingpageView extends GetView<StartingpageController> {
 
     return Stack(
       children: [
-        Obx(() {
-          return ParticalWidget.particals(
-            context,
-            particals: controller.particles.call,
-          );
-        }),
+        ParticalWidget.particals(
+          context,
+          particals: controller.particles.call,
+        ),
         Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

@@ -40,6 +40,23 @@ extension FeedbackServices on FeedbackCategory {
     }
   }
 
+  String get departmentLogo {
+    switch (this) {
+      case FeedbackCategory.request:
+        return "https://logowik.com/content/uploads/images/belediye-zabita7556.logowik.com.webp";
+      case FeedbackCategory.complaint:
+        return "https://logowik.com/content/uploads/images/belediye-zabita7556.logowik.com.webp";
+      case FeedbackCategory.projectStatement:
+        return "https://logowik.com/content/uploads/images/belediye-zabita7556.logowik.com.webp";
+      case FeedbackCategory.informationRequest:
+        return "https://logowik.com/content/uploads/images/belediye-zabita7556.logowik.com.webp";
+      case FeedbackCategory.report:
+        return "https://logowik.com/content/uploads/images/belediye-zabita7556.logowik.com.webp";
+      case FeedbackCategory.thanks:
+        return "https://logowik.com/content/uploads/images/belediye-zabita7556.logowik.com.webp";
+    }
+  }
+
   String get subtitle {
     switch (this) {
       case FeedbackCategory.request:
@@ -86,38 +103,38 @@ extension FeedbackServices on FeedbackCategory {
     switch (this) {
       case FeedbackCategory.request:
         return const Icon(
-          Icons.contact_support,
-          color: Colors.yellow,
+          Icons.assignment,
+          color: Colors.white,
           size: 50,
         );
       case FeedbackCategory.complaint:
         return const Icon(
-          Icons.safety_check,
-          color: Colors.yellow,
+          Icons.error,
+          color: Colors.white,
           size: 50,
         );
       case FeedbackCategory.projectStatement:
         return const Icon(
           Icons.engineering,
-          color: Colors.yellow,
+          color: Colors.white,
           size: 50,
         );
       case FeedbackCategory.informationRequest:
         return const Icon(
-          Icons.abc,
-          color: Colors.yellow,
+          Icons.search,
+          color: Colors.white,
           size: 50,
         );
       case FeedbackCategory.report:
         return const Icon(
-          Icons.abc,
-          color: Colors.yellow,
+          Icons.report,
+          color: Colors.white,
           size: 50,
         );
       case FeedbackCategory.thanks:
         return const Icon(
-          Icons.abc,
-          color: Colors.yellow,
+          Icons.emoji_emotions,
+          color: Colors.white,
           size: 50,
         );
     }

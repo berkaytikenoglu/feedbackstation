@@ -1,5 +1,6 @@
 import 'package:feedbackstation/app/data/providers/user_provider.dart';
 import 'package:feedbackstation/app/data/repositories/user_repository.dart';
+import 'package:feedbackstation/app/modules/requestspage/controllers/create_requestspage_controller.dart';
 import 'package:feedbackstation/app/modules/startingpage/controllers/startingpage_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,6 +13,8 @@ void main() {
   ));
 
   Get.put(StartingpageController());
+
+  Get.put(CreateRequestspageController());
 
   runApp(const App());
 }
