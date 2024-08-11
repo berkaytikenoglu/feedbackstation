@@ -1,7 +1,7 @@
 import 'package:feedbackstation/app/data/models/feedbacks_model.dart';
 import 'package:feedbackstation/app/data/models/status_model.dart';
-import 'package:feedbackstation/app/modules/requestspage/controllers/requestspage_controller.dart';
-import 'package:feedbackstation/app/modules/requestspage/views/detail_requestspage_view.dart';
+import 'package:feedbackstation/app/modules/requestspages/requestpage/controllers/requestspage_controller.dart';
+import 'package:feedbackstation/app/modules/requestspages/requestpage/views/detail_requestspage_view.dart';
 import 'package:feedbackstation/app/utils/applist.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

@@ -4,7 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:feedbackstation/app/appinfo.dart';
 import 'package:feedbackstation/app/data/models/request_model.dart';
 import 'package:feedbackstation/app/data/models/status_model.dart';
-import 'package:feedbackstation/app/modules/requestspage/controllers/detail_requestspage_controller.dart';
+import 'package:feedbackstation/app/modules/requestspages/detail_requestpage/controllers/detail_requestspage_controller.dart';
 import 'package:feedbackstation/app/utils/applist.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

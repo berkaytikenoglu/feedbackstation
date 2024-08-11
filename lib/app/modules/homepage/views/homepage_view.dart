@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:feedbackstation/app/data/models/feedbacks_model.dart';
-import 'package:feedbackstation/app/modules/requestspage/views/create_requestspage_view.dart';
-import 'package:feedbackstation/app/modules/requestspage/views/requestspage_view.dart';
+import 'package:feedbackstation/app/modules/requestspages/requestpage/views/create_requestspage_view.dart';
+import 'package:feedbackstation/app/modules/requestspages/requestpage/views/requestspage_view.dart';
 import 'package:feedbackstation/app/modules/startingpage/views/startingpage_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
