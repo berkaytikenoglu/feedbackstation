@@ -4,14 +4,12 @@ import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 
 class CreateRequestspageController extends GetxController {
-  //
   var mediaList = <PlatformFile>[].obs;
 
   @override
   void onInit() {
     super.onInit();
-    mediaList.clear();
-    log("Hoşgeldin");
+    log("-------Hoşgeldin-------");
     log(mediaList.length.toString());
   }
 
@@ -19,8 +17,7 @@ class CreateRequestspageController extends GetxController {
   void onClose() {
     // Sayfa kapatıldığında mediaList temizlenir
     mediaList.clear();
-    log("Güle Güle");
-
+    log("-------Güle Güle-------");
     super.onClose();
   }
 

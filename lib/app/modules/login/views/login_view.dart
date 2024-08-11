@@ -6,7 +6,7 @@ import 'package:feedbackstation/app/widgets/textfields_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class LoginView extends GetView<LoginController> {
+class LoginView extends StatelessWidget {
   const LoginView({super.key});
 
   @override
@@ -19,7 +19,7 @@ class LoginView extends GetView<LoginController> {
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width / 4,
+            horizontal: MediaQuery.of(context).size.width / 5,
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -34,27 +34,31 @@ class LoginView extends GetView<LoginController> {
               ),
               const SizedBox(height: 15),
               Obx(() {
-                return ToggleButtons(
-                  color: Colors.grey,
-                  borderColor: Colors.grey,
-                  selectedColor: Colors.white,
-                  selectedBorderColor: Colors.blue,
-                  fillColor: Colors.blue,
-                  isSelected: List.generate(
-                      2, (index) => index == controller.selectedIndex.value),
-                  onPressed: (int index) {
-                    controller.updateSelectedIndex(index);
-                  },
-                  children: const <Widget>[
-                    Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text('Vatandaş Girişi'),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text('Personel Girişi'),
-                    ),
-                  ],
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: ToggleButtons(
+                    color: Colors.grey,
+                    borderColor: Colors.grey,
+                    selectedColor: Colors.white,
+                    selectedBorderColor: Colors.blue,
+                    fillColor: Colors.blue,
+                    borderRadius: BorderRadius.circular(10),
+                    isSelected: List.generate(
+                        2, (index) => index == controller.selectedIndex.value),
+                    onPressed: (int index) {
+                      controller.updateSelectedIndex(index);
+                    },
+                    children: const <Widget>[
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text('Vatandaş Girişi'),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text('Personel Girişi'),
+                      ),
+                    ],
+                  ),
                 );
               }),
               TextfieldWidget.costum2(
@@ -77,6 +81,9 @@ class LoginView extends GetView<LoginController> {
                   onPressed: null,
                   child: Text(
                     "Şifremi unuttum!",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),

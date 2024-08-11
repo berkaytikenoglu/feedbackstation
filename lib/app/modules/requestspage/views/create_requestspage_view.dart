@@ -1,17 +1,19 @@
 import 'dart:developer';
 import 'dart:io';
+
 import 'package:feedbackstation/app/appinfo.dart';
 import 'package:feedbackstation/app/modules/requestspage/controllers/create_requestspage_controller.dart';
 import 'package:feedbackstation/app/widgets/textfields_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class CreateRequestspageView extends GetView<CreateRequestspageController> {
+class CreateRequestspageView extends StatelessWidget {
   const CreateRequestspageView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<CreateRequestspageController>();
+    final CreateRequestspageController controller =
+        Get.put(CreateRequestspageController());
 
     Map<String, dynamic> data = Get.arguments;
     final requestId = data["page"];
@@ -92,6 +94,7 @@ class CreateRequestspageView extends GetView<CreateRequestspageController> {
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: controller.mediaList.length,
+                      // itemCount: 0,
                       itemBuilder: (context, index) {
                         final file = controller.mediaList[index];
                         log("$index - ${file.extension}");

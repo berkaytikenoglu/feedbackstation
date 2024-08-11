@@ -25,27 +25,24 @@ class ParticalWidget {
     return rng.nextBool() ? 1 : -1;
   }
 
-  static Widget particals(
+  static Particles particals(
     context, {
     required Function particals,
   }) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
-    return Container(
-      color: const Color.fromARGB(255, 2, 45, 80),
-      child: Particles(
-        awayRadius: 100,
-        particles: particals(),
-        height: screenHeight,
-        width: screenWidth,
-        onTapAnimation: true,
-        awayAnimationDuration: const Duration(milliseconds: 10000),
-        awayAnimationCurve: Curves.easeInBack,
-        enableHover: true,
-        hoverRadius: 80,
-        connectDots: true,
-      ),
+    return Particles(
+      awayRadius: 100,
+      particles: particals(),
+      height: screenHeight,
+      width: screenWidth,
+      onTapAnimation: true,
+      awayAnimationDuration: const Duration(milliseconds: 10000),
+      awayAnimationCurve: Curves.easeInBack,
+      enableHover: true,
+      hoverRadius: 80,
+      connectDots: true,
     );
   }
 }

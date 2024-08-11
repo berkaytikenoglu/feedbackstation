@@ -1,24 +1,16 @@
 import 'package:feedbackstation/app/appinfo.dart';
-import 'package:feedbackstation/app/modules/startingpage/controllers/startingpage_controller.dart';
-import 'package:feedbackstation/app/modules/login/views/login_view.dart';
-import 'package:feedbackstation/app/widgets/partical_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class StartingpageView extends GetView<StartingpageController> {
+class StartingpageView extends StatelessWidget {
   const StartingpageView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final StartingpageController controller = Get.put(StartingpageController());
-
-    return Stack(
-      children: [
-        ParticalWidget.particals(
-          context,
-          particals: controller.particles.call,
-        ),
-        Center(
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 2, 45, 80),
+      body: Center(
+        child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -30,15 +22,17 @@ class StartingpageView extends GetView<StartingpageController> {
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   AppInfo.appName,
+                  textAlign: TextAlign.center,
                   style: const TextStyle(
                     color: Colors.white,
                     decoration: TextDecoration.none,
+                    fontSize: 22,
                   ),
                 ),
               ),
               ElevatedButton(
                 onPressed: () {
-                  Get.to(() => const LoginView());
+                  Get.offNamed("/login");
                 },
                 child: const Text(
                   "Giriş ekranı",
@@ -47,7 +41,7 @@ class StartingpageView extends GetView<StartingpageController> {
             ],
           ),
         ),
-      ],
+      ),
     );
   }
 }

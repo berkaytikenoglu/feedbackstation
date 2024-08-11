@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:feedbackstation/app/appinfo.dart';
-import 'package:feedbackstation/app/data/models/feedbacks_model.dart';
 import 'package:feedbackstation/app/data/models/request_model.dart';
 import 'package:feedbackstation/app/data/models/status_model.dart';
 import 'package:feedbackstation/app/modules/requestspage/controllers/detail_requestspage_controller.dart';
@@ -18,8 +17,6 @@ class DetailRequestspageView extends GetView<DetailRequestspageController> {
     Map<String, dynamic> data = Get.arguments;
     final requestId = data["id"];
     final detail = data["detail"];
-
-    log(requestId.toString());
 
     AppRequest requestInfo =
         AppList.requestsList.firstWhere((element) => element.id == requestId);
@@ -39,22 +36,10 @@ class DetailRequestspageView extends GetView<DetailRequestspageController> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ClipOval(
-                    child: CachedNetworkImage(
-                      imageUrl: requestInfo.category.departmentLogo,
-                      scale: 4,
-                    ),
-                  ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Image.asset(
                       AppInfo.appImage,
-                      scale: 4,
-                    ),
-                  ),
-                  ClipOval(
-                    child: CachedNetworkImage(
-                      imageUrl: requestInfo.category.departmentLogo,
                       scale: 4,
                     ),
                   ),
@@ -139,7 +124,7 @@ class DetailRequestspageView extends GetView<DetailRequestspageController> {
                       itemCount: requestInfo.documents.length,
                       itemBuilder: (context, index) {
                         final file = requestInfo.documents[index];
-                        log("$index - $file");
+                        log("Page|$index - $file");
 
                         List link = file.split("/");
                         String fileName = link[link.length - 1];

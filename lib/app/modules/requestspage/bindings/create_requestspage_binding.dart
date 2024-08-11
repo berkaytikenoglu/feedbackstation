@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 class CreateRequestspageBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<CreateRequestspageController>(
-        () => CreateRequestspageController());
+    Get.lazyPut(() => CreateRequestspageController());
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:feedbackstation/app/data/models/user_model.dart';
 import 'package:feedbackstation/app/data/repositories/user_repository.dart';
 import 'package:get/get.dart';
@@ -17,6 +19,13 @@ class UserController extends GetxController {
   void onInit() {
     super.onInit();
     fetchUsers();
+    log("----user sayfası açıldı");
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
+    log("---user sayfası kapandı");
   }
 
   // Kullanıcıları getiren ve listeye ekleyen yöntem

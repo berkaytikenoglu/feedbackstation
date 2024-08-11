@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 class DetailRequestspageBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<DetailRequestspageController>(
-        () => DetailRequestspageController());
+    Get.lazyPut(() => DetailRequestspageController());
   }
 }

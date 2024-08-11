@@ -71,8 +71,8 @@ class HomepageView extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3, // Grid'deki sütun sayısı
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: MediaQuery.of(context).size.width > 600 ? 2 : 1,
             crossAxisSpacing: 10, // Sütunlar arasındaki boşluk
             mainAxisSpacing: 10, // Satırlar arasındaki boşluk
             childAspectRatio: 1.618, // Çocukların en/boy oranı
