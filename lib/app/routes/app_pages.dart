@@ -1,6 +1,6 @@
-import 'package:feedbackstation/app/modules/homepage/homepage_module.dart';
-import 'package:feedbackstation/app/modules/requestspages/requestpage/requestspage_module.dart';
-import 'package:feedbackstation/app/modules/startingpage/startingpage_module.dart';
+import 'package:feedbackstation/app/modules/homepages/homepage_module.dart';
+import 'package:feedbackstation/app/modules/requestspages/requestspage_module.dart';
+import 'package:feedbackstation/app/modules/splash/startingpage_module.dart';
 import 'package:feedbackstation/app/modules/login/login_module.dart';
 import 'package:feedbackstation/app/modules/user/user_module.dart';
 

@@ -1,9 +1,9 @@
-import 'package:feedbackstation/app/modules/requestspages/requestpage/bindings/create_requestspage_binding.dart';
+import 'package:feedbackstation/app/modules/requestspages/create_requestpage/bindings/create_requestspage_binding.dart';
 import 'package:feedbackstation/app/modules/requestspages/detail_requestpage/bindings/detail_requestspage_binding.dart';
-import 'package:feedbackstation/app/modules/requestspages/requestpage/bindings/requestspage_binding.dart';
-import 'package:feedbackstation/app/modules/requestspages/requestpage/views/create_requestspage_view.dart';
-import 'package:feedbackstation/app/modules/requestspages/requestpage/views/detail_requestspage_view.dart';
-import 'package:feedbackstation/app/modules/requestspages/requestpage/views/requestspage_view.dart';
+import 'package:feedbackstation/app/modules/requestspages/_main/bindings/requestspage_binding.dart';
+import 'package:feedbackstation/app/modules/requestspages/create_requestpage/views/create_requestspage_view.dart';
+import 'package:feedbackstation/app/modules/requestspages/detail_requestpage/views/detail_requestspage_view.dart';
+import 'package:feedbackstation/app/modules/requestspages/_main/views/requestspage_view.dart';
 import 'package:get/get.dart';
 
 class RequestspageModule {

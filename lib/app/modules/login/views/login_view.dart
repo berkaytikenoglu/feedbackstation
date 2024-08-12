@@ -1,5 +1,4 @@
 import 'package:feedbackstation/app/appinfo.dart';
-import 'package:feedbackstation/app/modules/homepage/views/homepage_view.dart';
 import 'package:feedbackstation/app/modules/login/controllers/login_controller.dart';
 import 'package:feedbackstation/app/modules/user/views/user_view.dart';
 import 'package:feedbackstation/app/widgets/partical_widget.dart';
@@ -15,7 +14,6 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     final LoginController controller = Get.put(LoginController());
 
-    // return Obx(() {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 2, 45, 80),
       body: Stack(
@@ -140,7 +138,11 @@ class LoginView extends StatelessWidget {
                       const Spacer(),
                       ElevatedButton(
                         onPressed: () {
-                          Get.off(() => const HomepageView());
+                          if (controller.selectedIndex.value == 1) {
+                            Get.offNamed("/home/admin");
+                          } else {
+                            Get.offNamed("/home");
+                          }
                         },
                         child: const Text("Giriş Yap"),
                       )

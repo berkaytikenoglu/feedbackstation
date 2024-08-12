@@ -153,8 +153,13 @@ class DetailRequestspageView extends GetView<DetailRequestspageController> {
                               children: [
                                 addedPreview,
                                 ListTile(
+                                  contentPadding: EdgeInsets.all(3),
                                   title: SingleChildScrollView(
                                     child: Text(fileName),
+                                  ),
+                                  trailing: IconButton(
+                                    icon: const Icon(Icons.download),
+                                    onPressed: () {},
                                   ),
                                 ),
                               ],

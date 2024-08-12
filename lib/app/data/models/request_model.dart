@@ -8,7 +8,7 @@ class AppRequest {
   final String description;
   final String subject;
   final AppStatus status;
-  final String date;
+  final DateTime date;
   List<String> documents = [];
   final List<MessageModel>? messages;
 

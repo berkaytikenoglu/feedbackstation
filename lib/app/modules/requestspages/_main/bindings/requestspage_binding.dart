@@ -1,4 +1,4 @@
-import 'package:feedbackstation/app/modules/requestspages/requestpage/controllers/requestspage_controller.dart';
+import 'package:feedbackstation/app/modules/requestspages/_main/controllers/requestspage_controller.dart';
 import 'package:get/get.dart';
 
 class RequestspageBinding extends Bindings {

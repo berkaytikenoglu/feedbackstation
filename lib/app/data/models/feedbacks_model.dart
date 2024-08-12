@@ -82,20 +82,20 @@ extension FeedbackServices on FeedbackCategory {
   Color get backGrndcolor {
     switch (this) {
       case FeedbackCategory.request:
-        return const Color(0xFF3C4CBD);
+        return Colors.red;
       case FeedbackCategory.complaint:
-        return const Color(0xFF3C4CBD);
+        return Colors.green;
 
       case FeedbackCategory.projectStatement:
-        return const Color(0xFF3C4CBD);
+        return Colors.blue;
 
       case FeedbackCategory.informationRequest:
-        return const Color(0xFF3C4CBD);
+        return Colors.purple;
 
       case FeedbackCategory.report:
-        return const Color(0xFF3C4CBD);
+        return Colors.amber;
       case FeedbackCategory.thanks:
-        return const Color(0xFF3C4CBD);
+        return Colors.cyan;
     }
   }
 

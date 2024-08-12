@@ -1,8 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:feedbackstation/app/data/models/feedbacks_model.dart';
-import 'package:feedbackstation/app/modules/requestspages/requestpage/views/create_requestspage_view.dart';
-import 'package:feedbackstation/app/modules/requestspages/requestpage/views/requestspage_view.dart';
-import 'package:feedbackstation/app/modules/startingpage/views/startingpage_view.dart';
+import 'package:feedbackstation/app/modules/requestspages/create_requestpage/views/create_requestspage_view.dart';
+import 'package:feedbackstation/app/modules/requestspages/_main/views/requestspage_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -62,7 +61,7 @@ class HomepageView extends StatelessWidget {
               leading: const Icon(Icons.exit_to_app),
               title: const Text('Çıkış Yap'),
               onTap: () {
-                Get.to(() => const StartingpageView());
+                Get.offAllNamed("/login");
               },
             ),
           ],
@@ -95,7 +94,7 @@ class HomepageView extends StatelessWidget {
                   ),
                 ),
               ),
-              tileColor: FeedbackCategory.values[index].backGrndcolor,
+              tileColor: Color(0xFF3C4CBD),
               onTap: () {
                 Get.to(() => const CreateRequestspageView(), arguments: {
                   "page": FeedbackCategory.values[index].title,

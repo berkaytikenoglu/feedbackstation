@@ -27,11 +27,20 @@ extension StatusExtension on AppStatus {
       case AppStatus.pending:
         return const Icon(Icons.remove);
       case AppStatus.approved:
-        return const Icon(Icons.check);
+        return const Icon(
+          Icons.check,
+          color: Colors.green,
+        );
       case AppStatus.denied:
-        return const Icon(Icons.cancel_outlined);
+        return const Icon(
+          Icons.cancel_outlined,
+          color: Colors.red,
+        );
       case AppStatus.ongoing:
-        return const Icon(Icons.remove_circle_outline_sharp);
+        return const Icon(
+          Icons.remove_circle_outline_sharp,
+          color: Colors.amber,
+        );
     }
   }
 
