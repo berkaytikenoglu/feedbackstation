@@ -1,7 +1,6 @@
-import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:feedbackstation/app/data/models/feedbacks_model.dart';
+import 'package:feedbackstation/app/data/models/status_model.dart';
 import 'package:feedbackstation/app/modules/homepages/admin/controllers/admin_home_controller.dart';
 import 'package:feedbackstation/app/modules/requestspages/_main/views/requestspage_view.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -14,6 +13,15 @@ class AdminHomepageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AdminHomeController controller = Get.put(AdminHomeController());
+    String calculatePercentageChange(double initialValue, double finalValue) {
+      if (initialValue == 0) {
+        return ("??");
+      }
+
+      double change = finalValue - initialValue;
+      double percentageChange = (change / initialValue) * 100;
+      return "${percentageChange.toStringAsFixed(2)}%";
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -72,228 +80,1360 @@ class AdminHomepageView extends StatelessWidget {
           ],
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 210,
-              child: Obx(
-                () => ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: controller.categoryList.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: controller
-                              .categoryList[index].category.backGrndcolor,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        width: 300,
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Obx(
+                () => Visibility(
+                  visible: controller.viewhourly.value,
+                  child: SizedBox(
+                    height: 210,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: controller.categoryList.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: controller
+                                  .categoryList[index].category.backGrndcolor,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            width: 300,
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
                                     children: [
-                                      Row(
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                "${controller.categoryList[index].hourValue! > 1000000 ? "${(controller.categoryList[index].hourValue! / 1000000).toStringAsFixed(1)}M" : controller.categoryList[index].hourValue! > 1000 ? "${(controller.categoryList[index].hourValue! / 1000).toStringAsFixed(1)}K" : controller.categoryList[index].hourValue}",
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 28,
+                                                ),
+                                              ),
+                                              const Text(
+                                                "(",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              Text(
+                                                calculatePercentageChange(
+                                                  controller.categoryList[index]
+                                                      .hourly!.first.values.last
+                                                      .toDouble(),
+                                                  controller.categoryList[index]
+                                                      .hourly!.last.values.last
+                                                      .toDouble(),
+                                                ),
+                                                style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white),
+                                              ),
+                                              controller
+                                                              .categoryList[
+                                                                  index]
+                                                              .hourly!
+                                                              .last
+                                                              .values
+                                                              .last -
+                                                          controller
+                                                              .categoryList[
+                                                                  index]
+                                                              .hourly!
+                                                              .first
+                                                              .values
+                                                              .last >
+                                                      0
+                                                  ? const Icon(
+                                                      Icons
+                                                          .arrow_upward_rounded,
+                                                      color: Colors.white,
+                                                      size: 15,
+                                                    )
+                                                  : const Icon(
+                                                      Icons
+                                                          .arrow_downward_rounded,
+                                                      color: Colors.white,
+                                                      size: 15,
+                                                    ),
+                                              const Text(
+                                                ")",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                           Text(
-                                            "${controller.categoryList[index].value.toString()}K ",
+                                            controller.categoryList[index]
+                                                .category.title,
                                             style: const TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 28,
                                             ),
-                                          ),
-                                          const Icon(
-                                            Icons.arrow_upward,
-                                            color: Colors.white,
                                           ),
                                         ],
                                       ),
-                                      Text(
-                                        controller
-                                            .categoryList[index].category.title,
-                                        style: const TextStyle(
+                                      const Spacer(),
+                                      IconButton(
+                                        onPressed: () {},
+                                        icon: const Icon(
+                                          Icons.more_vert_sharp,
                                           color: Colors.white,
-                                          fontWeight: FontWeight.bold,
                                         ),
-                                      ),
+                                      )
                                     ],
                                   ),
-                                  const Spacer(),
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(
-                                      Icons.more_vert_sharp,
-                                      color: Colors.white,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 118,
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 8.0),
-                                child: LineChart(
-                                  LineChartData(
-                                      gridData: const FlGridData(show: false),
-                                      titlesData:
-                                          const FlTitlesData(show: false),
-                                      borderData: FlBorderData(show: false),
-                                      minX: 0,
-                                      minY: 0,
-                                      //maxY: 10,
-                                      lineBarsData: [
-                                        LineChartBarData(
-                                          spots: [
-                                            FlSpot(0, 11),
-                                            FlSpot(1, 3),
-                                            FlSpot(2, 6),
-                                            FlSpot(3, 3),
-                                            FlSpot(4, 7),
-                                            FlSpot(5, 1),
-                                            FlSpot(6, 5),
-                                            FlSpot(8, 5),
-                                            FlSpot(9, 8),
-                                            FlSpot(10, 6),
-                                            FlSpot(11, 4),
-                                          ],
-                                          isCurved: true,
-                                          color: const Color.fromARGB(
-                                              255, 255, 255, 255),
-                                          dotData: const FlDotData(show: true),
-                                          belowBarData: BarAreaData(
-                                            show: true,
-                                            color: Colors.white30,
-                                          ),
-                                        )
-                                      ]
-                                      // lineBarsData: [
-                                      //   LineChartBarData(
-                                      //     spots: List.generate(
-                                      //       controller.categoryList[index]
-                                      //           .saatlik!.length,
-                                      //       (index2) {
-                                      //         log(controller.categoryList[index]
-                                      //             .saatlik![index2].values.last);
-                                      //         log(controller.categoryList[index]
-                                      //             .saatlik![index2].values.first);
-
-                                      //         return FlSpot(
-                                      //             index2.toDouble(),
-                                      //             controller
-                                      //                 .categoryList[index]
-                                      //                 .saatlik![index2]
-                                      //                 .values
-                                      //                 .last
-                                      //                 .toDouble());
-                                      //       },
-                                      //     ),
-                                      //     isCurved: true,
-                                      //     color: const Color.fromARGB(
-                                      //         255, 255, 255, 255),
-                                      //     dotData: const FlDotData(show: true),
-                                      //     belowBarData: BarAreaData(
-                                      //       show: true,
-                                      //       color: Colors.white30,
-                                      //     ),
-                                      //   ),
-                                      // ],
-                                      ),
-                                  duration: Durations.medium1,
                                 ),
-                              ),
+                                SizedBox(
+                                  height: 118,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 8.0),
+                                    child: controller.categoryList[index]
+                                                .hourValue! ==
+                                            0
+                                        ? const Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Veri yok",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        : LineChart(
+                                            LineChartData(
+                                              gridData: const FlGridData(
+                                                show: false,
+                                              ),
+                                              titlesData: const FlTitlesData(
+                                                  show: false),
+                                              borderData:
+                                                  FlBorderData(show: false),
+                                              minX: 0,
+                                              minY: 0,
+                                              lineTouchData: LineTouchData(
+                                                touchTooltipData:
+                                                    LineTouchTooltipData(
+                                                  getTooltipItems:
+                                                      (List<LineBarSpot>
+                                                          touchedSpots) {
+                                                    return touchedSpots
+                                                        .asMap()
+                                                        .entries
+                                                        .map((entry) {
+                                                      int index = entry
+                                                          .key; // Indeksi al
+
+                                                      LineBarSpot spot = entry
+                                                          .value; // Spot'u al
+
+                                                      int indexval =
+                                                          spot.x.round();
+
+                                                      return LineTooltipItem(
+                                                        '${controller.categoryList[index].hourly![indexval].keys.first} \n${spot.y.toStringAsFixed(1)}',
+                                                        const TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                      );
+                                                    }).toList();
+                                                  },
+                                                ),
+                                              ),
+                                              lineBarsData: [
+                                                LineChartBarData(
+                                                  spots: List.generate(
+                                                    controller
+                                                        .categoryList[index]
+                                                        .hourly!
+                                                        .length,
+                                                    (index2) {
+                                                      return FlSpot(
+                                                          index2.toDouble(),
+                                                          controller
+                                                              .categoryList[
+                                                                  index]
+                                                              .hourly![index2]
+                                                              .values
+                                                              .last
+                                                              .toDouble());
+                                                    },
+                                                  ),
+                                                  isCurved: true,
+                                                  color: const Color.fromARGB(
+                                                      255, 255, 255, 255),
+                                                  dotData: const FlDotData(
+                                                    show: true,
+                                                  ),
+                                                  belowBarData: BarAreaData(
+                                                    show: true,
+                                                    color: Colors.white30,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            duration: Durations.medium1,
+                                          ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 400,
-              child: LineChart(
-                LineChartData(
-                    gridData: const FlGridData(show: false),
-                    titlesData: FlTitlesData(
-                      topTitles: const AxisTitles(
-                        sideTitles: SideTitles(
-                          showTitles: false,
-                        ),
-                      ),
-                      rightTitles: const AxisTitles(
-                        sideTitles: SideTitles(
-                          showTitles: false,
-                        ),
-                      ),
-                      leftTitles: AxisTitles(
-                        sideTitles: SideTitles(
-                          showTitles: true,
-                          getTitlesWidget: (value, meta) {
-                            return SideTitleWidget(
-                              axisSide: meta.axisSide,
-                              child: const Text("|"),
-                            );
-                          },
-                        ),
-                      ),
-                      bottomTitles: AxisTitles(
-                        sideTitles: SideTitles(
-                          showTitles: true,
-                          reservedSize: 40,
-                          getTitlesWidget: (value, meta) {
-                            return SideTitleWidget(
-                              axisSide: meta.axisSide,
-                              child: const Text("-"),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                    borderData: FlBorderData(show: false),
-                    minX: 0,
-                    minY: 0,
-                    lineBarsData: List.generate(
-                      controller.categoryList.length,
-                      (index) {
-                        return LineChartBarData(
-                          spots: [
-                            FlSpot(0, Random().nextDouble() * 31),
-                            FlSpot(1, Random().nextDouble() * 31),
-                            FlSpot(2, Random().nextDouble() * 31),
-                            FlSpot(3, Random().nextDouble() * 31),
-                            FlSpot(4, Random().nextDouble() * 31),
-                            FlSpot(5, Random().nextDouble() * 31),
-                            FlSpot(6, Random().nextDouble() * 31),
-                          ],
-                          isCurved: true,
-                          color: controller
-                              .categoryList[index].category.backGrndcolor,
-                          dotData: const FlDotData(show: true),
-                          belowBarData: BarAreaData(
-                            show: true,
-                            color: controller
-                                .categoryList[index].category.backGrndcolor
-                                .withOpacity(0.2),
                           ),
                         );
                       },
-                    )),
-                duration: Durations.medium1,
+                    ),
+                  ),
+                ),
               ),
-            ),
-          ],
+
+              Obx(
+                () => Visibility(
+                  visible: controller.viewweekly.value,
+                  child: SizedBox(
+                    height: 210,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: controller.categoryList.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: controller
+                                  .categoryList[index].category.backGrndcolor,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            width: 300,
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                "${controller.categoryList[index].weeklyValue! > 1000000 ? "${(controller.categoryList[index].weeklyValue! / 1000000).toStringAsFixed(1)}M" : controller.categoryList[index].weeklyValue! > 1000 ? "${(controller.categoryList[index].weeklyValue! / 1000).toStringAsFixed(1)}K" : controller.categoryList[index].weeklyValue}",
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 28,
+                                                ),
+                                              ),
+                                              const Text(
+                                                "(",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              Text(
+                                                calculatePercentageChange(
+                                                  controller.categoryList[index]
+                                                      .weekly!.first.values.last
+                                                      .toDouble(),
+                                                  controller.categoryList[index]
+                                                      .weekly!.last.values.last
+                                                      .toDouble(),
+                                                ),
+                                                style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white),
+                                              ),
+                                              controller
+                                                              .categoryList[
+                                                                  index]
+                                                              .weekly!
+                                                              .last
+                                                              .values
+                                                              .last -
+                                                          controller
+                                                              .categoryList[
+                                                                  index]
+                                                              .weekly!
+                                                              .first
+                                                              .values
+                                                              .last >
+                                                      0
+                                                  ? const Icon(
+                                                      Icons
+                                                          .arrow_upward_rounded,
+                                                      color: Colors.white,
+                                                      size: 15,
+                                                    )
+                                                  : const Icon(
+                                                      Icons
+                                                          .arrow_downward_rounded,
+                                                      color: Colors.white,
+                                                      size: 15,
+                                                    ),
+                                              const Text(
+                                                ")",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Text(
+                                            controller.categoryList[index]
+                                                .category.title,
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const Spacer(),
+                                      IconButton(
+                                        onPressed: () {},
+                                        icon: const Icon(
+                                          Icons.more_vert_sharp,
+                                          color: Colors.white,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 118,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 8.0),
+                                    child: controller.categoryList[index]
+                                                .hourValue! ==
+                                            0
+                                        ? const Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Veri yok",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        : LineChart(
+                                            LineChartData(
+                                              gridData: const FlGridData(
+                                                show: false,
+                                              ),
+                                              titlesData: const FlTitlesData(
+                                                  show: false),
+                                              borderData:
+                                                  FlBorderData(show: false),
+                                              minX: 0,
+                                              minY: 0,
+                                              lineTouchData: LineTouchData(
+                                                touchTooltipData:
+                                                    LineTouchTooltipData(
+                                                  getTooltipItems:
+                                                      (List<LineBarSpot>
+                                                          touchedSpots) {
+                                                    return touchedSpots
+                                                        .asMap()
+                                                        .entries
+                                                        .map((entry) {
+                                                      int index = entry
+                                                          .key; // Indeksi al
+
+                                                      LineBarSpot spot = entry
+                                                          .value; // Spot'u al
+
+                                                      int indexval =
+                                                          spot.x.round();
+
+                                                      return LineTooltipItem(
+                                                        '${controller.categoryList[index].weekly![indexval].keys.first} \n${spot.y.toStringAsFixed(1)}',
+                                                        const TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                      );
+                                                    }).toList();
+                                                  },
+                                                ),
+                                              ),
+                                              lineBarsData: [
+                                                LineChartBarData(
+                                                  spots: List.generate(
+                                                    controller
+                                                        .categoryList[index]
+                                                        .weekly!
+                                                        .length,
+                                                    (index2) {
+                                                      return FlSpot(
+                                                          index2.toDouble(),
+                                                          controller
+                                                              .categoryList[
+                                                                  index]
+                                                              .weekly![index2]
+                                                              .values
+                                                              .last
+                                                              .toDouble());
+                                                    },
+                                                  ),
+                                                  isCurved: true,
+                                                  color: const Color.fromARGB(
+                                                      255, 255, 255, 255),
+                                                  dotData: const FlDotData(
+                                                    show: true,
+                                                  ),
+                                                  belowBarData: BarAreaData(
+                                                    show: true,
+                                                    color: Colors.white30,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            duration: Durations.medium1,
+                                          ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
+              Obx(
+                () => Visibility(
+                  visible: controller.viewmontly.value,
+                  child: SizedBox(
+                    height: 210,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: controller.categoryList.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: controller
+                                  .categoryList[index].category.backGrndcolor,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            width: 300,
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                "${controller.categoryList[index].monthlyValue! > 1000000 ? "${(controller.categoryList[index].monthlyValue! / 1000000).toStringAsFixed(1)}M" : controller.categoryList[index].monthlyValue! > 1000 ? "${(controller.categoryList[index].monthlyValue! / 1000).toStringAsFixed(1)}K" : controller.categoryList[index].monthlyValue}",
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 28,
+                                                ),
+                                              ),
+                                              const Text(
+                                                "(",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              Text(
+                                                calculatePercentageChange(
+                                                  controller
+                                                      .categoryList[index]
+                                                      .monthly!
+                                                      .first
+                                                      .values
+                                                      .last
+                                                      .toDouble(),
+                                                  controller.categoryList[index]
+                                                      .monthly!.last.values.last
+                                                      .toDouble(),
+                                                ),
+                                                style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white),
+                                              ),
+                                              controller
+                                                              .categoryList[
+                                                                  index]
+                                                              .monthly!
+                                                              .last
+                                                              .values
+                                                              .last -
+                                                          controller
+                                                              .categoryList[
+                                                                  index]
+                                                              .monthly!
+                                                              .first
+                                                              .values
+                                                              .last >
+                                                      0
+                                                  ? const Icon(
+                                                      Icons
+                                                          .arrow_upward_rounded,
+                                                      color: Colors.white,
+                                                      size: 15,
+                                                    )
+                                                  : const Icon(
+                                                      Icons
+                                                          .arrow_downward_rounded,
+                                                      color: Colors.white,
+                                                      size: 15,
+                                                    ),
+                                              const Text(
+                                                ")",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Text(
+                                            controller.categoryList[index]
+                                                .category.title,
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const Spacer(),
+                                      IconButton(
+                                        onPressed: () {},
+                                        icon: const Icon(
+                                          Icons.more_vert_sharp,
+                                          color: Colors.white,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 118,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 8.0),
+                                    child: controller.categoryList[index]
+                                                .hourValue! ==
+                                            0
+                                        ? const Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Veri yok",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        : LineChart(
+                                            LineChartData(
+                                              gridData: const FlGridData(
+                                                show: false,
+                                              ),
+                                              titlesData: const FlTitlesData(
+                                                  show: false),
+                                              borderData:
+                                                  FlBorderData(show: false),
+                                              minX: 0,
+                                              minY: 0,
+                                              lineTouchData: LineTouchData(
+                                                touchTooltipData:
+                                                    LineTouchTooltipData(
+                                                  getTooltipItems:
+                                                      (List<LineBarSpot>
+                                                          touchedSpots) {
+                                                    return touchedSpots
+                                                        .asMap()
+                                                        .entries
+                                                        .map((entry) {
+                                                      int index = entry
+                                                          .key; // Indeksi al
+
+                                                      LineBarSpot spot = entry
+                                                          .value; // Spot'u al
+
+                                                      int indexval =
+                                                          spot.x.round();
+
+                                                      return LineTooltipItem(
+                                                        '${controller.categoryList[index].monthly![indexval].keys.first} \n${spot.y.toStringAsFixed(1)}',
+                                                        const TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                      );
+                                                    }).toList();
+                                                  },
+                                                ),
+                                              ),
+                                              lineBarsData: [
+                                                LineChartBarData(
+                                                  spots: List.generate(
+                                                    controller
+                                                        .categoryList[index]
+                                                        .monthly!
+                                                        .length,
+                                                    (index2) {
+                                                      return FlSpot(
+                                                          index2.toDouble(),
+                                                          controller
+                                                              .categoryList[
+                                                                  index]
+                                                              .monthly![index2]
+                                                              .values
+                                                              .last
+                                                              .toDouble());
+                                                    },
+                                                  ),
+                                                  isCurved: true,
+                                                  color: const Color.fromARGB(
+                                                      255, 255, 255, 255),
+                                                  dotData: const FlDotData(
+                                                    show: true,
+                                                  ),
+                                                  belowBarData: BarAreaData(
+                                                    show: true,
+                                                    color: Colors.white30,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            duration: Durations.medium1,
+                                          ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
+              Obx(
+                () => Visibility(
+                  visible: controller.viewyearly.value,
+                  child: SizedBox(
+                    height: 210,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: controller.categoryList.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: controller
+                                  .categoryList[index].category.backGrndcolor,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            width: 300,
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                "${controller.categoryList[index].yearlyValue! > 1000000 ? "${(controller.categoryList[index].yearlyValue! / 1000000).toStringAsFixed(1)}M" : controller.categoryList[index].yearlyValue! > 1000 ? "${(controller.categoryList[index].yearlyValue! / 1000).toStringAsFixed(1)}K" : controller.categoryList[index].yearlyValue}",
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 28,
+                                                ),
+                                              ),
+                                              const Text(
+                                                "(",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              Text(
+                                                calculatePercentageChange(
+                                                  controller.categoryList[index]
+                                                      .yearly!.first.values.last
+                                                      .toDouble(),
+                                                  controller.categoryList[index]
+                                                      .yearly!.last.values.last
+                                                      .toDouble(),
+                                                ),
+                                                style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white),
+                                              ),
+                                              controller
+                                                              .categoryList[
+                                                                  index]
+                                                              .yearly!
+                                                              .last
+                                                              .values
+                                                              .last -
+                                                          controller
+                                                              .categoryList[
+                                                                  index]
+                                                              .yearly!
+                                                              .first
+                                                              .values
+                                                              .last >
+                                                      0
+                                                  ? const Icon(
+                                                      Icons
+                                                          .arrow_upward_rounded,
+                                                      color: Colors.white,
+                                                      size: 15,
+                                                    )
+                                                  : const Icon(
+                                                      Icons
+                                                          .arrow_downward_rounded,
+                                                      color: Colors.white,
+                                                      size: 15,
+                                                    ),
+                                              const Text(
+                                                ")",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Text(
+                                            controller.categoryList[index]
+                                                .category.title,
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const Spacer(),
+                                      IconButton(
+                                        onPressed: () {},
+                                        icon: const Icon(
+                                          Icons.more_vert_sharp,
+                                          color: Colors.white,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 118,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 8.0),
+                                    child: controller.categoryList[index]
+                                                .hourValue! ==
+                                            0
+                                        ? const Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Veri yok",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        : LineChart(
+                                            LineChartData(
+                                              gridData: const FlGridData(
+                                                show: false,
+                                              ),
+                                              titlesData: const FlTitlesData(
+                                                  show: false),
+                                              borderData:
+                                                  FlBorderData(show: false),
+                                              minX: 0,
+                                              minY: 0,
+                                              lineTouchData: LineTouchData(
+                                                touchTooltipData:
+                                                    LineTouchTooltipData(
+                                                  getTooltipItems:
+                                                      (List<LineBarSpot>
+                                                          touchedSpots) {
+                                                    return touchedSpots
+                                                        .asMap()
+                                                        .entries
+                                                        .map((entry) {
+                                                      int index = entry
+                                                          .key; // Indeksi al
+
+                                                      LineBarSpot spot = entry
+                                                          .value; // Spot'u al
+
+                                                      int indexval =
+                                                          spot.x.round();
+
+                                                      return LineTooltipItem(
+                                                        '${controller.categoryList[index].yearly![indexval].keys.first} \n${spot.y.toStringAsFixed(1)}',
+                                                        const TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                      );
+                                                    }).toList();
+                                                  },
+                                                ),
+                                              ),
+                                              lineBarsData: [
+                                                LineChartBarData(
+                                                  spots: List.generate(
+                                                    controller
+                                                        .categoryList[index]
+                                                        .yearly!
+                                                        .length,
+                                                    (index2) {
+                                                      return FlSpot(
+                                                          index2.toDouble(),
+                                                          controller
+                                                              .categoryList[
+                                                                  index]
+                                                              .yearly![index2]
+                                                              .values
+                                                              .last
+                                                              .toDouble());
+                                                    },
+                                                  ),
+                                                  isCurved: true,
+                                                  color: const Color.fromARGB(
+                                                      255, 255, 255, 255),
+                                                  dotData: const FlDotData(
+                                                    show: true,
+                                                  ),
+                                                  belowBarData: BarAreaData(
+                                                    show: true,
+                                                    color: Colors.white30,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            duration: Durations.medium1,
+                                          ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
+              Obx(() {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: ToggleButtons(
+                    color: Colors.grey,
+                    borderColor: Colors.grey,
+                    selectedColor: Colors.white,
+                    selectedBorderColor: Colors.blue,
+                    fillColor: Colors.blue,
+                    borderRadius: BorderRadius.circular(10),
+                    isSelected: List.generate(
+                        4, (index) => index == controller.selectedIndex.value),
+                    onPressed: (int index) {
+                      controller.updateSelectedIndex(index);
+                    },
+                    children: const <Widget>[
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: SizedBox(
+                          width: 55,
+                          child: Text(
+                            'Günlük',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: SizedBox(
+                          width: 55,
+                          child: Text(
+                            'Haftalık',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: SizedBox(
+                          width: 55,
+                          child: Text(
+                            'Aylık',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: SizedBox(
+                          width: 55,
+                          child: Text(
+                            'Yıllık',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }),
+              // Spacer(),
+              SizedBox(
+                height: 400,
+                child: LineChart(
+                  LineChartData(
+                      gridData: const FlGridData(
+                        drawVerticalLine: false,
+                        drawHorizontalLine: true,
+                      ),
+                      titlesData: const FlTitlesData(
+                        topTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: false,
+                          ),
+                        ),
+                        rightTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: false,
+                          ),
+                        ),
+                        leftTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            reservedSize: 50,
+                            showTitles: true,
+                          ),
+                        ),
+                        bottomTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            reservedSize: 40,
+                          ),
+                        ),
+                      ),
+                      borderData: FlBorderData(show: false),
+                      minX: 0,
+                      minY: 0,
+                      lineBarsData: List.generate(
+                        controller.categoryList.length,
+                        (index) {
+                          return LineChartBarData(
+                            spots: [
+                              ...List.generate(
+                                controller.categoryList[index].hourly!.length,
+                                (index2) {
+                                  return FlSpot(
+                                      index2.toDouble(),
+                                      controller.categoryList[index]
+                                          .hourly![index2].values.first
+                                          .toDouble());
+                                },
+                              ),
+                            ],
+                            isCurved: true,
+                            color: controller
+                                .categoryList[index].category.backGrndcolor,
+                            dotData: const FlDotData(show: true),
+                            belowBarData: BarAreaData(
+                              show: true,
+                              color: controller
+                                  .categoryList[index].category.backGrndcolor
+                                  .withOpacity(0.2),
+                            ),
+                          );
+                        },
+                      )),
+                  duration: Durations.medium1,
+                ),
+              ),
+              const Text("İstekler"),
+              const Divider(
+                color: Colors.black,
+              ),
+              SizedBox(
+                height: 200,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        ...List.generate(
+                          AppStatus.values.length,
+                          (index) {
+                            if (AppStatus.values[index] == AppStatus.close ||
+                                AppStatus.values[index] == AppStatus.open ||
+                                AppStatus.values[index] == AppStatus.pending) {
+                              return Container();
+                            }
+
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                height: 150,
+                                width: 350,
+                                decoration: BoxDecoration(
+                                  color: AppStatus.values[index].color,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Column(
+                                  children: [
+                                    AppStatus.values[index].icon,
+                                    Text(
+                                      AppStatus.values[index].val,
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                    ),
+                                    const Text(
+                                      "594",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 50,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const Text("Şikayet"),
+              const Divider(
+                color: Colors.black,
+              ),
+              SizedBox(
+                height: 200,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        ...List.generate(
+                          AppStatus.values.length,
+                          (index) {
+                            if (AppStatus.values[index] == AppStatus.close ||
+                                AppStatus.values[index] == AppStatus.open ||
+                                AppStatus.values[index] == AppStatus.pending) {
+                              return Container();
+                            }
+
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                height: 150,
+                                width: 350,
+                                decoration: BoxDecoration(
+                                  color: AppStatus.values[index].color,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Column(
+                                  children: [
+                                    AppStatus.values[index].icon,
+                                    Text(
+                                      AppStatus.values[index].val,
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                    ),
+                                    const Text(
+                                      "594",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 50,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const Text("Proje Bildirimi"),
+              const Divider(
+                color: Colors.black,
+              ),
+              SizedBox(
+                height: 200,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        ...List.generate(
+                          AppStatus.values.length,
+                          (index) {
+                            if (AppStatus.values[index] == AppStatus.close ||
+                                AppStatus.values[index] == AppStatus.open ||
+                                AppStatus.values[index] == AppStatus.pending) {
+                              return Container();
+                            }
+
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                height: 150,
+                                width: 350,
+                                decoration: BoxDecoration(
+                                  color: AppStatus.values[index].color,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Column(
+                                  children: [
+                                    AppStatus.values[index].icon,
+                                    Text(
+                                      AppStatus.values[index].val,
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                    ),
+                                    const Text(
+                                      "594",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 50,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const Text("Bilgi Talebi"),
+              const Divider(
+                color: Colors.black,
+              ),
+              SizedBox(
+                height: 200,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        ...List.generate(
+                          AppStatus.values.length,
+                          (index) {
+                            if (AppStatus.values[index] == AppStatus.close ||
+                                AppStatus.values[index] == AppStatus.open ||
+                                AppStatus.values[index] == AppStatus.pending) {
+                              return Container();
+                            }
+
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                height: 150,
+                                width: 350,
+                                decoration: BoxDecoration(
+                                  color: AppStatus.values[index].color,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Column(
+                                  children: [
+                                    AppStatus.values[index].icon,
+                                    Text(
+                                      AppStatus.values[index].val,
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                    ),
+                                    const Text(
+                                      "594",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 50,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const Text("İhbar"),
+              const Divider(
+                color: Colors.black,
+              ),
+              SizedBox(
+                height: 200,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        ...List.generate(
+                          AppStatus.values.length,
+                          (index) {
+                            if (AppStatus.values[index] == AppStatus.close ||
+                                AppStatus.values[index] == AppStatus.open ||
+                                AppStatus.values[index] == AppStatus.pending) {
+                              return Container();
+                            }
+
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                height: 150,
+                                width: 350,
+                                decoration: BoxDecoration(
+                                  color: AppStatus.values[index].color,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Column(
+                                  children: [
+                                    AppStatus.values[index].icon,
+                                    Text(
+                                      AppStatus.values[index].val,
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                    ),
+                                    const Text(
+                                      "594",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 50,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const Text("Teşekkür"),
+              const Divider(
+                color: Colors.black,
+              ),
+              SizedBox(
+                height: 200,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        ...List.generate(
+                          AppStatus.values.length,
+                          (index) {
+                            if (AppStatus.values[index] == AppStatus.close ||
+                                AppStatus.values[index] == AppStatus.open ||
+                                AppStatus.values[index] == AppStatus.pending) {
+                              return Container();
+                            }
+
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                height: 150,
+                                width: 350,
+                                decoration: BoxDecoration(
+                                  color: AppStatus.values[index].color,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Column(
+                                  children: [
+                                    AppStatus.values[index].icon,
+                                    Text(
+                                      AppStatus.values[index].val,
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                    ),
+                                    const Text(
+                                      "594",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 50,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

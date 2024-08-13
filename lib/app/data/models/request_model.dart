@@ -1,3 +1,4 @@
+import 'package:feedbackstation/app/data/models/adres_model.dart';
 import 'package:feedbackstation/app/data/models/feedbacks_model.dart';
 import 'package:feedbackstation/app/data/models/message_model.dart';
 import 'package:feedbackstation/app/data/models/status_model.dart';
@@ -12,6 +13,8 @@ class AppRequest {
   List<String> documents = [];
   final List<MessageModel>? messages;
 
+  final AdresModel adresses;
+
   AppRequest({
     required this.id,
     required this.subject,
@@ -20,6 +23,7 @@ class AppRequest {
     required this.status,
     required this.date,
     required this.documents,
+    required this.adresses,
     this.messages,
   });
 }

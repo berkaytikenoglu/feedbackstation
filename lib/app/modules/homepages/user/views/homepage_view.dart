@@ -98,7 +98,7 @@ class HomepageView extends StatelessWidget {
               onTap: () {
                 Get.to(() => const CreateRequestspageView(), arguments: {
                   "page": FeedbackCategory.values[index].title,
-                  "content": FeedbackCategory.values[index].title,
+                  "category": FeedbackCategory.values[index],
                 });
               },
             );

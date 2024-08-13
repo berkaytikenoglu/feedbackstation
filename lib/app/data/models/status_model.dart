@@ -57,7 +57,7 @@ extension StatusExtension on AppStatus {
       case AppStatus.denied:
         return Colors.red;
       case AppStatus.ongoing:
-        return Colors.yellow;
+        return Colors.amber;
     }
   }
 }

@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:feedbackstation/app/appinfo.dart';
+import 'package:feedbackstation/app/data/models/feedbacks_model.dart';
 import 'package:feedbackstation/app/modules/requestspages/create_requestpage/controllers/create_requestspage_controller.dart';
 import 'package:feedbackstation/app/widgets/textfields_widget.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,8 @@ class CreateRequestspageView extends StatelessWidget {
 
     Map<String, dynamic> data = Get.arguments;
     final requestId = data["page"];
+
+    FeedbackCategory requestCategory = data["category"];
 
     return Scaffold(
       appBar: AppBar(
@@ -43,31 +46,46 @@ class CreateRequestspageView extends StatelessWidget {
               ),
               const Divider(),
               TextfieldWidget.costum1(
-                controller: TextEditingController(),
+                controller: controller.mahalle.value,
                 label: "Mahalle",
               ),
               TextfieldWidget.costum1(
-                controller: TextEditingController(),
+                controller: controller.sokakCadde.value,
                 label: "Sokak-Cadde",
               ),
               TextfieldWidget.costum1(
-                controller: TextEditingController(),
+                controller: controller.sokakCaddeAra.value,
                 label: "Sokak-Cadde Ara",
               ),
               TextfieldWidget.costum1(
-                controller: TextEditingController(),
+                controller: controller.disKapi.value,
                 label: "Dış Kapı No",
               ),
               TextfieldWidget.costum1(
-                controller: TextEditingController(),
+                controller: controller.icKapi.value,
                 label: "İç Kapı No",
               ),
               TextfieldWidget.costum1(
-                controller: TextEditingController(),
+                controller: controller.adresTarif.value,
                 label: "Adres Tarifi",
               ),
               const SizedBox(
                 height: 15,
+              ),
+              const Text(
+                "Konu Başlığı",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
+              ),
+              const Divider(),
+              TextfieldWidget.costum1(
+                controller: controller.konu.value,
+                label: "",
+                hinttext: "Konuyu özetleyen bir başlık yazınız!",
+                maxline: 1,
+                minline: 1,
               ),
               const Text(
                 "Talep",
@@ -78,7 +96,7 @@ class CreateRequestspageView extends StatelessWidget {
               ),
               const Divider(),
               TextfieldWidget.costum1(
-                controller: TextEditingController(),
+                controller: controller.basvuruMetni.value,
                 label: "Başvuru Metni",
                 hinttext: "",
                 maxline: 100,
@@ -140,6 +158,7 @@ class CreateRequestspageView extends StatelessWidget {
               const SizedBox(height: 200),
               ElevatedButton(
                 onPressed: () {
+                  controller.addRequest(requestCategory: requestCategory);
                   Get.back();
                 },
                 child: const Text("Gönder"),

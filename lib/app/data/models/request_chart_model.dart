@@ -2,19 +2,25 @@ import 'package:feedbackstation/app/data/models/feedbacks_model.dart';
 
 class AppChartRequest {
   final FeedbackCategory category;
-  final int value;
+  int? hourValue = 0;
+  int? weeklyValue = 0;
+  int? monthlyValue = 0;
+  int? yearlyValue = 0;
 
-  List<Map<String, int>>? saatlik;
-  List<Map<String, int>>? haftalik;
-  List<Map<String, int>>? aylik;
-  List<Map<String, int>>? yillik;
+  List<Map<String, int>>? hourly;
+  List<Map<String, int>>? weekly;
+  List<Map<String, int>>? monthly;
+  List<Map<String, int>>? yearly;
 
   AppChartRequest({
     required this.category,
-    required this.value,
-    this.saatlik,
-    this.haftalik,
-    this.aylik,
-    this.yillik,
+    this.hourValue,
+    this.weeklyValue,
+    this.monthlyValue,
+    this.yearlyValue,
+    this.hourly,
+    this.weekly,
+    this.monthly,
+    this.yearly,
   });
 }
