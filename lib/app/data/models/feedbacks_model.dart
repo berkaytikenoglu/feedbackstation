@@ -99,44 +99,20 @@ extension FeedbackServices on FeedbackCategory {
     }
   }
 
-  Icon get homepgIcon {
+  IconData get homepgIcon {
     switch (this) {
       case FeedbackCategory.request:
-        return const Icon(
-          Icons.assignment,
-          color: Colors.white,
-          size: 50,
-        );
+        return Icons.assignment;
       case FeedbackCategory.complaint:
-        return const Icon(
-          Icons.error,
-          color: Colors.white,
-          size: 50,
-        );
+        return Icons.error;
       case FeedbackCategory.projectStatement:
-        return const Icon(
-          Icons.engineering,
-          color: Colors.white,
-          size: 50,
-        );
+        return Icons.engineering;
       case FeedbackCategory.informationRequest:
-        return const Icon(
-          Icons.search,
-          color: Colors.white,
-          size: 50,
-        );
+        return Icons.search;
       case FeedbackCategory.report:
-        return const Icon(
-          Icons.report,
-          color: Colors.white,
-          size: 50,
-        );
+        return Icons.report;
       case FeedbackCategory.thanks:
-        return const Icon(
-          Icons.emoji_emotions,
-          color: Colors.white,
-          size: 50,
-        );
+        return Icons.emoji_emotions;
     }
   }
 }

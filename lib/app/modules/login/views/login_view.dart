@@ -1,6 +1,5 @@
 import 'package:feedbackstation/app/appinfo.dart';
 import 'package:feedbackstation/app/modules/login/controllers/login_controller.dart';
-import 'package:feedbackstation/app/modules/user/views/user_view.dart';
 import 'package:feedbackstation/app/widgets/partical_widget.dart';
 import 'package:feedbackstation/app/widgets/textfields_widget.dart';
 import 'package:flutter/material.dart';
@@ -110,26 +109,7 @@ class LoginView extends StatelessWidget {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          if (!GetUtils.isNumericOnly(
-                              controller.loginController.text)) {
-                            Get.snackbar("Hata", "Numaratik Değil");
-                            return;
-                          }
-                          if (controller.loginController.text !=
-                              "00000000000") {
-                            Get.snackbar("Hata", "Yanlış TC kimlik numarası");
-                            return;
-                          }
-
-                          if (controller.passwordController.text != "123") {
-                            Get.snackbar(
-                              "Hata",
-                              "Parola",
-                            );
-                            return;
-                          }
-
-                          Get.off(() => const UserView());
+                          Get.toNamed("/register");
                         },
                         child: const Text(
                           "Kayıt ol",
@@ -141,7 +121,7 @@ class LoginView extends StatelessWidget {
                           if (controller.selectedIndex.value == 1) {
                             Get.offNamed("/home/admin");
                           } else {
-                            Get.offNamed("/home");
+                            Get.offNamed("/home/user");
                           }
                         },
                         child: const Text("Giriş Yap"),
@@ -155,6 +135,5 @@ class LoginView extends StatelessWidget {
         ],
       ),
     );
-    // });
   }
 }

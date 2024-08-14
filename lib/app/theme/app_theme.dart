@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 final ThemeData appThemeData = ThemeData(
+  primaryColor: const Color(0xFF3C4CBD),
   primarySwatch: Colors.blue,
-  primaryColor: Colors.red,
   visualDensity: VisualDensity.adaptivePlatformDensity,
   scaffoldBackgroundColor: Colors.white,
   appBarTheme: const AppBarTheme(
@@ -53,8 +53,8 @@ final ThemeData appThemeData = ThemeData(
     thickness: 3,
   ),
   listTileTheme: const ListTileThemeData(
-    tileColor: Color(0xFF3C4CBD),
-    textColor: Colors.white,
-    iconColor: Colors.white,
-  ),
+      // // tileColor: Color(0xFF3C4CBD),
+      // textColor: Colors.white,
+      // iconColor: Colors.white,
+      ),
 );

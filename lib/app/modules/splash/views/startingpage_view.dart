@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:feedbackstation/app/appinfo.dart';
 import 'package:feedbackstation/app/modules/login/views/login_view.dart';
+import 'package:feedbackstation/app/modules/splash/controllers/startingpage_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:particles_flutter/component/particle/particle.dart';
@@ -30,6 +31,7 @@ class StartingpageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(StartingpageController());
     return Scaffold(
       body: Stack(
         children: [
@@ -73,14 +75,11 @@ class StartingpageView extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      // Get.toNamed("/login");
-                      // Get.offNamed("/login");
                       Get.to(
-                        LoginView(),
-                        transition: Transition.fade, // Geçiş efekti
-                        duration: Duration(milliseconds: 1000), // Geçiş süresi
+                        const LoginView(),
+                        transition: Transition.fade,
+                        duration: const Duration(milliseconds: 1000),
                       );
-                      ;
                     },
                     child: const Text(
                       "Giriş ekranı",

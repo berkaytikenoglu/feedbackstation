@@ -2,9 +2,11 @@ import 'package:feedbackstation/app/data/models/adres_model.dart';
 import 'package:feedbackstation/app/data/models/feedbacks_model.dart';
 import 'package:feedbackstation/app/data/models/message_model.dart';
 import 'package:feedbackstation/app/data/models/status_model.dart';
+import 'package:feedbackstation/app/data/models/user_model.dart';
 
 class AppRequest {
   final int id;
+  final User reportuser;
   final FeedbackCategory category;
   final String description;
   final String subject;
@@ -17,6 +19,7 @@ class AppRequest {
 
   AppRequest({
     required this.id,
+    required this.reportuser,
     required this.subject,
     required this.category,
     required this.description,
