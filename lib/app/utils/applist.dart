@@ -28,7 +28,7 @@ class AppList {
         serialNumber: "213456",
       ),
       subject: "Hatalı Park",
-      adresses: AdresModel(
+      adresses: AddresModel(
         neighbourhood: "neighbourhood",
         streetAvenue: "streetAvenue",
         streetAvenueAlley: "streetAvenueAlley",
@@ -88,7 +88,7 @@ class AppList {
         serialNumber: "213456",
       ),
       subject: "Hatalı Park",
-      adresses: AdresModel(
+      adresses: AddresModel(
         neighbourhood: "neighbourhood",
         streetAvenue: "streetAvenue",
         streetAvenueAlley: "streetAvenueAlley",
@@ -148,7 +148,7 @@ class AppList {
         serialNumber: "213456",
       ),
       subject: "Sokak Hayvanları",
-      adresses: AdresModel(
+      adresses: AddresModel(
         neighbourhood: "neighbourhood",
         streetAvenue: "streetAvenue",
         streetAvenueAlley: "streetAvenueAlley",
@@ -208,7 +208,7 @@ class AppList {
         serialNumber: "213456",
       ),
       subject: "Zam İstiyoruz",
-      adresses: AdresModel(
+      adresses: AddresModel(
         neighbourhood: "neighbourhood",
         streetAvenue: "streetAvenue",
         streetAvenueAlley: "streetAvenueAlley",
@@ -268,7 +268,7 @@ class AppList {
         serialNumber: "213456",
       ),
       subject: "Pis Koku",
-      adresses: AdresModel(
+      adresses: AddresModel(
         neighbourhood: "neighbourhood",
         streetAvenue: "streetAvenue",
         streetAvenueAlley: "streetAvenueAlley",
@@ -329,7 +329,7 @@ class AppList {
         serialNumber: "213456",
       ),
       subject: "Vergi borcu",
-      adresses: AdresModel(
+      adresses: AddresModel(
         neighbourhood: "neighbourhood",
         streetAvenue: "streetAvenue",
         streetAvenueAlley: "streetAvenueAlley",
@@ -410,7 +410,7 @@ class AppList {
         serialNumber: "213456",
       ),
       subject: "Kaçak inşaat",
-      adresses: AdresModel(
+      adresses: AddresModel(
         neighbourhood: "neighbourhood",
         streetAvenue: "streetAvenue",
         streetAvenueAlley: "streetAvenueAlley",

@@ -1,5 +1,5 @@
 import 'package:feedbackstation/app/data/models/feedbacks_model.dart';
-import 'package:feedbackstation/app/data/models/request_chart_model.dart';
+import 'package:feedbackstation/app/data/models/request_category_model.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 

@@ -19,7 +19,7 @@ final ThemeData appThemeData = ThemeData(
     buttonColor: Colors.red,
   ),
   snackBarTheme: const SnackBarThemeData(
-    backgroundColor: Color(0xFF3C4CBD), // SnackBar arka plan rengi
+    backgroundColor: Color(0xFF3C4CBD),
     contentTextStyle: TextStyle(
       color: Colors.white,
     ), // SnackBar metin rengi
@@ -57,4 +57,9 @@ final ThemeData appThemeData = ThemeData(
       // textColor: Colors.white,
       // iconColor: Colors.white,
       ),
+  checkboxTheme: CheckboxThemeData(
+    checkColor: const WidgetStatePropertyAll(Colors.white),
+    fillColor: WidgetStatePropertyAll(Colors.black.withOpacity(0.2)),
+    overlayColor: WidgetStatePropertyAll(Colors.black.withOpacity(0.5)),
+  ),
 );

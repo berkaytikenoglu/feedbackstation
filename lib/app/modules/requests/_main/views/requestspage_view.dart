@@ -2,6 +2,7 @@ import 'package:feedbackstation/app/data/models/feedbacks_model.dart';
 import 'package:feedbackstation/app/data/models/status_model.dart';
 import 'package:feedbackstation/app/modules/requests/_main/controllers/requestspage_controller.dart';
 import 'package:feedbackstation/app/modules/requests/detail_requestpage/views/detail_requestspage_view.dart';
+import 'package:feedbackstation/app/widgets/appbar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -12,11 +13,7 @@ class RequestspageView extends StatelessWidget {
   Widget build(BuildContext context) {
     final RequestspageController controller = Get.put(RequestspageController());
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "Taleplerim",
-        ),
-      ),
+      appBar: AppbarWidget.appbar(title: "Taleplerim"),
       body: Column(
         children: [
           Container(

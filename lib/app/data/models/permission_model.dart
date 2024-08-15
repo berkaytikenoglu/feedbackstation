@@ -1,5 +1,8 @@
 class PermissionModel {
   // İzinler için bool değişkenler
+  String name;
+  String category;
+
   bool canShowAdminPanel = false;
   bool canEditUser = false;
   bool canDeleteUser = false;
@@ -10,6 +13,8 @@ class PermissionModel {
   bool canReportRequest = false;
 
   PermissionModel({
+    required this.name,
+    required this.category,
     required this.canShowAdminPanel,
     required this.canEditUser,
     required this.canDeleteUser,

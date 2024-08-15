@@ -11,11 +11,12 @@ class AppRequest {
   final String description;
   final String subject;
   final AppStatus status;
+  FeedbackStatus? responseStatus;
   final DateTime date;
   List<String> documents = [];
   final List<MessageModel>? messages;
 
-  final AdresModel adresses;
+  final AddresModel adresses;
 
   AppRequest({
     required this.id,
@@ -24,6 +25,7 @@ class AppRequest {
     required this.category,
     required this.description,
     required this.status,
+    this.responseStatus,
     required this.date,
     required this.documents,
     required this.adresses,

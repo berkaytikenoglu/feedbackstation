@@ -1,5 +1,10 @@
 import 'package:feedbackstation/app/appinfo.dart';
+import 'package:feedbackstation/app/data/models/adres_model.dart';
+import 'package:feedbackstation/app/data/models/media_model.dart';
+import 'package:feedbackstation/app/data/models/permission_model.dart';
+import 'package:feedbackstation/app/data/models/user_model.dart';
 import 'package:feedbackstation/app/modules/login/controllers/login_controller.dart';
+import 'package:feedbackstation/app/utils/session.dart';
 import 'package:feedbackstation/app/widgets/partical_widget.dart';
 import 'package:feedbackstation/app/widgets/textfields_widget.dart';
 import 'package:flutter/material.dart';
@@ -93,11 +98,13 @@ class LoginView extends StatelessWidget {
                     icon: Icons.security,
                     isPassword: true,
                   ),
-                  const Align(
+                  Align(
                     alignment: Alignment.centerLeft,
                     child: TextButton(
-                      onPressed: null,
-                      child: Text(
+                      onPressed: () {
+                        Get.toNamed("/Password");
+                      },
+                      child: const Text(
                         "Şifremi unuttum!",
                         style: TextStyle(
                           color: Colors.white,
@@ -118,6 +125,48 @@ class LoginView extends StatelessWidget {
                       const Spacer(),
                       ElevatedButton(
                         onPressed: () {
+                          AppSession.user = User(
+                            id: 1,
+                            permission: PermissionModel(
+                              name: "Müdür",
+                              category: "Bilgi İşlem",
+                              canShowAdminPanel: false,
+                              canEditUser: false,
+                              canDeleteUser: false,
+                              canResponseRequest: false,
+                              canUploadAvatar: false,
+                              canAddFeedbackCategory: false,
+                              canDeleteFeedbackCategory: false,
+                              canReportRequest: false,
+                            ),
+                            displayname: "Tony Stark",
+                            // email: "ironman@maniron.com",
+                            firstname: "Tony",
+                            lastname: "Stark",
+                            phonenumber: "5054442521",
+                            serialNumber: "29675478652",
+                            avatar: Media(
+                              id: 0,
+                              type: MediaType.image,
+                              isLocal: false,
+                              bigUrl:
+                                  "https://www.indyturk.com/sites/default/files/styles/1368x911/public/article/main_image/2023/05/29/1148686-855586519.jpg?itok=G1u1wA05",
+                              minUrl:
+                                  "https://www.indyturk.com/sites/default/files/styles/1368x911/public/article/main_image/2023/05/29/1148686-855586519.jpg?itok=G1u1wA05",
+                              normalUrl:
+                                  "https://www.indyturk.com/sites/default/files/styles/1368x911/public/article/main_image/2023/05/29/1148686-855586519.jpg?itok=G1u1wA05",
+                            ),
+                            gender: Gender.male,
+                            address: AddresModel(
+                              neighbourhood: "Mustafa Kemal Paşa Mahallesi",
+                              streetAvenue: "Sahil Caddesi",
+                              streetAvenueAlley: "",
+                              // insideDoor: "4",
+                              // outDoor: "441",
+                              neighborhoodDirections: "Bimin üstündeyiz",
+                            ),
+                          );
+
                           if (controller.selectedIndex.value == 1) {
                             Get.offNamed("/home/admin");
                           } else {

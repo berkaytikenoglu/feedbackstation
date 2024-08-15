@@ -46,7 +46,7 @@ extension StatusExtension on AppStatus {
   }
 }
 
-enum AppStatus { completed, pending, inprogress }
+enum AppStatus { completed, inprogress, pending }
 
 extension StatusExtension2 on FeedbackStatus {
   String get val {

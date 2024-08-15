@@ -46,7 +46,7 @@ class CreateRequestspageController extends GetxController {
           serialNumber: "213456",
         ),
         subject: konu.value.text,
-        adresses: AdresModel(
+        adresses: AddresModel(
           neighbourhood: mahalle.value.text,
           streetAvenue: sokakCadde.value.text,
           streetAvenueAlley: sokakCaddeAra.value.text,

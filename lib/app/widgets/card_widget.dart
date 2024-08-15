@@ -1,6 +1,31 @@
+import 'package:feedbackstation/app/data/models/request_status_chart_model.dart';
+import 'package:feedbackstation/app/data/models/status_model.dart';
 import 'package:flutter/material.dart';
 
 class CardWidget {
+  static Widget analysticcard(
+      List<AppStatusChartRequest> list, AppStatus category) {
+    return SizedBox(
+      height: 150,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: list.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CardWidget.statusCardWidget(
+              category: list[index].status.val,
+              categoryvalue: list[index].hourValue.toString(),
+              icon: list[index].status.icon,
+              color: list[index].status.color,
+              backgroundcolor: list[index].status.backgroundcolor,
+            ),
+          );
+        },
+      ),
+    );
+  }
+
   static Widget asdakslaandasd({
     required String title,
     required String subtitle,

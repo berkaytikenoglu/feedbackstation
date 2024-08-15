@@ -1,6 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:feedbackstation/app/data/models/feedbacks_model.dart';
 import 'package:feedbackstation/app/modules/requests/create_requestpage/views/create_requestspage_view.dart';
+import 'package:feedbackstation/app/widgets/appbar_widget.dart';
 import 'package:feedbackstation/app/widgets/drawer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,20 +11,7 @@ class UserHomepageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Anasayfa'),
-        actions: const [
-          Text("John Doe"),
-          SizedBox(width: 10),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: CircleAvatar(
-              foregroundImage: CachedNetworkImageProvider(
-                  "https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg"),
-            ),
-          ),
-        ],
-      ),
+      appBar: AppbarWidget.appbar(title: "Ana Sayfa"),
       drawer: DrawerWidget.drawer(),
       body: Padding(
         padding: const EdgeInsets.all(8.0),

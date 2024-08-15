@@ -36,25 +36,20 @@ class DrawerWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.dashboard),
-            title: const Text('Gösterge Paneli v2'),
+            leading: const Icon(Icons.settings),
+            title: const Text('Ayarlar'),
             onTap: () {
-              Get.toNamed("/dashboard/user");
+              Get.toNamed("/profile/settings");
             },
           ),
           ListTile(
             leading: const Icon(Icons.exit_to_app),
             title: const Text('Çıkış Yap'),
+            tileColor: Colors.red,
+            textColor: Colors.white,
+            iconColor: Colors.white,
             onTap: () {
               Get.offAllNamed("/login");
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.settings),
-            title: const Text('Ayarlar'),
-            onTap: () {
-              // Ayarlar sayfasına yönlendirme
-              Get.toNamed("/profile/settings");
             },
           ),
         ],

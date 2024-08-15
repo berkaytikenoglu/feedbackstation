@@ -70,7 +70,7 @@ class TextfieldWidget {
 
   static Widget costum2({
     required TextEditingController controller,
-    required String label,
+    String? label,
     IconData? icon,
     bool isDigitalNumber = false,
     bool isPassword = false,
@@ -83,13 +83,15 @@ class TextfieldWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label.toUpperCase(),
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
+        label == null
+            ? Container()
+            : Text(
+                label.toUpperCase(),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
         Container(
           decoration: BoxDecoration(
             border: Border.all(

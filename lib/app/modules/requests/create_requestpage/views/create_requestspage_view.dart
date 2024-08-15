@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:feedbackstation/app/appinfo.dart';
 import 'package:feedbackstation/app/data/models/feedbacks_model.dart';
 import 'package:feedbackstation/app/modules/requests/create_requestpage/controllers/create_requestspage_controller.dart';
+import 'package:feedbackstation/app/widgets/appbar_widget.dart';
 import 'package:feedbackstation/app/widgets/textfields_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -22,9 +23,7 @@ class CreateRequestspageView extends StatelessWidget {
     FeedbackCategory requestCategory = data["category"];
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('$requestId Formu'),
-      ),
+      appBar: AppbarWidget.appbar(title: "$requestId Formu"),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30),

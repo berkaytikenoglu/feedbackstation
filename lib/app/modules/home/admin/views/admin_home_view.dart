@@ -1,7 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:feedbackstation/app/data/models/feedbacks_model.dart';
 import 'package:feedbackstation/app/data/models/status_model.dart';
 import 'package:feedbackstation/app/modules/home/admin/controllers/admin_home_controller.dart';
+import 'package:feedbackstation/app/widgets/appbar_widget.dart';
 import 'package:feedbackstation/app/widgets/card_widget.dart';
 import 'package:feedbackstation/app/widgets/chart.dart';
 import 'package:feedbackstation/app/widgets/drawer_widget.dart';
@@ -17,20 +17,7 @@ class AdminHomepageView extends StatelessWidget {
     final AdminHomeController controller = Get.put(AdminHomeController());
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Admin Panel"),
-        actions: const [
-          Text("John Doe"),
-          SizedBox(width: 10),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: CircleAvatar(
-              foregroundImage: CachedNetworkImageProvider(
-                  "https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg"),
-            ),
-          ),
-        ],
-      ),
+      appBar: AppbarWidget.appbar(title: "Admin Paneli"),
       drawer: DrawerWidget.drawer(),
       body: SingleChildScrollView(
         child: Padding(
@@ -187,25 +174,12 @@ class AdminHomepageView extends StatelessWidget {
                   ),
                 );
               }),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List.generate(
-                    AppStatus.values.length,
-                    (index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: CardWidget.statusCardWidget(
-                          category: AppStatus.values[index].val,
-                          categoryvalue: "1000",
-                          icon: AppStatus.values[index].icon,
-                          color: AppStatus.values[index].color,
-                          backgroundcolor:
-                              AppStatus.values[index].backgroundcolor,
-                        ),
-                      );
-                    },
-                  ),
+
+              Obx(
+                () => Visibility(
+                  visible: true,
+                  child: CardWidget.analysticcard(
+                      controller.categoryStatusList, AppStatus.completed),
                 ),
               ),
 

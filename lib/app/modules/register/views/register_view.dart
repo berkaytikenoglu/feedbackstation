@@ -128,21 +128,87 @@ class RegisterpageView extends StatelessWidget {
                                       ),
                                     ),
                                     TextButton(
-                                      onPressed: () {},
-                                      child: const Text(
-                                        "(KVKK)",
-                                        style: TextStyle(
-                                          color: Colors.red,
-                                          decoration: TextDecoration.underline,
-                                          decorationColor: Colors.amber,
-                                          decorationThickness: 0.5,
+                                      onPressed: () {
+                                        Get.dialog(
+                                          Center(
+                                            child: SingleChildScrollView(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(20.0),
+                                                child: Container(
+                                                  margin: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 20),
+                                                  padding:
+                                                      const EdgeInsets.all(20),
+                                                  color: Colors.white70,
+                                                  child: Column(
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: Text(
+                                                          AppInfo.kvkk.title,
+                                                          style:
+                                                              const TextStyle(
+                                                            color: Colors.black,
+                                                            decoration:
+                                                                TextDecoration
+                                                                    .none,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        AppInfo.kvkk.context,
+                                                        style: const TextStyle(
+                                                          color: Colors.black,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 15,
+                                                          decoration:
+                                                              TextDecoration
+                                                                  .none,
+                                                        ),
+                                                      ),
+                                                      ElevatedButton(
+                                                        onPressed: () {
+                                                          Get.back();
+                                                        },
+                                                        child: const Text(
+                                                            "Okudum "),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          barrierDismissible: false,
+                                        );
+                                      },
+                                      child: const SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              "(KVKK)",
+                                              style: TextStyle(
+                                                color: Colors.red,
+                                                decoration:
+                                                    TextDecoration.underline,
+                                                decorationColor: Colors.amber,
+                                                decorationThickness: 0.5,
+                                              ),
+                                            ),
+                                            Text(
+                                              " hakkında bilgilendirmeyi okudum onaylıyorum",
+                                              style: TextStyle(
+                                                color: Colors.amber,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                    ),
-                                    const Text(
-                                      "Kişisel verilerin korunması hakkında bilgilendirmeyi okudum onaylıyorum",
-                                      style: TextStyle(
-                                        color: Colors.amber,
                                       ),
                                     ),
                                   ],
@@ -152,7 +218,7 @@ class RegisterpageView extends StatelessWidget {
                           ),
                           ElevatedButton(
                             onPressed: () {
-                              Get.toNamed("/register");
+                              Get.toNamed("/home/user");
                             },
                             child: const Text(
                               "Kayıt ol",

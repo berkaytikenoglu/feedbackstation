@@ -1,18 +1,16 @@
 import 'dart:developer' as log;
-import 'dart:math';
 
-import 'package:feedbackstation/app/data/models/adres_model.dart';
 import 'package:feedbackstation/app/data/models/feedbacks_model.dart';
-import 'package:feedbackstation/app/data/models/request_chart_model.dart';
-import 'package:feedbackstation/app/data/models/request_model.dart';
+import 'package:feedbackstation/app/data/models/request_category_model.dart';
+import 'package:feedbackstation/app/data/models/request_status_chart_model.dart';
 import 'package:feedbackstation/app/data/models/status_model.dart';
-import 'package:feedbackstation/app/data/models/user_model.dart';
 import 'package:feedbackstation/app/utils/applist.dart';
 import 'package:get/get.dart';
 
 class AdminHomeController extends GetxController {
   var appList = AppList.requestsList.obs;
   var categoryList = <AppChartRequest>[].obs;
+  var categoryStatusList = <AppStatusChartRequest>[].obs;
 
   var selectedIndex = 0.obs;
 
@@ -31,46 +29,56 @@ class AdminHomeController extends GetxController {
   var viewihbar = false.obs;
   var viewthanks = false.obs;
 
-  void randomInfoRequestFillCategory(FeedbackCategory category) {
-    int rndm = Random().nextInt(50000);
-
-    for (var i = 0; i < rndm; i++) {
-      final randomIndex = Random().nextInt(AppList.userList.length);
-      final User randomUser = AppList.userList[randomIndex];
-
-      DateTime datetime = DateTime.now();
-
-      int rndmonth = Random().nextInt(12);
-      int rndday = Random().nextInt(31);
-      int rndhour = Random().nextInt(24);
-      int rndmminutes = Random().nextInt(60);
-
-      DateTime newdatetime =
-          DateTime(datetime.year, rndmonth, rndday, rndhour, rndmminutes);
-
-      AppList.requestsList.add(
-        AppRequest(
-          id: Random().nextInt(100),
-          reportuser: randomUser,
-          subject: "subject",
-          category: category,
-          description: "description",
-          status: AppStatus.completed,
-          date: newdatetime,
-          documents: [],
-          adresses: AdresModel(
-            neighbourhood: "neighbourhood",
-            streetAvenue: "streetAvenue",
-            streetAvenueAlley: "streetAvenueAlley",
-            insideDoor: "insideDoor",
-            outDoor: "outDoor",
-            neighborhoodDirections: "neighborhoodDirections",
-          ),
-        ),
+  void fetchFeedbackStatus() {
+    categoryStatusList.clear();
+    for (var fetchelement in AppStatus.values) {
+      categoryStatusList.add(
+        AppStatusChartRequest(status: fetchelement),
       );
     }
   }
 
+  void statusFilterRequestsByHours() {
+    for (var element in categoryStatusList) {
+      DateTime datetime = DateTime.now();
+
+      element.hourly = [];
+
+      int totalcount = 0;
+      for (var i = 0; i < datetime.hour; i++) {
+        DateTime startDateTime =
+            DateTime(datetime.year, datetime.month, datetime.day, 00 + i);
+        DateTime endDateTime = startDateTime.add(const Duration(hours: 1));
+
+        List data = AppList.requestsList
+            .where(
+              (element2) => ((element2.date.isAfter(startDateTime) &&
+                      element2.date.isBefore(endDateTime)) &&
+                  element2.status.val == element.status.val),
+            )
+            .toList();
+        String? hourstartString;
+        String? hourendString;
+        if (startDateTime.hour < 10) {
+          hourstartString = "0${startDateTime.hour}";
+        } else {
+          hourstartString = startDateTime.hour.toString();
+        }
+        if (endDateTime.hour < 10) {
+          hourendString = "0${endDateTime.hour}";
+        } else {
+          hourendString = endDateTime.hour.toString();
+        }
+        element.hourly!.add({
+          " $hourstartString - $hourendString": data.length,
+        });
+        totalcount += data.length;
+        element.hourValue = totalcount;
+      }
+    }
+  }
+
+//CATEGORYFILTER
   void fetchFeedbackCategories() {
     categoryList.clear();
     for (var fetchelement in FeedbackCategory.values) {
@@ -216,22 +224,15 @@ class AdminHomeController extends GetxController {
 
     log.log("Anasayfaya Hoşgeldiniz");
 
-    // ----
-
-    randomInfoRequestFillCategory(FeedbackCategory.complaint);
-    randomInfoRequestFillCategory(FeedbackCategory.informationRequest);
-    randomInfoRequestFillCategory(FeedbackCategory.report);
-    randomInfoRequestFillCategory(FeedbackCategory.thanks);
-    randomInfoRequestFillCategory(FeedbackCategory.request);
-    randomInfoRequestFillCategory(FeedbackCategory.projectStatement);
-
-    // ----
-
     fetchFeedbackCategories();
     filterRequestsByHours();
     filterRequestsByWeek();
     filterRequestsByMontly();
     filterRequestsByYear();
+
+    // -------*-----*------
+    fetchFeedbackStatus();
+    statusFilterRequestsByHours();
   }
 
   @override

@@ -1,17 +1,17 @@
-class AdresModel {
-  final String neighbourhood;
-  final String streetAvenue;
-  final String streetAvenueAlley;
-  final String insideDoor;
-  final String outDoor;
-  final String neighborhoodDirections;
+class AddresModel {
+  String? neighbourhood;
+  String? streetAvenue;
+  String? streetAvenueAlley;
+  String? insideDoor;
+  String? outDoor;
+  String? neighborhoodDirections;
 
-  AdresModel({
-    required this.neighbourhood,
-    required this.streetAvenue,
-    required this.streetAvenueAlley,
-    required this.insideDoor,
-    required this.outDoor,
-    required this.neighborhoodDirections,
+  AddresModel({
+    this.neighbourhood,
+    this.streetAvenue,
+    this.streetAvenueAlley,
+    this.insideDoor,
+    this.outDoor,
+    this.neighborhoodDirections,
   });
 }

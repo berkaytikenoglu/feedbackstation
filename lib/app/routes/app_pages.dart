@@ -1,5 +1,6 @@
 import 'package:feedbackstation/app/modules/dashboard/dashboard_module.dart';
 import 'package:feedbackstation/app/modules/home/homepage_module.dart';
+import 'package:feedbackstation/app/modules/password/password_modules.dart';
 import 'package:feedbackstation/app/modules/profile/profile_module.dart';
 import 'package:feedbackstation/app/modules/register/register_module.dart';
 import 'package:feedbackstation/app/modules/requests/requestspage_module.dart';
@@ -16,6 +17,7 @@ class AppPages {
     ...RequestspageModule.routes,
     ...ProfileModule.routes,
     ...DashboardModule.routes,
-    ...RegisterModule.routes
+    ...RegisterModule.routes,
+    ...PasswordModule.routes,
   ];
 }

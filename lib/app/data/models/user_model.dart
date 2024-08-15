@@ -1,14 +1,21 @@
+import 'package:feedbackstation/app/data/models/adres_model.dart';
 import 'package:feedbackstation/app/data/models/media_model.dart';
+import 'package:feedbackstation/app/data/models/permission_model.dart';
 import 'package:feedbackstation/app/utils/applist.dart';
+import 'package:flutter/material.dart';
 
 class User {
   final int id;
-  final String? firstname;
-  final String? lastname;
-  final String? displayname;
-  final String? email;
-  final String? serialNumber;
-  final Media? avatar;
+  String? firstname;
+  String? lastname;
+  String? displayname;
+  String? email;
+  String? phonenumber;
+  String? serialNumber;
+  Media? avatar;
+  PermissionModel? permission;
+  Gender? gender;
+  AddresModel? address;
 
   User({
     required this.id,
@@ -16,9 +23,20 @@ class User {
     this.lastname,
     this.displayname,
     this.email,
+    this.phonenumber,
     this.serialNumber,
     this.avatar,
+    this.permission,
+    this.gender,
+    this.address,
   });
+
+  void changeusername(
+      {required String getfirstname, required String getlastname}) {
+    firstname = getfirstname;
+    lastname = getlastname;
+    displayname = "$getfirstname $getlastname";
+  }
 
   // JSON'dan User nesnesine dönüştürmek için bir fabrika yöntemi
   factory User.fromURLJson(Map<String, dynamic> json) {
@@ -28,6 +46,7 @@ class User {
       lastname: json['name']['last'],
       displayname: json['name']['first'] + " " + json['name']['last'],
       email: json['email'],
+      // phonenumber: json['phonenumber'],
       serialNumber: json['phone'],
       avatar: Media(
         id: 1,
@@ -48,8 +67,41 @@ class User {
       'lastname': lastname,
       'displayname': displayname,
       'email': email,
+      'phonenumber': phonenumber,
       'serialNumber': serialNumber,
       'avatar': avatar?.toJson(),
+      'address': avatar?.toJson(),
     };
   }
 }
+
+extension StatusExtension2 on Gender {
+  String get val {
+    switch (this) {
+      case Gender.male:
+        return "Erkek";
+      case Gender.female:
+        return "Kadın";
+    }
+  }
+
+  IconData get icon {
+    switch (this) {
+      case Gender.male:
+        return Icons.male;
+      case Gender.female:
+        return Icons.female;
+    }
+  }
+
+  Color get color {
+    switch (this) {
+      case Gender.male:
+        return Colors.green;
+      case Gender.female:
+        return Colors.red;
+    }
+  }
+}
+
+enum Gender { male, female }

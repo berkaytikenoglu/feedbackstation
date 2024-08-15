@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:feedbackstation/app/utils/applist.dart';
+import 'package:feedbackstation/app/widgets/appbar_widget.dart';
 import 'package:feedbackstation/app/widgets/card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,20 +14,7 @@ class DashboardAdminView extends StatelessWidget {
     //     Get.put(DashboardAdminController());
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Ayarlar"),
-        actions: const [
-          Text("John Doe"),
-          SizedBox(width: 10),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: CircleAvatar(
-              foregroundImage: CachedNetworkImageProvider(
-                  "https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg"),
-            ),
-          ),
-        ],
-      ),
+      appBar: AppbarWidget.appbar(title: "Gösterge Paneli"),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,

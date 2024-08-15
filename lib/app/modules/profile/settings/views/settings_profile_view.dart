@@ -1,5 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:feedbackstation/app/modules/profile/settings/controllers/settings_profile_controller.dart';
+import 'package:feedbackstation/app/utils/session.dart';
+import 'package:feedbackstation/app/widgets/appbar_widget.dart';
+import 'package:feedbackstation/app/widgets/editinglisttile_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -12,20 +15,7 @@ class SettingsProfileView extends StatelessWidget {
         Get.put(SettingsProfileController());
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Ayarlar"),
-        actions: const [
-          Text("John Doe"),
-          SizedBox(width: 10),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: CircleAvatar(
-              foregroundImage: CachedNetworkImageProvider(
-                  "https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg"),
-            ),
-          ),
-        ],
-      ),
+      appBar: AppbarWidget.appbar(title: "Ayarlar"),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -36,47 +26,98 @@ class SettingsProfileView extends StatelessWidget {
                 children: [
                   SizedBox(
                     width: 400,
-                    child: Container(
-                      color: Colors.red.shade100,
-                      child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          CircleAvatar(
-                            radius: 100,
-                            foregroundImage: CachedNetworkImageProvider(
-                                "https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg"),
-                          ),
-                          Text(
-                            "John Doe",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Container(
+                        color: Colors.white,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Obx(
+                              () => CircleAvatar(
+                                radius: 100,
+                                foregroundImage: CachedNetworkImageProvider(
+                                  controller.avatar.value!.minUrl,
+                                ),
+                              ),
                             ),
-                          ),
-                          Text(
-                            "Yönetici",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 10,
-                              color: Colors.blue,
+                            Obx(
+                              () => Text(
+                                controller.displayname.value == null
+                                    ? ""
+                                    : controller.displayname.value!,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                              ),
                             ),
-                          ),
-                          ListTile(
-                            leading: Icon(
-                              Icons.person,
-                              color: Colors.black,
+                            Text(
+                              AppSession.user!.permission!.name.toString(),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                                color: Colors.blue,
+                              ),
                             ),
-                            title: Text(
-                              'Hesap ID',
-                              style: TextStyle(color: Colors.black),
+                            Text(
+                              AppSession.user!.permission!.category.toString(),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 10,
+                                color: Colors.blue,
+                              ),
                             ),
-                            subtitle: Text(
-                              "TR-6866",
-                              style: TextStyle(color: Colors.grey),
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      const Text(
+                                        "Profil Durumu",
+                                        textAlign: TextAlign.start,
+                                      ),
+                                      const Spacer(),
+                                      Obx(
+                                        () => Text(
+                                          "%${(controller.countinfooaflk.value / 13 * 100).toStringAsFixed(2)}",
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Obx(
+                                    () => LinearProgressIndicator(
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(10)),
+                                      value: controller.countinfooaflk.value
+                                              .toInt() /
+                                          13,
+                                      minHeight: 15,
+                                      backgroundColor: Colors.grey,
+                                      color: Colors.green,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                            ListTile(
+                              leading: const Icon(
+                                Icons.person,
+                                color: Colors.black,
+                              ),
+                              title: const Text(
+                                'Hesap ID',
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              subtitle: Text(
+                                AppSession.user!.id.toString(),
+                                style: const TextStyle(color: Colors.grey),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -111,12 +152,11 @@ class SettingsProfileView extends StatelessWidget {
                           child: TabBarView(
                               controller: controller.tabbarController,
                               physics: const NeverScrollableScrollPhysics(),
-                              children: const [
+                              children: [
                                 Column(
                                   children: [
-                                    Row(
+                                    const Row(
                                       children: [
-                                        Spacer(),
                                         Text(
                                           "Kullanıcı Bilgileri",
                                           style: TextStyle(
@@ -124,103 +164,79 @@ class SettingsProfileView extends StatelessWidget {
                                             fontSize: 20,
                                           ),
                                         ),
-                                        Spacer(),
-                                        ElevatedButton(
-                                          onPressed: null,
-                                          child: Text("Güncelle"),
-                                        )
                                       ],
                                     ),
-                                    // SizedBox(height: 200),
-                                    ListTile(
-                                      leading: Icon(
-                                        Icons.person,
-                                        color: Colors.black,
-                                      ),
-                                      title: Text(
-                                        'Ad ve Soyad',
-                                        style: TextStyle(color: Colors.black),
-                                      ),
-                                      subtitle: Text(
-                                        "Ömer Faruk SEVGİ",
-                                        style: TextStyle(color: Colors.grey),
+                                    Obx(
+                                      () => EditingListTileWidget.custom1(
+                                        title: "Ad",
+                                        text: controller.firstname.value == null
+                                            ? ""
+                                            : controller.firstname.value!,
+                                        function: (result) {
+                                          controller.updateFirstName(result);
+                                        },
                                       ),
                                     ),
-                                    ListTile(
-                                      leading: Icon(
-                                        Icons.person,
-                                        color: Colors.black,
-                                      ),
-                                      title: Text(
-                                        'TC kimlik No',
-                                        style: TextStyle(color: Colors.black),
-                                      ),
-                                      subtitle: Text(
-                                        "35785469269",
-                                        style: TextStyle(color: Colors.grey),
+                                    Obx(
+                                      () => EditingListTileWidget.custom1(
+                                        title: "Soyad",
+                                        text: controller.lastname.value == null
+                                            ? ""
+                                            : controller.lastname.value!,
+                                        function: (result) {
+                                          controller.updateLastName(result);
+                                        },
                                       ),
                                     ),
-                                    ListTile(
-                                      leading: Icon(
-                                        Icons.person,
-                                        color: Colors.black,
-                                      ),
-                                      title: Text(
-                                        'Hesap ID',
-                                        style: TextStyle(color: Colors.black),
-                                      ),
-                                      subtitle: Text(
-                                        "TR-6866",
-                                        style: TextStyle(color: Colors.grey),
+                                    Obx(
+                                      () => EditingListTileWidget.custom1(
+                                        title: "TC No",
+                                        text: controller.tcno.value == null
+                                            ? ""
+                                            : controller.tcno.value!,
+                                        function: (result) {
+                                          controller.updatetcno(result);
+                                        },
                                       ),
                                     ),
-                                    ListTile(
-                                      leading: Icon(
-                                        Icons.person,
-                                        color: Colors.black,
-                                      ),
-                                      title: Text(
-                                        'Telefon numarası ',
-                                        style: TextStyle(color: Colors.black),
-                                      ),
-                                      subtitle: Text(
-                                        "0535 636 5920",
-                                        style: TextStyle(color: Colors.grey),
+                                    Obx(
+                                      () => EditingListTileWidget.custom1(
+                                        title: "E-posta",
+                                        text: controller.mail.value == null
+                                            ? ""
+                                            : controller.mail.value!,
+                                        function: (result) {
+                                          controller.updatemail(result);
+                                        },
                                       ),
                                     ),
-                                    ListTile(
-                                      leading: Icon(
-                                        Icons.person,
-                                        color: Colors.black,
-                                      ),
-                                      title: Text(
-                                        'Cinsiyet',
-                                        style: TextStyle(color: Colors.black),
-                                      ),
-                                      subtitle: Text(
-                                        "Erkek",
-                                        style: TextStyle(color: Colors.grey),
+                                    Obx(
+                                      () => EditingListTileWidget.custom1(
+                                        title: "Telefon Numarası",
+                                        text: controller.phone.value == null
+                                            ? ""
+                                            : controller.phone.value!,
+                                        function: (result) {
+                                          controller.updatephone(result);
+                                        },
                                       ),
                                     ),
-                                    ListTile(
-                                      leading: Icon(
-                                        Icons.person,
-                                        color: Colors.black,
-                                      ),
-                                      title: Text(
-                                        'E-posta adresi',
-                                        style: TextStyle(color: Colors.black),
-                                      ),
-                                      subtitle: Text(
-                                        "abc@hotmail.com",
-                                        style: TextStyle(color: Colors.grey),
+                                    Obx(
+                                      () => EditingListTileWidget.custom1(
+                                        title: "Cinsiyet",
+                                        text: controller.gender.value == null
+                                            ? ""
+                                            : controller.gender.value!,
+                                        function: (result) {
+                                          controller.updategender(result);
+                                        },
                                       ),
                                     ),
                                   ],
                                 ),
                                 Column(
                                   children: [
-                                    Row(
+                                    const Row(
                                       children: [
                                         Spacer(),
                                         Text(
@@ -238,93 +254,88 @@ class SettingsProfileView extends StatelessWidget {
                                       ],
                                     ),
                                     // SizedBox(height: 200),
-                                    ListTile(
-                                      leading: Icon(
-                                        Icons.person,
-                                        color: Colors.black,
-                                      ),
-                                      title: Text(
-                                        'Mahalle ',
-                                        style: TextStyle(color: Colors.black),
-                                      ),
-                                      subtitle: Text(
-                                        "Dolunay",
-                                        style: TextStyle(color: Colors.grey),
-                                      ),
-                                    ),
-                                    ListTile(
-                                      leading: Icon(
-                                        Icons.person,
-                                        color: Colors.black,
-                                      ),
-                                      title: Text(
-                                        'Sokak-Cadde',
-                                        style: TextStyle(color: Colors.black),
-                                      ),
-                                      subtitle: Text(
-                                        "Kumru sokak",
-                                        style: TextStyle(color: Colors.grey),
+
+                                    Obx(
+                                      () => EditingListTileWidget.custom1(
+                                        title: "Mahalle",
+                                        text: controller.neighbourhood.value ==
+                                                null
+                                            ? ""
+                                            : controller.neighbourhood.value!,
+                                        function: (result) {
+                                          controller.updateneighbour(result);
+                                        },
                                       ),
                                     ),
-                                    ListTile(
-                                      leading: Icon(
-                                        Icons.person,
-                                        color: Colors.black,
-                                      ),
-                                      title: Text(
-                                        ' Sokak-Cadde-Ara',
-                                        style: TextStyle(color: Colors.black),
-                                      ),
-                                      subtitle: Text(
-                                        "---------",
-                                        style: TextStyle(color: Colors.grey),
+                                    Obx(
+                                      () => EditingListTileWidget.custom1(
+                                        title: "Sokak-Cadde",
+                                        text: controller.streetAvenue.value ==
+                                                null
+                                            ? ""
+                                            : controller.streetAvenue.value!,
+                                        function: (result) {
+                                          controller.updatestreetAvenue(result);
+                                        },
                                       ),
                                     ),
-                                    ListTile(
-                                      leading: Icon(
-                                        Icons.person,
-                                        color: Colors.black,
-                                      ),
-                                      title: Text(
-                                        'Dış kapı No ',
-                                        style: TextStyle(color: Colors.black),
-                                      ),
-                                      subtitle: Text(
-                                        "15",
-                                        style: TextStyle(color: Colors.grey),
-                                      ),
-                                    ),
-                                    ListTile(
-                                      leading: Icon(
-                                        Icons.person,
-                                        color: Colors.black,
-                                      ),
-                                      title: Text(
-                                        'İç Kapı No',
-                                        style: TextStyle(color: Colors.black),
-                                      ),
-                                      subtitle: Text(
-                                        "32",
-                                        style: TextStyle(color: Colors.grey),
+                                    Obx(
+                                      () => EditingListTileWidget.custom1(
+                                        title: "Sokak-Cadde_Ara",
+                                        text: controller
+                                                    .streetAvenueAlley.value ==
+                                                null
+                                            ? ""
+                                            : controller
+                                                .streetAvenueAlley.value!,
+                                        function: (result) {
+                                          controller
+                                              .updatestreetAvenueAlley(result);
+                                        },
                                       ),
                                     ),
-                                    ListTile(
-                                      leading: Icon(
-                                        Icons.person,
-                                        color: Colors.black,
+                                    Obx(
+                                      () => EditingListTileWidget.custom1(
+                                        title: "Dış Kapı No",
+                                        text: controller.outDoor.value == null
+                                            ? ""
+                                            : controller.outDoor.value!,
+                                        function: (result) {
+                                          controller.updateoutDoor(result);
+                                        },
                                       ),
-                                      title: Text(
-                                        'Adres Tarif',
-                                        style: TextStyle(color: Colors.black),
+                                    ),
+                                    Obx(
+                                      () => EditingListTileWidget.custom1(
+                                        title: "iç Kapı No",
+                                        text:
+                                            controller.insideDoor.value == null
+                                                ? ""
+                                                : controller.insideDoor.value!,
+                                        function: (result) {
+                                          controller.updateinsideDoor(result);
+                                        },
                                       ),
-                                      subtitle: Text(
-                                        "A market Karşısı",
-                                        style: TextStyle(color: Colors.grey),
+                                    ),
+                                    Obx(
+                                      () => EditingListTileWidget.custom1(
+                                        title: "Adres Tarifi",
+                                        text: controller.neighborhoodDirections
+                                                    .value ==
+                                                null
+                                            ? ""
+                                            : controller
+                                                .neighborhoodDirections.value!,
+                                        function: (result) {
+                                          controller
+                                              .updateneighborhoodDirections(
+                                                  result);
+                                        },
                                       ),
                                     ),
                                   ],
                                 ),
-                                Column(
+                                const Column(
                                   children: [
                                     Row(
                                       children: [
@@ -346,7 +357,7 @@ class SettingsProfileView extends StatelessWidget {
                                     // SizedBox(height: 200),
                                   ],
                                 ),
-                                Text("data4"),
+                                const Text("data4"),
                               ]),
                         ),
                       ],
