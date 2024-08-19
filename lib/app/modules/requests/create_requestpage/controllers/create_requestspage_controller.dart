@@ -23,8 +23,10 @@ class CreateRequestspageController extends GetxController {
   var basvuruMetni = TextEditingController().obs;
   var konu = TextEditingController().obs;
 
-  void addRequest({required FeedbackCategory requestCategory}) {
-    log("${mahalle.value.text}, ${sokakCadde.value.text}, ${sokakCaddeAra.value.text}, ${disKapi.value.text},${icKapi.value.text},${adresTarif.value.text},${basvuruMetni.value.text},${konu.value.text}, ");
+  var category = Rx<FeedbackCategory?>(null);
+
+  void addRequest() {
+    log("${mahalle.value.text}, ${sokakCadde.value.text}, ${sokakCaddeAra.value.text}, ${disKapi.value.text},${icKapi.value.text},${adresTarif.value.text},${basvuruMetni.value.text},${konu.value.text}, ${category.value!.title} ");
 
     AppList.requestsList.add(
       AppRequest(
@@ -54,13 +56,14 @@ class CreateRequestspageController extends GetxController {
           outDoor: disKapi.value.text,
           neighborhoodDirections: adresTarif.value.text,
         ),
-        category: requestCategory,
+        category: category.value!,
         description: basvuruMetni.value.text,
         status: AppStatus.pending,
         date: DateTime.now(),
         documents: [],
       ),
     );
+    Get.back();
   }
 
   @override

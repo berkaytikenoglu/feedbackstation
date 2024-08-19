@@ -12,6 +12,8 @@ class PermissionModel {
   bool canDeleteFeedbackCategory = false;
   bool canReportRequest = false;
 
+  bool canEditmyProfile = false;
+
   PermissionModel({
     required this.name,
     required this.category,
@@ -23,6 +25,7 @@ class PermissionModel {
     required this.canAddFeedbackCategory,
     required this.canDeleteFeedbackCategory,
     required this.canReportRequest,
+    required this.canEditmyProfile,
   });
 
   // İzinleri güncelleme metodu

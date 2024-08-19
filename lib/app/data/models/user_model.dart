@@ -5,7 +5,7 @@ import 'package:feedbackstation/app/utils/applist.dart';
 import 'package:flutter/material.dart';
 
 class User {
-  final int id;
+  int? id;
   String? firstname;
   String? lastname;
   String? displayname;
@@ -18,7 +18,7 @@ class User {
   AddresModel? address;
 
   User({
-    required this.id,
+    this.id,
     this.firstname,
     this.lastname,
     this.displayname,

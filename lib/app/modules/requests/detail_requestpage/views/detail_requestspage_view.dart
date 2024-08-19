@@ -6,7 +6,7 @@ import 'package:feedbackstation/app/data/models/request_model.dart';
 import 'package:feedbackstation/app/data/models/status_model.dart';
 import 'package:feedbackstation/app/modules/requests/detail_requestpage/controllers/detail_requestspage_controller.dart';
 import 'package:feedbackstation/app/utils/applist.dart';
-import 'package:feedbackstation/app/widgets/appbar_widget.dart';
+import 'package:feedbackstation/app/widgets/appbar/appbar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -26,7 +26,7 @@ class DetailRequestspageView extends GetView<DetailRequestspageController> {
     tt.text = requestInfo.description;
 
     return Scaffold(
-      appBar: AppbarWidget.appbar(title: "$detail  Formu"),
+      appBar: AppbarWidget(title: "$detail  Formu"),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(10.0),

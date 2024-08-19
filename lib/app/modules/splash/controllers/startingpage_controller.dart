@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:feedbackstation/app/data/models/adres_model.dart';
 import 'package:feedbackstation/app/data/models/feedbacks_model.dart';
+import 'package:feedbackstation/app/data/models/permission_model.dart';
 import 'package:feedbackstation/app/data/models/request_model.dart';
 import 'package:feedbackstation/app/data/models/status_model.dart';
 import 'package:feedbackstation/app/data/models/user_model.dart';
@@ -32,6 +33,19 @@ class StartingpageController extends GetxController {
     for (var i = 0; i < 10; i++) {
       List<User> aa = await UserProvider().fetchRandomUsers();
       for (User element in aa) {
+        element.permission = PermissionModel(
+          name: "Müdür Yardımcısı",
+          category: "Bilgi İşlem",
+          canAddFeedbackCategory: false,
+          canDeleteFeedbackCategory: false,
+          canDeleteUser: false,
+          canEditUser: false,
+          canEditmyProfile: false,
+          canReportRequest: false,
+          canResponseRequest: false,
+          canShowAdminPanel: false,
+          canUploadAvatar: false,
+        );
         AppList.userList.add(element);
       }
     }
