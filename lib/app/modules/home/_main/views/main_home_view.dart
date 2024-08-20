@@ -54,23 +54,22 @@ class MainHomeView extends StatelessWidget {
             Row(
               children: [
                 const Spacer(),
-                const SizedBox(
+                SizedBox(
                   height: 200,
                   width: 400,
                   child: Column(
                     children: [
-                      ListTile(
+                      const ListTile(
                         leading: Icon(Icons.star_border),
                         title: Text("Hızlı Erişim"),
                         tileColor: Colors.yellow,
                       ),
                       ListTile(
-                        title: Text("Şikayet Olştur"),
+                        title: Text("Talep oluştur"),
                         tileColor: Color.fromARGB(255, 224, 223, 223),
-                      ),
-                      ListTile(
-                        title: Text("Şikayet Olştur"),
-                        tileColor: Color.fromARGB(255, 224, 223, 223),
+                        onTap: () {
+                          Get.toNamed("/requests/create");
+                        },
                       ),
                     ],
                   ),
@@ -91,7 +90,9 @@ class MainHomeView extends StatelessWidget {
                         leading: const Icon(Icons.sos),
                         title: const Text("Sıkça Sorulan Sorular"),
                         tileColor: const Color.fromARGB(255, 224, 223, 223),
-                        onTap: () {},
+                        onTap: () {
+                          Get.toNamed("/FAQ");
+                        },
                       ),
                       ListTile(
                         leading: const Icon(Icons.help),

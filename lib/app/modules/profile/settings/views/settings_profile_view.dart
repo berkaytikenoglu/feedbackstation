@@ -50,17 +50,32 @@ class SettingsProfileView extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              Obx(
-                                () => Text(
-                                  controller.displayname.value == null
-                                      ? ""
-                                      : controller.displayname.value!,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                  ),
-                                ),
-                              ),
+                              Obx(() => Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 135,
+                                      ),
+                                      Text(
+                                        controller.displayname.value == null
+                                            ? ""
+                                            : controller.displayname.value!,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                      Spacer(),
+                                      ElevatedButton(
+                                          onPressed: () async {
+                                            await controller.filepicker();
+                                            log(421412);
+                                          },
+                                          child: Icon(
+                                            Icons.edit,
+                                            color: Colors.white,
+                                          ))
+                                    ],
+                                  )),
                               Obx(
                                 () => Text(
                                   controller.userpermission.value == null
@@ -286,21 +301,7 @@ class SettingsProfileView extends StatelessWidget {
                                           },
                                         ),
                                       ),
-                                      Obx(
-                                        () => EditingListTileWidget.custom1(
-                                          title: "Sokak-Cadde_Ara",
-                                          text: controller.streetAvenueAlley
-                                                      .value ==
-                                                  null
-                                              ? ""
-                                              : controller
-                                                  .streetAvenueAlley.value!,
-                                          function: (result) {
-                                            controller.updatestreetAvenueAlley(
-                                                result);
-                                          },
-                                        ),
-                                      ),
+
                                       Obx(
                                         () => EditingListTileWidget.custom1(
                                           title: "Dış Kapı No",

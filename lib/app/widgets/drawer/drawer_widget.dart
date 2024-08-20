@@ -111,6 +111,13 @@ class DrawerWidget extends StatelessWidget implements PreferredSizeWidget {
               Get.offAllNamed("/login");
             },
           ),
+          SizedBox(
+            height: 310,
+          ),
+          Text(
+            "Versiyon:0.8",
+            textAlign: TextAlign.center,
+          ),
         ],
       ),
     );

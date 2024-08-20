@@ -179,7 +179,6 @@ class AdminHomepageView extends StatelessWidget {
                   ),
                 );
               }),
-
               Obx(
                 () => Visibility(
                   visible: true,
@@ -187,7 +186,6 @@ class AdminHomepageView extends StatelessWidget {
                       controller.categoryStatusList, AppStatus.completed),
                 ),
               ),
-
               Obx(
                 () => Visibility(
                   visible: controller.viewhourly.value,
@@ -212,8 +210,13 @@ class AdminHomepageView extends StatelessWidget {
                   child: ChartWidget.asda(controller.categoryList, "yearly"),
                 ),
               ),
-
-              // Spacer(),
+              const SizedBox(
+                height: 40,
+              ),
+              const Text(
+                "Genel Talep Grafiği",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 50),
+              ),
               SizedBox(
                 height: 400,
                 child: LineChart(

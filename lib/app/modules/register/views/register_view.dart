@@ -1,10 +1,6 @@
 import 'package:feedbackstation/app/appinfo.dart';
-import 'package:feedbackstation/app/data/models/adres_model.dart';
-import 'package:feedbackstation/app/data/models/media_model.dart';
-import 'package:feedbackstation/app/data/models/permission_model.dart';
-import 'package:feedbackstation/app/data/models/user_model.dart';
 import 'package:feedbackstation/app/modules/register/controllers/register_controller.dart';
-import 'package:feedbackstation/app/utils/session.dart';
+import 'package:feedbackstation/app/services/API/api.dart';
 import 'package:feedbackstation/app/widgets/partical_widget.dart';
 import 'package:feedbackstation/app/widgets/textfields_widget.dart';
 import 'package:flutter/material.dart';
@@ -79,7 +75,6 @@ class RegisterpageView extends StatelessWidget {
                               controller: controller.adconttroller.value,
                               label: "Ad",
                               icon: Icons.person,
-                              isPassword: true,
                             ),
                           ),
                           const SizedBox(height: 15),
@@ -88,7 +83,6 @@ class RegisterpageView extends StatelessWidget {
                               controller: controller.soyAdconttroller.value,
                               label: "Soyad",
                               icon: Icons.person,
-                              isPassword: true,
                             ),
                           ),
                           const SizedBox(height: 15),
@@ -97,9 +91,16 @@ class RegisterpageView extends StatelessWidget {
                               controller: controller.telnoconttroller.value,
                               label: "Telefon Numarası",
                               icon: Icons.phone,
-                              isPassword: true,
                               isDigitalNumber: true,
                               maxLength: 11,
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+                          Obx(
+                            () => TextfieldWidget.costum2(
+                              controller: controller.mailconttroller.value,
+                              label: "E posta Adresi",
+                              icon: Icons.security,
                             ),
                           ),
                           const SizedBox(height: 15),
@@ -224,51 +225,39 @@ class RegisterpageView extends StatelessWidget {
                             ),
                           ),
                           ElevatedButton(
-                            onPressed: () {
-                              AppSession.user = User(
-                                id: 1,
-                                permission: PermissionModel(
-                                  name: "Müdür",
-                                  category: "Bilgi İşlem",
-                                  canShowAdminPanel: false,
-                                  canEditUser: false,
-                                  canDeleteUser: false,
-                                  canResponseRequest: false,
-                                  canUploadAvatar: false,
-                                  canAddFeedbackCategory: false,
-                                  canDeleteFeedbackCategory: false,
-                                  canReportRequest: false,
-                                  canEditmyProfile: true,
-                                ),
-                                displayname: "Tony Stark",
-                                email: "ironman@maniron.com",
-                                firstname: "Tony",
-                                lastname: "Stark",
-                                phonenumber: "5054442521",
-                                serialNumber: "29675478652",
-                                avatar: Media(
-                                  id: 0,
-                                  type: MediaType.image,
-                                  isLocal: false,
-                                  bigUrl:
-                                      "https://www.indyturk.com/sites/default/files/styles/1368x911/public/article/main_image/2023/05/29/1148686-855586519.jpg?itok=G1u1wA05",
-                                  minUrl:
-                                      "https://www.indyturk.com/sites/default/files/styles/1368x911/public/article/main_image/2023/05/29/1148686-855586519.jpg?itok=G1u1wA05",
-                                  normalUrl:
-                                      "https://www.indyturk.com/sites/default/files/styles/1368x911/public/article/main_image/2023/05/29/1148686-855586519.jpg?itok=G1u1wA05",
-                                ),
-                                gender: Gender.male,
-                                address: AddresModel(
-                                  neighbourhood: "Mustafa Kemal Paşa Mahallesi",
-                                  streetAvenue: "Sahil Caddesi",
-                                  streetAvenueAlley: "",
-                                  // insideDoor: "4",
-                                  // outDoor: "441",
-                                  neighborhoodDirections: "Bimin üstündeyiz",
-                                ),
-                              );
+                            onPressed: () async {
+                              final userApiService = APIServices();
 
-                              Get.toNamed("/home/user");
+                              Map<String, String> formData = {
+                                "tc_identity":
+                                    controller.tcconttroller.value.text,
+                                "email": controller.mailconttroller.value.text,
+                                "firstname":
+                                    controller.adconttroller.value.text,
+                                "lastname":
+                                    controller.soyAdconttroller.value.text,
+                                "password":
+                                    controller.parolaconttroller.value.text,
+                                "phonenumber":
+                                    controller.telnoconttroller.value.text,
+                              };
+
+                              final Map<String, dynamic> getUsersResult =
+                                  await userApiService.addUser(
+                                      formData: formData);
+
+                              if (getUsersResult['status'] == "true") {
+                                Get.snackbar(
+                                  "Sistem",
+                                  getUsersResult['error'].toString(),
+                                  colorText: Colors.white,
+                                  backgroundColor: Colors.black38,
+                                  duration: const Duration(seconds: 4),
+                                );
+                                return;
+                              }
+
+                              Get.back();
                             },
                             child: const Text(
                               "Kayıt ol",

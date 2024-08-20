@@ -10,6 +10,7 @@ class RegisterController extends GetxController {
   var telnoconttroller = TextEditingController().obs;
   var parolaconttroller = TextEditingController().obs;
   var parola2conttroller = TextEditingController().obs;
+  var mailconttroller = TextEditingController().obs;
 
   var kvkkcheck = false.obs;
 

@@ -1,9 +1,13 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:feedbackstation/app/appinfo.dart';
 import 'package:feedbackstation/app/data/models/adres_model.dart';
 import 'package:feedbackstation/app/data/models/media_model.dart';
 import 'package:feedbackstation/app/data/models/permission_model.dart';
 import 'package:feedbackstation/app/data/models/user_model.dart';
 import 'package:feedbackstation/app/modules/login/controllers/login_controller.dart';
+import 'package:feedbackstation/app/services/API/api.dart';
 import 'package:feedbackstation/app/utils/session.dart';
 import 'package:feedbackstation/app/widgets/partical_widget.dart';
 import 'package:feedbackstation/app/widgets/textfields_widget.dart';
@@ -124,7 +128,32 @@ class LoginView extends StatelessWidget {
                       ),
                       const Spacer(),
                       ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
+                          final apiService = APIServices();
+
+                          Map<String, String> formData = {
+                            "tc_identity":
+                                controller.loginController.value.text,
+                            "password":
+                                controller.passwordController.value.text,
+                          };
+                          final Map<String, dynamic> getUsersResult =
+                              await apiService.login(formData: formData);
+
+                          if (getUsersResult['status'] != true) {
+                            print('Hata: ${getUsersResult['error']}');
+
+                            Get.snackbar(
+                              "Sistem",
+                              getUsersResult['message'].toString(),
+                              colorText: Colors.white,
+                              backgroundColor: Colors.black38,
+                              duration: const Duration(seconds: 4),
+                            );
+                            return;
+                          }
+
+                          var userInfo = getUsersResult['response']['user'];
                           AppSession.user = User(
                             id: 1,
                             permission: controller.selectedIndex.value == 1
@@ -154,12 +183,12 @@ class LoginView extends StatelessWidget {
                                     canReportRequest: false,
                                     canEditmyProfile: true,
                                   ),
-                            displayname: "Tony Stark",
-                            email: "ironman@maniron.com",
-                            firstname: "Tony",
-                            lastname: "Stark",
-                            phonenumber: "5054442521",
-                            serialNumber: "29675478652",
+                            displayname: userInfo["name"],
+                            email: userInfo["email"],
+                            firstname: userInfo["firstname"],
+                            lastname: userInfo["lastname"],
+                            phonenumber: userInfo["phonenumber"],
+                            serialNumber: userInfo["tc_identity"],
                             avatar: Media(
                               id: 0,
                               type: MediaType.image,
@@ -182,11 +211,7 @@ class LoginView extends StatelessWidget {
                             ),
                           );
 
-                          if (controller.selectedIndex.value == 1) {
-                            Get.offNamed("/home/admin");
-                          } else {
-                            Get.offNamed("/home/user");
-                          }
+                          Get.offNamed("/home");
                         },
                         child: const Text("Giriş Yap"),
                       )
