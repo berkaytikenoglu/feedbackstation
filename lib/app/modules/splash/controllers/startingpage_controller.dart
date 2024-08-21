@@ -8,24 +8,87 @@ import 'package:feedbackstation/app/data/models/request_model.dart';
 import 'package:feedbackstation/app/data/models/status_model.dart';
 import 'package:feedbackstation/app/data/models/user_model.dart';
 import 'package:feedbackstation/app/data/providers/user_provider.dart';
+import 'package:feedbackstation/app/services/API/api.dart';
 
 import 'package:feedbackstation/app/utils/applist.dart';
+import 'package:feedbackstation/app/utils/session.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class StartingpageController extends GetxController {
   Future<void> startingfunctions() async {
+    requestsListrefresh();
     // ---- Rastgele internet kullanıcıları çek
 
-    await fetchUserRandom();
+    // await fetchUserRandom();
     // ----
-    randomInfoRequestFillCategory(FeedbackCategory.complaint);
-    randomInfoRequestFillCategory(FeedbackCategory.informationRequest);
-    randomInfoRequestFillCategory(FeedbackCategory.report);
-    randomInfoRequestFillCategory(FeedbackCategory.thanks);
-    randomInfoRequestFillCategory(FeedbackCategory.request);
-    randomInfoRequestFillCategory(FeedbackCategory.projectStatement);
+    // randomInfoRequestFillCategory(FeedbackCategory.complaint);
+    // randomInfoRequestFillCategory(FeedbackCategory.informationRequest);
+    // randomInfoRequestFillCategory(FeedbackCategory.report);
+    // randomInfoRequestFillCategory(FeedbackCategory.thanks);
+    // randomInfoRequestFillCategory(FeedbackCategory.request);
+    // randomInfoRequestFillCategory(FeedbackCategory.projectStatement);
 
     // ----
+  }
+
+  Future<void> requestsListrefresh() async {
+    final apiService = APIServices(
+      userTOKEN: AppSession.userTOKEN.toString(),
+    );
+    Map<String, String> formData = {};
+
+    //controller.loginstatus.value = true;
+    final Map<String, dynamic> getUsersResult =
+        await apiService.getfeedbackrequest(formData: formData);
+    //controller.loginstatus.value = false;
+
+    if (getUsersResult['status'] != true) {
+      Get.snackbar(
+        "Sistem",
+        getUsersResult['message'].toString(),
+        colorText: Colors.white,
+        backgroundColor: Colors.black38,
+      );
+      return;
+    }
+
+    AppList.requestsList.clear();
+
+    for (var element in getUsersResult['response']) {
+      AppList.requestsList.add(
+        AppRequest(
+          id: element['id'],
+          reportuser: User(id: element['id']),
+          subject: element['subject'],
+          category: FeedbackCategory.values
+              .firstWhere((element2) => element2.id == element['category_id']),
+          description: element['description'],
+          status: AppStatus.completed,
+          date: DateTime(2024),
+          documents: [],
+          adresses: AddresModel(),
+        ),
+      );
+    }
+  }
+
+  String generate11DigitNumber() {
+    String digital11 = "";
+    for (var i = 0; i < 11; i++) {
+      digital11 += Random().nextInt(10).toString();
+    }
+
+    return digital11;
+  }
+
+  String generate10DigitNumber() {
+    String digital10 = "537";
+    for (var i = 0; i < 7; i++) {
+      digital10 += Random().nextInt(10).toString();
+    }
+
+    return digital10;
   }
 
   Future<void> fetchUserRandom() async {
@@ -48,7 +111,26 @@ class StartingpageController extends GetxController {
           canUploadAvatar: false,
         );
         AppList.userList.add(element);
+
+//--Veritabanına Kayıt Et
+        final userApiService =
+            APIServices(userTOKEN: AppSession.userTOKEN.toString());
+        ll.log(generate11DigitNumber());
+        Map<String, String> formData = {
+          "tc_identity": generate11DigitNumber(),
+          "email": element.email.toString(),
+          "firstname": element.firstname.toString(),
+          "lastname": element.lastname.toString(),
+          "password": "12345678",
+          "phonenumber": generate10DigitNumber(),
+          "big_avatar": element.avatar!.bigUrl.toString(),
+          "normal_avatar": element.avatar!.normalUrl.toString(),
+          "min_avatar": element.avatar!.minUrl.toString(),
+        };
+
+        await userApiService.addUser(formData: formData);
       }
+//--Veritabanına Kayıt Et
     }
     ll.log("Rastgele Üyeler Getirildi.");
   }

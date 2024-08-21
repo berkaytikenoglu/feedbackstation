@@ -1,5 +1,6 @@
 import 'package:feedbackstation/app/data/models/feedbacks_model.dart';
 import 'package:feedbackstation/app/data/models/status_model.dart';
+import 'package:feedbackstation/app/modules/requests/detail_requestpage/views/detail_requestspage_view.dart';
 import 'package:feedbackstation/app/utils/applist.dart';
 import 'package:feedbackstation/app/widgets/appbar/appbar_controller.dart';
 import 'package:feedbackstation/app/widgets/appbar/appbar_widget.dart';
@@ -123,7 +124,7 @@ class MainHomeView extends StatelessWidget {
                       ),
                     ),
                     ...List.generate(
-                      5,
+                      AppList.requestsList.length,
                       (index) {
                         return ListTile(
                           leading: Icon(
@@ -136,6 +137,14 @@ class MainHomeView extends StatelessWidget {
                             color: AppList
                                 .requestsList[index].status.backgroundcolor,
                           ),
+                          onTap: () {
+                            Get.to(() => const DetailRequestspageView(),
+                                arguments: {
+                                  "id": AppList.requestsList[index].id,
+                                  "detail": AppList
+                                      .requestsList[index].category.title,
+                                });
+                          },
                         );
                       },
                     )

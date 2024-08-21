@@ -6,7 +6,9 @@ import 'package:feedbackstation/app/data/models/media_model.dart';
 import 'package:feedbackstation/app/data/models/request_model.dart';
 import 'package:feedbackstation/app/data/models/status_model.dart';
 import 'package:feedbackstation/app/data/models/user_model.dart';
+import 'package:feedbackstation/app/services/API/api.dart';
 import 'package:feedbackstation/app/utils/applist.dart';
+import 'package:feedbackstation/app/utils/session.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -25,8 +27,34 @@ class CreateRequestspageController extends GetxController {
 
   var category = Rx<FeedbackCategory?>(null);
 
-  void addRequest() {
+  Future<void> addRequest() async {
     log("${mahalle.value.text}, ${sokakCadde.value.text}, ${sokakCaddeAra.value.text}, ${disKapi.value.text},${icKapi.value.text},${adresTarif.value.text},${basvuruMetni.value.text},${konu.value.text}, ${category.value!.title} ");
+
+    final apiService = APIServices(
+      userTOKEN: AppSession.userTOKEN.toString(),
+    );
+
+    Map<String, String> formData = {
+      "category_id": category.value!.id.toString(),
+      "user_id": AppSession.user.id.toString(),
+      "description": basvuruMetni.value.text,
+      "subject": konu.value.text,
+    };
+
+    //controller.loginstatus.value = true;
+    final Map<String, dynamic> getUsersResult =
+        await apiService.addfeedbackrequest(formData: formData);
+    //controller.loginstatus.value = false;
+
+    if (getUsersResult['status'] != true) {
+      Get.snackbar(
+        "Sistem",
+        getUsersResult['message'].toString(),
+        colorText: Colors.white,
+        backgroundColor: Colors.black38,
+      );
+      return;
+    }
 
     AppList.requestsList.add(
       AppRequest(

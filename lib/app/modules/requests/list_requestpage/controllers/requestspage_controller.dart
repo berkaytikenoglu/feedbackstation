@@ -1,8 +1,13 @@
 import 'dart:developer';
 
+import 'package:feedbackstation/app/data/models/adres_model.dart';
 import 'package:feedbackstation/app/data/models/feedbacks_model.dart';
 import 'package:feedbackstation/app/data/models/request_model.dart';
+import 'package:feedbackstation/app/data/models/status_model.dart';
+import 'package:feedbackstation/app/data/models/user_model.dart';
+import 'package:feedbackstation/app/services/API/api.dart';
 import 'package:feedbackstation/app/utils/applist.dart';
+import 'package:feedbackstation/app/utils/session.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -23,6 +28,47 @@ class RequestspageController extends GetxController {
   void onClose() {
     super.onClose();
     log("bye");
+  }
+
+  Future<void> requestsListrefresh() async {
+    final apiService = APIServices(
+      userTOKEN: AppSession.userTOKEN.toString(),
+    );
+    Map<String, String> formData = {};
+
+    //controller.loginstatus.value = true;
+    final Map<String, dynamic> getUsersResult =
+        await apiService.getfeedbackrequest(formData: formData);
+    //controller.loginstatus.value = false;
+
+    if (getUsersResult['status'] != true) {
+      Get.snackbar(
+        "Sistem",
+        getUsersResult['message'].toString(),
+        colorText: Colors.white,
+        backgroundColor: Colors.black38,
+      );
+      return;
+    }
+
+    requestsList.clear();
+
+    for (var element in getUsersResult['response']) {
+      requestsList.add(
+        AppRequest(
+          id: element['id'],
+          reportuser: User(id: element['id']),
+          subject: element['subject'],
+          category: FeedbackCategory.values
+              .firstWhere((element2) => element2.id == element['category_id']),
+          description: element['description'],
+          status: AppStatus.completed,
+          date: DateTime(2024),
+          documents: [],
+          adresses: AddresModel(),
+        ),
+      );
+    }
   }
 
   void sortRequestsByDate() {
@@ -96,26 +142,26 @@ class RequestspageController extends GetxController {
     );
   }
 
-  final currentPage = 0.obs;
-  final itemsPerPage = 7;
+  // final currentPage = 0.obs;
+  // final itemsPerPage = 4;
 
-  List<AppRequest> get pagedItems {
-    final startIndex = currentPage.value * itemsPerPage;
-    final endIndex = (startIndex + itemsPerPage) > requestsList.length
-        ? requestsList.length
-        : startIndex + itemsPerPage;
-    return requestsList.sublist(startIndex, endIndex);
-  }
+  // List<AppRequest> get pagedItems {
+  //   final startIndex = currentPage.value * itemsPerPage;
+  //   final endIndex = (startIndex + itemsPerPage) > requestsList.length
+  //       ? requestsList.length
+  //       : startIndex + itemsPerPage;
+  //   return requestsList.sublist(startIndex, endIndex);
+  // }
 
-  void nextPage() {
-    if ((currentPage.value + 1) * itemsPerPage < requestsList.length) {
-      currentPage.value++;
-    }
-  }
+  // void nextPage() {
+  //   if ((currentPage.value + 1) * itemsPerPage < requestsList.length) {
+  //     currentPage.value++;
+  //   }
+  // }
 
-  void previousPage() {
-    if (currentPage.value > 0) {
-      currentPage.value--;
-    }
-  }
+  // void previousPage() {
+  //   if (currentPage.value > 0) {
+  //     currentPage.value--;
+  //   }
+  // }
 }

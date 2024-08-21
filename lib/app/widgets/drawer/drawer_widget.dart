@@ -98,7 +98,15 @@ class DrawerWidget extends StatelessWidget implements PreferredSizeWidget {
             leading: const Icon(Icons.settings),
             title: const Text('Ayarlar'),
             onTap: () {
-              Get.toNamed("/profile/settings");
+              Get.toNamed("/profile/settings",
+                  arguments: {"user": AppSession.user});
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.settings),
+            title: const Text('Hizmet Yöntetim Sayfası'),
+            onTap: () {
+              Get.toNamed("/Adminsettings");
             },
           ),
           ListTile(
@@ -111,10 +119,10 @@ class DrawerWidget extends StatelessWidget implements PreferredSizeWidget {
               Get.offAllNamed("/login");
             },
           ),
-          SizedBox(
+          const SizedBox(
             height: 310,
           ),
-          Text(
+          const Text(
             "Versiyon:0.8",
             textAlign: TextAlign.center,
           ),

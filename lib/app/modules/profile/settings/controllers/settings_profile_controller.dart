@@ -1,6 +1,7 @@
 import 'package:feedbackstation/app/data/models/media_model.dart';
 import 'package:feedbackstation/app/data/models/permission_model.dart';
 import 'package:feedbackstation/app/data/models/user_model.dart';
+import 'package:feedbackstation/app/services/API/api.dart';
 import 'package:feedbackstation/app/utils/filepicker.dart';
 import 'package:feedbackstation/app/utils/session.dart';
 import 'package:feedbackstation/app/widgets/appbar/appbar_controller.dart';
@@ -10,6 +11,9 @@ import 'package:get/get.dart';
 
 class SettingsProfileController extends GetxController
     with GetSingleTickerProviderStateMixin {
+  final User profileUser;
+  SettingsProfileController({required this.profileUser});
+
   late TabController tabbarController;
 
   var userid = Rx<int?>(null);
@@ -42,173 +46,217 @@ class SettingsProfileController extends GetxController
   final DrawerWidgetController drawerController =
       Get.find<DrawerWidgetController>();
 
-  void fetchvalue() {
+  void fetchvalue(User profileUser) {
     appBarController.refreshprofiledetail();
     drawerController.refreshprofiledetail();
 
     countinfooaflk.value = 0;
 
-    if (AppSession.user.id != null) {
-      userid.value = AppSession.user.id;
+    if (profileUser.id != null) {
+      userid.value = profileUser.id;
     }
 
-    if (AppSession.user.permission != null) {
-      userpermission.value = AppSession.user.permission;
+    if (profileUser.permission != null) {
+      userpermission.value = profileUser.permission;
     }
 
-    if (AppSession.user.avatar != null) {
+    if (profileUser.avatar != null) {
       countinfooaflk++;
-      avatar.value = AppSession.user.avatar;
+      avatar.value = profileUser.avatar;
     }
 
-    if (AppSession.user.displayname != null ||
-        AppSession.user.displayname == "") {
+    if (profileUser.displayname != null || profileUser.displayname == "") {
       countinfooaflk++;
-      displayname.value = AppSession.user.displayname.toString();
-    } else {}
+      displayname.value = profileUser.displayname.toString();
+    }
 
-    if (AppSession.user.firstname != null || AppSession.user.firstname == "") {
+    if (profileUser.firstname != null || profileUser.firstname == "") {
       countinfooaflk++;
-      firstname.value = AppSession.user.firstname.toString();
-    } else {}
+      firstname.value = profileUser.firstname.toString();
+    }
 
-    if (AppSession.user.lastname != null && AppSession.user.lastname != "") {
+    if (profileUser.lastname != null && profileUser.lastname != "") {
       countinfooaflk++;
-      lastname.value = AppSession.user.lastname.toString();
-    } else {}
+      lastname.value = profileUser.lastname.toString();
+    }
 
-    if (AppSession.user.serialNumber != null &&
-        AppSession.user.serialNumber != "") {
+    if (profileUser.serialNumber != null && profileUser.serialNumber != "") {
       countinfooaflk++;
-      tcno.value = AppSession.user.serialNumber.toString();
-    } else {}
+      tcno.value = profileUser.serialNumber.toString();
+    }
 
-    if (AppSession.user.phonenumber != null &&
-        AppSession.user.phonenumber != "") {
+    if (profileUser.phonenumber != null && profileUser.phonenumber != "") {
       countinfooaflk++;
-      phone.value = AppSession.user.phonenumber.toString();
-    } else {}
+      phone.value = profileUser.phonenumber.toString();
+    }
 
-    if (AppSession.user.email != null && AppSession.user.email != "") {
+    if (profileUser.email != null && profileUser.email != "") {
       countinfooaflk++;
-      mail.value = AppSession.user.email.toString();
-    } else {}
+      mail.value = profileUser.email.toString();
+    }
 
-    if (AppSession.user.gender != null) {
+    if (profileUser.gender != null) {
       countinfooaflk++;
-      gender.value = AppSession.user.gender!.val.toString();
-    } else {}
-    if (AppSession.user.address!.neighbourhood != null &&
-        AppSession.user.address!.neighbourhood != "") {
-      countinfooaflk++;
-      neighbourhood.value = AppSession.user.address!.neighbourhood.toString();
-    } else {}
+      gender.value = profileUser.gender!.val.toString();
+    }
 
-    if (AppSession.user.address!.streetAvenue != null &&
-        AppSession.user.address!.streetAvenue != "") {
-      countinfooaflk++;
-      streetAvenue.value = AppSession.user.address!.streetAvenue.toString();
-    } else {}
-    if (AppSession.user.address!.streetAvenueAlley != null &&
-        AppSession.user.address!.streetAvenueAlley != "") {
-      countinfooaflk++;
-      streetAvenueAlley.value =
-          AppSession.user.address!.streetAvenueAlley.toString();
-    } else {}
+    if (profileUser.address != null) {
+      if (profileUser.address!.neighbourhood != null) {
+        countinfooaflk++;
+        neighbourhood.value = profileUser.address!.neighbourhood.toString();
+      }
+    }
 
-    if (AppSession.user.address!.outDoor != null &&
-        AppSession.user.address!.outDoor != "") {
-      countinfooaflk++;
-      outDoor.value = AppSession.user.address!.outDoor.toString();
-    } else {}
-    if (AppSession.user.address!.insideDoor != null &&
-        AppSession.user.address!.insideDoor != "") {
-      countinfooaflk++;
-      insideDoor.value = AppSession.user.address!.insideDoor.toString();
-    } else {}
-    if (AppSession.user.address!.neighborhoodDirections != null &&
-        AppSession.user.address!.neighborhoodDirections != "") {
-      countinfooaflk++;
-      neighborhoodDirections.value =
-          AppSession.user.address!.neighborhoodDirections.toString();
-    } else {}
+    if (profileUser.address != null) {
+      if (profileUser.address!.streetAvenue != null) {
+        countinfooaflk++;
+        streetAvenue.value = profileUser.address!.streetAvenue.toString();
+      }
+    }
+
+    if (profileUser.address != null) {
+      if (profileUser.address!.streetAvenueAlley != null) {
+        countinfooaflk++;
+        streetAvenueAlley.value =
+            profileUser.address!.streetAvenueAlley.toString();
+      }
+    }
+
+    if (profileUser.address != null) {
+      if (profileUser.address!.outDoor != null) {
+        countinfooaflk++;
+        outDoor.value = profileUser.address!.outDoor.toString();
+      }
+    }
+
+    if (profileUser.address != null) {
+      if (profileUser.address!.insideDoor != null) {
+        countinfooaflk++;
+        insideDoor.value = profileUser.address!.insideDoor.toString();
+      }
+    }
+    if (profileUser.address != null) {
+      if (profileUser.address!.neighborhoodDirections != null) {
+        countinfooaflk++;
+        neighborhoodDirections.value =
+            profileUser.address!.neighborhoodDirections.toString();
+      }
+    }
   }
 
-  void updateFirstName(String newName) {
+  Future<void> updateinfoweb(Map<String, String> formData) async {
+    final userApiService =
+        APIServices(userTOKEN: AppSession.userTOKEN.toString());
+
+    final Map<String, dynamic> getUsersResult = await userApiService.editUser(
+      userID: profileUser.id!,
+      formData: formData,
+    );
+
+    if (getUsersResult['status'] != true) {
+      Get.snackbar(
+        "Sistem",
+        getUsersResult['message'].toString(),
+        colorText: Colors.white,
+        backgroundColor: Colors.black38,
+      );
+      return;
+    }
+  }
+
+  Future<void> updateFirstName(User profileUser, String newName) async {
+    final Map<String, String> formData = {
+      "firstname": newName,
+      "name": "${firstname.value!} $newName"
+    };
+    await updateinfoweb(formData);
+
     firstname.value = newName;
-    AppSession.user.firstname = newName;
+    profileUser.firstname = newName;
 
-    AppSession.user.displayname = "$newName ${lastname.value!}";
+    profileUser.displayname = "$newName ${lastname.value!}";
 
-    fetchvalue();
+    fetchvalue(profileUser);
   }
 
-  void updateLastName(String newName) {
+  Future<void> updateLastName(User profileUser, String newName) async {
+    final Map<String, String> formData = {
+      "lastname": newName,
+      "name": "${firstname.value!} $newName"
+    };
+    await updateinfoweb(formData);
+
     lastname.value = newName;
-    AppSession.user.lastname = newName;
+    profileUser.lastname = newName;
 
-    AppSession.user.displayname = "${firstname.value!} $newName";
+    profileUser.displayname = "${firstname.value!} $newName";
 
-    fetchvalue();
+    fetchvalue(profileUser);
   }
 
-  void updatetcno(String newName) {
+  Future<void> updatetcno(User profileUser, String newName) async {
+    final Map<String, String> formData = {"tc_identity": newName};
+    await updateinfoweb(formData);
     tcno.value = newName;
-    AppSession.user.serialNumber = newName;
-    fetchvalue();
+    profileUser.serialNumber = newName;
+    fetchvalue(profileUser);
   }
 
-  void updatephone(String newName) {
+  Future<void> updatephone(User profileUser, String newName) async {
+    final Map<String, String> formData = {"phonenumber": newName};
+    await updateinfoweb(formData);
     phone.value = newName;
-    AppSession.user.phonenumber = newName;
-    fetchvalue();
+    profileUser.phonenumber = newName;
+    fetchvalue(profileUser);
   }
 
-  void updatemail(String newName) {
+  Future<void> updatemail(User profileUser, String newName) async {
+    final Map<String, String> formData = {"email": newName};
+    await updateinfoweb(formData);
     mail.value = newName;
-    AppSession.user.email = newName;
-    fetchvalue();
+    profileUser.email = newName;
+    fetchvalue(profileUser);
   }
 
-  void updategender(String newName) {
+  void updategender(User profileUser, String newName) {
     // gender.value = newName;
-    // AppSession.user!.gender = newName;
+    // profileUser!.gender = newName;
   }
 
-  void updateneighbour(String newName) {
+  void updateneighbour(User profileUser, String newName) {
     neighbourhood.value = newName;
-    AppSession.user.address!.neighbourhood = newName;
-    fetchvalue();
+    profileUser.address!.neighbourhood = newName;
+    fetchvalue(profileUser);
   }
 
-  void updatestreetAvenue(String newName) {
+  void updatestreetAvenue(User profileUser, String newName) {
     streetAvenue.value = newName;
-    AppSession.user.address!.streetAvenue = newName;
-    fetchvalue();
+    profileUser.address!.streetAvenue = newName;
+    fetchvalue(profileUser);
   }
 
-  void updatestreetAvenueAlley(String newName) {
+  void updatestreetAvenueAlley(User profileUser, String newName) {
     streetAvenueAlley.value = newName;
-    AppSession.user.address!.streetAvenueAlley = newName;
-    fetchvalue();
+    profileUser.address!.streetAvenueAlley = newName;
+    fetchvalue(profileUser);
   }
 
-  void updateoutDoor(String newName) {
+  void updateoutDoor(User profileUser, String newName) {
     outDoor.value = newName;
-    AppSession.user.address!.outDoor = newName;
-    fetchvalue();
+    profileUser.address!.outDoor = newName;
+    fetchvalue(profileUser);
   }
 
-  void updateinsideDoor(String newName) {
+  void updateinsideDoor(User profileUser, String newName) {
     insideDoor.value = newName;
-    AppSession.user.address!.insideDoor = newName;
-    fetchvalue();
+    profileUser.address!.insideDoor = newName;
+    fetchvalue(profileUser);
   }
 
-  void updateneighborhoodDirections(String newName) {
+  void updateneighborhoodDirections(User profileUser, String newName) {
     neighborhoodDirections.value = newName;
-    AppSession.user.address!.neighborhoodDirections = newName;
-    fetchvalue();
+    profileUser.address!.neighborhoodDirections = newName;
+    fetchvalue(profileUser);
   }
 
   Future<void> filepicker() async {
@@ -222,7 +270,7 @@ class SettingsProfileController extends GetxController
 
     tabbarController = TabController(length: 2, vsync: this);
 
-    fetchvalue();
+    fetchvalue(profileUser);
   }
 
   @override

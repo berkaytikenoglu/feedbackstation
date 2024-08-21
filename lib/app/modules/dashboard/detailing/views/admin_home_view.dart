@@ -215,7 +215,10 @@ class AdminHomepageView extends StatelessWidget {
               ),
               const Text(
                 "Genel Talep Grafiği",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 50),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 30,
+                ),
               ),
               SizedBox(
                 height: 400,

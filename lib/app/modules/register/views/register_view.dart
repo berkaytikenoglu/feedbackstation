@@ -1,6 +1,5 @@
 import 'package:feedbackstation/app/appinfo.dart';
 import 'package:feedbackstation/app/modules/register/controllers/register_controller.dart';
-import 'package:feedbackstation/app/services/API/api.dart';
 import 'package:feedbackstation/app/widgets/partical_widget.dart';
 import 'package:feedbackstation/app/widgets/textfields_widget.dart';
 import 'package:flutter/material.dart';
@@ -225,40 +224,7 @@ class RegisterpageView extends StatelessWidget {
                             ),
                           ),
                           ElevatedButton(
-                            onPressed: () async {
-                              final userApiService = APIServices();
-
-                              Map<String, String> formData = {
-                                "tc_identity":
-                                    controller.tcconttroller.value.text,
-                                "email": controller.mailconttroller.value.text,
-                                "firstname":
-                                    controller.adconttroller.value.text,
-                                "lastname":
-                                    controller.soyAdconttroller.value.text,
-                                "password":
-                                    controller.parolaconttroller.value.text,
-                                "phonenumber":
-                                    controller.telnoconttroller.value.text,
-                              };
-
-                              final Map<String, dynamic> getUsersResult =
-                                  await userApiService.addUser(
-                                      formData: formData);
-
-                              if (getUsersResult['status'] == "true") {
-                                Get.snackbar(
-                                  "Sistem",
-                                  getUsersResult['error'].toString(),
-                                  colorText: Colors.white,
-                                  backgroundColor: Colors.black38,
-                                  duration: const Duration(seconds: 4),
-                                );
-                                return;
-                              }
-
-                              Get.back();
-                            },
+                            onPressed: () async => await controller.register(),
                             child: const Text(
                               "Kayıt ol",
                             ),

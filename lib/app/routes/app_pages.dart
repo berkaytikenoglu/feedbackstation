@@ -2,6 +2,7 @@ import 'package:feedbackstation/app/modules/dashboard/dashboard_module.dart';
 import 'package:feedbackstation/app/modules/help/FAQ/faq_module.dart';
 import 'package:feedbackstation/app/modules/home/home_module.dart';
 import 'package:feedbackstation/app/modules/password/password_modules.dart';
+import 'package:feedbackstation/app/modules/profile/adminsettings/adminsettings_modules.dart';
 import 'package:feedbackstation/app/modules/profile/profile_module.dart';
 import 'package:feedbackstation/app/modules/register/register_module.dart';
 import 'package:feedbackstation/app/modules/requests/requestspage_module.dart';
@@ -21,5 +22,6 @@ class AppPages {
     ...RegisterModule.routes,
     ...PasswordModule.routes,
     ...FAQpageModule.routes,
+    ...AdminsettingsModules.routes,
   ];
 }

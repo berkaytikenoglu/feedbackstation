@@ -1,6 +1,5 @@
-import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:feedbackstation/app/data/models/user_model.dart';
 import 'package:feedbackstation/app/modules/profile/settings/controllers/settings_profile_controller.dart';
 import 'package:feedbackstation/app/widgets/appbar/appbar_widget.dart';
 import 'package:feedbackstation/app/widgets/editinglisttile_widget.dart';
@@ -12,9 +11,11 @@ class SettingsProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SettingsProfileController controller =
-        Get.put(SettingsProfileController());
+    final arg = Get.arguments;
 
+    User profileUser = arg['user'];
+    final SettingsProfileController controller =
+        Get.put(SettingsProfileController(profileUser: profileUser));
     return Obx(
       () => Scaffold(
         appBar: const AppbarWidget(title: "Ayarlar"),
@@ -39,43 +40,46 @@ class SettingsProfileView extends StatelessWidget {
                               GestureDetector(
                                 onTap: () async {
                                   await controller.filepicker();
-                                  log(421412);
                                 },
                                 child: Obx(
-                                  () => CircleAvatar(
-                                    radius: 100,
-                                    foregroundImage: CachedNetworkImageProvider(
-                                      controller.avatar.value!.minUrl,
-                                    ),
+                                  () => Stack(
+                                    children: [
+                                      CircleAvatar(
+                                        radius: 140,
+                                        foregroundImage:
+                                            CachedNetworkImageProvider(
+                                          controller.avatar.value!.bigUrl,
+                                        ),
+                                      ),
+                                      Positioned(
+                                        bottom: 0,
+                                        right: -2,
+                                        child: IconButton(
+                                          icon: const Icon(
+                                              Icons.edit), // Buton simgesi
+                                          color: Colors.black, // Simge rengi
+                                          iconSize: 40.0, // Simgenin boyutu
+                                          onPressed: () async {
+                                            await controller.filepicker();
+                                          },
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
-                              Obx(() => Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 135,
-                                      ),
-                                      Text(
-                                        controller.displayname.value == null
-                                            ? ""
-                                            : controller.displayname.value!,
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                      Spacer(),
-                                      ElevatedButton(
-                                          onPressed: () async {
-                                            await controller.filepicker();
-                                            log(421412);
-                                          },
-                                          child: Icon(
-                                            Icons.edit,
-                                            color: Colors.white,
-                                          ))
-                                    ],
-                                  )),
+                              Obx(
+                                () => Text(
+                                  controller.displayname.value == null
+                                      ? ""
+                                      : controller.displayname.value!,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                  ),
+                                  textAlign: TextAlign.right,
+                                ),
+                              ),
                               Obx(
                                 () => Text(
                                   controller.userpermission.value == null
@@ -148,6 +152,94 @@ class SettingsProfileView extends StatelessWidget {
                                   style: const TextStyle(color: Colors.grey),
                                 ),
                               ),
+                              Column(
+                                children: [
+                                  Container(
+                                    color: Colors.red,
+                                    width: 500,
+                                    height: 100,
+                                    child: const Column(
+                                      children: [
+                                        Text(
+                                          "Reddedilen Talep Sayısı",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20,
+                                              color: Colors.white),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text(
+                                          "data",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20,
+                                              color: Colors.white),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Container(
+                                    color: Colors.amber,
+                                    width: 500,
+                                    height: 100,
+                                    child: const Column(
+                                      children: [
+                                        Text(
+                                          "Beklenen Talep Sayısı",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20,
+                                              color: Colors.white),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text(
+                                          "data",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20,
+                                              color: Colors.white),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Container(
+                                    color: Colors.green,
+                                    width: 500,
+                                    height: 100,
+                                    child: const Column(
+                                      children: [
+                                        Text(
+                                          "Onaylanan Talep Sayısı",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20,
+                                              color: Colors.white),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text(
+                                          "data",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20,
+                                              color: Colors.white),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                         ),
@@ -198,7 +290,8 @@ class SettingsProfileView extends StatelessWidget {
                                                   ? ""
                                                   : controller.firstname.value!,
                                           function: (result) {
-                                            controller.updateFirstName(result);
+                                            controller.updateFirstName(
+                                                profileUser, result);
                                           },
                                         ),
                                       ),
@@ -210,7 +303,8 @@ class SettingsProfileView extends StatelessWidget {
                                                   ? ""
                                                   : controller.lastname.value!,
                                           function: (result) {
-                                            controller.updateLastName(result);
+                                            controller.updateLastName(
+                                                profileUser, result);
                                           },
                                         ),
                                       ),
@@ -221,7 +315,8 @@ class SettingsProfileView extends StatelessWidget {
                                               ? ""
                                               : controller.tcno.value!,
                                           function: (result) {
-                                            controller.updatetcno(result);
+                                            controller.updatetcno(
+                                                profileUser, result);
                                           },
                                         ),
                                       ),
@@ -232,7 +327,8 @@ class SettingsProfileView extends StatelessWidget {
                                               ? ""
                                               : controller.mail.value!,
                                           function: (result) {
-                                            controller.updatemail(result);
+                                            controller.updatemail(
+                                                profileUser, result);
                                           },
                                         ),
                                       ),
@@ -243,7 +339,8 @@ class SettingsProfileView extends StatelessWidget {
                                               ? ""
                                               : controller.phone.value!,
                                           function: (result) {
-                                            controller.updatephone(result);
+                                            controller.updatephone(
+                                                profileUser, result);
                                           },
                                         ),
                                       ),
@@ -254,7 +351,8 @@ class SettingsProfileView extends StatelessWidget {
                                               ? ""
                                               : controller.gender.value!,
                                           function: (result) {
-                                            controller.updategender(result);
+                                            controller.updategender(
+                                                profileUser, result);
                                           },
                                         ),
                                       ),
@@ -284,7 +382,8 @@ class SettingsProfileView extends StatelessWidget {
                                               ? ""
                                               : controller.neighbourhood.value!,
                                           function: (result) {
-                                            controller.updateneighbour(result);
+                                            controller.updateneighbour(
+                                                profileUser, result);
                                           },
                                         ),
                                       ),
@@ -296,8 +395,8 @@ class SettingsProfileView extends StatelessWidget {
                                               ? ""
                                               : controller.streetAvenue.value!,
                                           function: (result) {
-                                            controller
-                                                .updatestreetAvenue(result);
+                                            controller.updatestreetAvenue(
+                                                profileUser, result);
                                           },
                                         ),
                                       ),
@@ -309,7 +408,8 @@ class SettingsProfileView extends StatelessWidget {
                                               ? ""
                                               : controller.outDoor.value!,
                                           function: (result) {
-                                            controller.updateoutDoor(result);
+                                            controller.updateoutDoor(
+                                                profileUser, result);
                                           },
                                         ),
                                       ),
@@ -321,7 +421,8 @@ class SettingsProfileView extends StatelessWidget {
                                               ? ""
                                               : controller.insideDoor.value!,
                                           function: (result) {
-                                            controller.updateinsideDoor(result);
+                                            controller.updateinsideDoor(
+                                                profileUser, result);
                                           },
                                         ),
                                       ),
@@ -339,7 +440,7 @@ class SettingsProfileView extends StatelessWidget {
                                           function: (result) {
                                             controller
                                                 .updateneighborhoodDirections(
-                                                    result);
+                                                    profileUser, result);
                                           },
                                         ),
                                       ),

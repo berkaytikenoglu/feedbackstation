@@ -5,10 +5,9 @@ import 'package:get/get.dart';
 
 class APIServices extends GetConnect {
   final String baseURL = "http://10.0.12.26/restapi/laravelapi/public/api/";
-  String userName = "";
-  String userTOKEN = "";
+  final String userTOKEN;
 
-  APIServices() {
+  APIServices({required this.userTOKEN}) {
     httpClient.baseUrl = baseURL;
     log("API INITALIZED : $baseURL");
   }
@@ -23,6 +22,18 @@ class APIServices extends GetConnect {
 
   //////////////////////////////////USER////////////////////////////////////////////
 
+// Yeni Request ekleme
+  Future<Map<String, dynamic>> addfeedbackrequest(
+      {required Map<String, String> formData}) async {
+    return await fetch('requests', method: 'POST', body: formData);
+  }
+//  Request listeleme
+
+  Future<Map<String, dynamic>> getfeedbackrequest(
+      {required Map<String, String> formData}) async {
+    return await fetch('requests', method: 'GET', body: formData);
+  }
+
   // Kullanıcıları getirme
   Future<Map<String, dynamic>> getUsers() async {
     return await fetch('users');
@@ -32,6 +43,12 @@ class APIServices extends GetConnect {
   Future<Map<String, dynamic>> addUser(
       {required Map<String, String> formData}) async {
     return await fetch('users', method: 'POST', body: formData);
+  }
+
+  // Yeni kullanıcı düzenleme
+  Future<Map<String, dynamic>> editUser(
+      {required int userID, required Map<String, String> formData}) async {
+    return await fetch('users/$userID', method: 'PUT', body: formData);
   }
 
   // Giriş Yapma
@@ -52,12 +69,35 @@ class APIServices extends GetConnect {
       {String method = 'GET', Map<String, String>? body}) async {
     try {
       log("Tam URL: ${httpClient.baseUrl! + endpoint}");
-      final response = method == 'POST'
-          ? await post(endpoint, json.encode(body),
-              headers: {'Content-Type': 'application/json'})
-          : await get(endpoint);
+      Response response;
+      if (method == 'POST') {
+        response = await post(
+          endpoint,
+          json.encode(body),
+          headers: {
+            'Authorization': 'Bearer $userTOKEN',
+            'Content-Type': 'application/json'
+          },
+        );
+      } else if (method == 'PUT') {
+        response = await put(
+          endpoint,
+          json.encode(body),
+          headers: {
+            'Authorization': 'Bearer $userTOKEN',
+            'Content-Type': 'application/json'
+          },
+        );
+      } else {
+        response = await get(
+          endpoint,
+          headers: {
+            'Authorization': 'Bearer $userTOKEN',
+            'Content-Type': 'application/json'
+          },
+        );
+      }
 
-      // log(response.bodyString.toString());
       if (response.isOk) {
         return json.decode(response.bodyString.toString());
       } else {
@@ -67,15 +107,15 @@ class APIServices extends GetConnect {
     } catch (e) {
       log("Hata: ${e.toString()}");
       return {
-        'status': "false",
+        'status': false,
         'message': 'Sunucuya bağlanılamadı: $e',
       };
     }
   }
 
-  Map<String, String> _handleError(int? statusCode, String? body) {
+  Map<String, dynamic> _handleError(int? statusCode, String? body) {
     return {
-      'status': "false",
+      'status': false,
       'message': 'Hata: $statusCode ${body ?? 'Bir hata oluştu'}',
     };
   }
