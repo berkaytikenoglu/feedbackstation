@@ -90,92 +90,97 @@ class AdminHomepageView extends StatelessWidget {
                 );
               }),
               Obx(() {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10.0),
-                  child: ToggleButtons(
-                    color: Colors.grey,
-                    borderColor: Colors.grey,
-                    selectedColor: Colors.white,
-                    selectedBorderColor: Colors.blue,
-                    fillColor: Colors.blue,
-                    borderRadius: BorderRadius.circular(10),
-                    isSelected: List.generate(7,
-                        (index) => index == controller.selectedTimeIndex.value),
-                    onPressed: (int index) {
-                      controller.updateTimeSelectedIndex(index);
-                    },
-                    children: const <Widget>[
-                      Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: SizedBox(
-                          width: 80,
-                          child: Text(
-                            'Tüm Formlar',
-                            textAlign: TextAlign.center,
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    child: ToggleButtons(
+                      color: Colors.grey,
+                      borderColor: Colors.grey,
+                      selectedColor: Colors.white,
+                      selectedBorderColor: Colors.blue,
+                      fillColor: Colors.blue,
+                      borderRadius: BorderRadius.circular(10),
+                      isSelected: List.generate(
+                          7,
+                          (index) =>
+                              index == controller.selectedTimeIndex.value),
+                      onPressed: (int index) {
+                        controller.updateTimeSelectedIndex(index);
+                      },
+                      children: const <Widget>[
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: SizedBox(
+                            width: 80,
+                            child: Text(
+                              'Tüm Formlar',
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: SizedBox(
-                          width: 80,
-                          child: Text(
-                            'İstekler',
-                            textAlign: TextAlign.center,
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: SizedBox(
+                            width: 80,
+                            child: Text(
+                              'İstekler',
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: SizedBox(
-                          width: 80,
-                          child: Text(
-                            'Şikayetler',
-                            textAlign: TextAlign.center,
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: SizedBox(
+                            width: 80,
+                            child: Text(
+                              'Şikayetler',
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: SizedBox(
-                          width: 80,
-                          child: Text(
-                            'Proje Bildirimi',
-                            textAlign: TextAlign.center,
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: SizedBox(
+                            width: 80,
+                            child: Text(
+                              'Proje Bildirimi',
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: SizedBox(
-                          width: 80,
-                          child: Text(
-                            'Bilgi Talebi',
-                            textAlign: TextAlign.center,
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: SizedBox(
+                            width: 80,
+                            child: Text(
+                              'Bilgi Talebi',
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: SizedBox(
-                          width: 80,
-                          child: Text(
-                            'İhbar',
-                            textAlign: TextAlign.center,
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: SizedBox(
+                            width: 80,
+                            child: Text(
+                              'İhbar',
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: SizedBox(
-                          width: 80,
-                          child: Text(
-                            'Teşşekür',
-                            textAlign: TextAlign.center,
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: SizedBox(
+                            width: 80,
+                            child: Text(
+                              'Teşşekür',
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 );
               }),

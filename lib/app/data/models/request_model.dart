@@ -1,4 +1,4 @@
-import 'package:feedbackstation/app/data/models/adres_model.dart';
+import 'package:feedbackstation/app/data/models/addres_model.dart';
 import 'package:feedbackstation/app/data/models/feedbacks_model.dart';
 import 'package:feedbackstation/app/data/models/message_model.dart';
 import 'package:feedbackstation/app/data/models/status_model.dart';

@@ -1,8 +1,9 @@
 import 'dart:developer' as ll;
 import 'dart:math';
 
-import 'package:feedbackstation/app/data/models/adres_model.dart';
+import 'package:feedbackstation/app/data/models/addres_model.dart';
 import 'package:feedbackstation/app/data/models/feedbacks_model.dart';
+import 'package:feedbackstation/app/data/models/media_model.dart';
 import 'package:feedbackstation/app/data/models/permission_model.dart';
 import 'package:feedbackstation/app/data/models/request_model.dart';
 import 'package:feedbackstation/app/data/models/status_model.dart';
@@ -20,7 +21,7 @@ class StartingpageController extends GetxController {
     requestsListrefresh();
     // ---- Rastgele internet kullanıcıları çek
 
-    // await fetchUserRandom();
+    await fetchUserRandom();
     // ----
     // randomInfoRequestFillCategory(FeedbackCategory.complaint);
     // randomInfoRequestFillCategory(FeedbackCategory.informationRequest);
@@ -36,11 +37,10 @@ class StartingpageController extends GetxController {
     final apiService = APIServices(
       userTOKEN: AppSession.userTOKEN.toString(),
     );
-    Map<String, String> formData = {};
 
     //controller.loginstatus.value = true;
     final Map<String, dynamic> getUsersResult =
-        await apiService.getfeedbackrequest(formData: formData);
+        await apiService.getfeedbackrequest();
     //controller.loginstatus.value = false;
 
     if (getUsersResult['status'] != true) {
@@ -59,10 +59,19 @@ class StartingpageController extends GetxController {
       AppList.requestsList.add(
         AppRequest(
           id: element['id'],
-          reportuser: User(id: element['id']),
+          reportuser: User(
+            avatar: Media(
+              id: element['user']['id'],
+              type: MediaType.image,
+              bigUrl: element['user']['big_avatar'],
+              normalUrl: element['user']['normal_avatar'],
+              minUrl: element['user']['min_avatar'],
+              isLocal: false,
+            ),
+          ),
           subject: element['subject'],
-          category: FeedbackCategory.values
-              .firstWhere((element2) => element2.id == element['category_id']),
+          category: FeedbackCategory.values.firstWhere(
+              (element2) => element2.id == element['feedbacks_category']['id']),
           description: element['description'],
           status: AppStatus.completed,
           date: DateTime(2024),
@@ -112,25 +121,23 @@ class StartingpageController extends GetxController {
         );
         AppList.userList.add(element);
 
-//--Veritabanına Kayıt Et
+        //--Veritabanına Kayıt Et
         final userApiService =
             APIServices(userTOKEN: AppSession.userTOKEN.toString());
-        ll.log(generate11DigitNumber());
-        Map<String, String> formData = {
-          "tc_identity": generate11DigitNumber(),
-          "email": element.email.toString(),
-          "firstname": element.firstname.toString(),
-          "lastname": element.lastname.toString(),
-          "password": "12345678",
-          "phonenumber": generate10DigitNumber(),
-          "big_avatar": element.avatar!.bigUrl.toString(),
-          "normal_avatar": element.avatar!.normalUrl.toString(),
-          "min_avatar": element.avatar!.minUrl.toString(),
-        };
 
-        await userApiService.addUser(formData: formData);
+        await userApiService.addUser(
+          email: element.email.toString(),
+          firstname: element.firstname.toString(),
+          lastname: element.lastname.toString(),
+          password: "12345678",
+          phonenumber: generate10DigitNumber(),
+          tcIdentity: generate11DigitNumber(),
+          bigAvatar: element.avatar!.bigUrl.toString(),
+          normalAvatar: element.avatar!.normalUrl.toString(),
+          minAvatar: element.avatar!.minUrl.toString(),
+        );
       }
-//--Veritabanına Kayıt Et
+      //--Veritabanına Kayıt Et
     }
     ll.log("Rastgele Üyeler Getirildi.");
   }
@@ -172,11 +179,10 @@ class StartingpageController extends GetxController {
           documents: [],
           adresses: AddresModel(
             neighbourhood: "neighbourhood",
-            streetAvenue: "streetAvenue",
-            streetAvenueAlley: "streetAvenueAlley",
-            insideDoor: "insideDoor",
-            outDoor: "outDoor",
-            neighborhoodDirections: "neighborhoodDirections",
+            street: "streetAvenue",
+            insidedoor: "insideDoor",
+            outdoor: "outDoor",
+            description: "neighborhoodDirections",
           ),
         ),
       );

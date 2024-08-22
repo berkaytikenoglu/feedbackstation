@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 
 class TextfieldWidget {
   static Widget costum1({
-    required TextEditingController controller,
+    required TextEditingController? controller,
     required String label,
     IconData? icon,
     bool isDigitalNumber = false,

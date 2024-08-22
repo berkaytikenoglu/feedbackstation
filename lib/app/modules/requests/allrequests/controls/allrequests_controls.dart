@@ -12,7 +12,7 @@ import 'package:feedbackstation/app/utils/session.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class RequestspageController extends GetxController {
+class AllrequestspageController extends GetxController {
   //
 
   var requestsList = <AppRequest>[].obs;

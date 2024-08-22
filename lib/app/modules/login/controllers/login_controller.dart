@@ -4,23 +4,23 @@ import 'package:get/get.dart';
 class LoginController extends GetxController {
   // Controller logic here
 
-  final TextEditingController loginController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  var loginController = TextEditingController().obs;
+  var passwordController = TextEditingController().obs;
 
   var loginstatus = false.obs;
 
   @override
   void onInit() {
     super.onInit();
-    loginController.text = "00000000000";
-    passwordController.text = "12345678";
+    loginController.value.text = "00000000000";
+    passwordController.value.text = "12345678";
   }
 
   @override
   void onClose() {
     super.onClose();
 
-    loginController.dispose();
-    passwordController.dispose();
+    loginController.value.dispose();
+    passwordController.value.dispose();
   }
 }

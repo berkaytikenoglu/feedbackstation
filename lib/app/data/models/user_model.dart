@@ -1,4 +1,4 @@
-import 'package:feedbackstation/app/data/models/adres_model.dart';
+import 'package:feedbackstation/app/data/models/addres_model.dart';
 import 'package:feedbackstation/app/data/models/media_model.dart';
 import 'package:feedbackstation/app/data/models/permission_model.dart';
 import 'package:feedbackstation/app/utils/applist.dart';

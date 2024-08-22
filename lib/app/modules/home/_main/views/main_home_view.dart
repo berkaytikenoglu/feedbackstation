@@ -26,36 +26,38 @@ class MainHomeView extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(
-              height: 120,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  ...List.generate(
-                    AppStatus.values.length,
-                    (index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: CardWidget.statusCardWidget(
-                          backgroundcolor:
-                              AppStatus.values[index].backgroundcolor,
-                          category: AppStatus.values[index].val,
-                          categoryvalue: "12",
-                          color: AppStatus.values[index].color,
-                          icon: AppStatus.values[index].icon,
-                        ),
-                      );
-                    },
-                  )
-                ],
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: SizedBox(
+                height: 120,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    ...List.generate(
+                      AppStatus.values.length,
+                      (index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: CardWidget.statusCardWidget(
+                            backgroundcolor:
+                                AppStatus.values[index].backgroundcolor,
+                            category: AppStatus.values[index].val,
+                            categoryvalue: "12",
+                            color: AppStatus.values[index].color,
+                            icon: AppStatus.values[index].icon,
+                          ),
+                        );
+                      },
+                    )
+                  ],
+                ),
               ),
             ),
             const SizedBox(height: 10),
-            Row(
-              children: [
-                const Spacer(),
-                SizedBox(
+            LayoutBuilder(
+              builder: (context, constraints) {
+                var widget1 = SizedBox(
                   height: 200,
                   width: 400,
                   child: Column(
@@ -66,17 +68,17 @@ class MainHomeView extends StatelessWidget {
                         tileColor: Colors.yellow,
                       ),
                       ListTile(
-                        title: Text("Talep oluştur"),
-                        tileColor: Color.fromARGB(255, 224, 223, 223),
+                        title: const Text("Talep oluştur"),
+                        tileColor: const Color.fromARGB(255, 224, 223, 223),
                         onTap: () {
                           Get.toNamed("/requests/create");
                         },
                       ),
                     ],
                   ),
-                ),
-                const Spacer(),
-                SizedBox(
+                );
+
+                var widget2 = SizedBox(
                   height: 200,
                   width: 400,
                   child: Column(
@@ -84,7 +86,6 @@ class MainHomeView extends StatelessWidget {
                       const ListTile(
                         title: Text("Yardım Masası"),
                         leading: Icon(Icons.help_center),
-                        titleAlignment: ListTileTitleAlignment.center,
                         tileColor: Colors.yellow,
                       ),
                       ListTile(
@@ -103,10 +104,85 @@ class MainHomeView extends StatelessWidget {
                       ),
                     ],
                   ),
-                ),
-                const Spacer(),
-              ],
+                );
+
+                return constraints.maxWidth < 500
+                    ? Column(
+                        // Ekran dar olduğunda alt alta diz
+                        children: [
+                          widget1,
+                          widget2,
+                        ],
+                      )
+                    : Row(
+                        // Ekran geniş olduğunda yan yana diz
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Spacer(),
+                          widget1,
+                          const Spacer(),
+                          widget2,
+                          const Spacer(),
+                        ],
+                      );
+              },
             ),
+
+            // Row(
+            //   children: [
+            //     const Spacer(),
+            //     SizedBox(
+            //       height: 200,
+            //       width: 400,
+            //       child: Column(
+            //         children: [
+            //           const ListTile(
+            //             leading: Icon(Icons.star_border),
+            //             title: Text("Hızlı Erişim"),
+            //             tileColor: Colors.yellow,
+            //           ),
+            //           ListTile(
+            //             title: Text("Talep oluştur"),
+            //             tileColor: Color.fromARGB(255, 224, 223, 223),
+            //             onTap: () {
+            //               Get.toNamed("/requests/create");
+            //             },
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //     const Spacer(),
+            //     SizedBox(
+            //       height: 200,
+            //       width: 400,
+            //       child: Column(
+            //         children: [
+            //           const ListTile(
+            //             title: Text("Yardım Masası"),
+            //             leading: Icon(Icons.help_center),
+            //             titleAlignment: ListTileTitleAlignment.center,
+            //             tileColor: Colors.yellow,
+            //           ),
+            //           ListTile(
+            //             leading: const Icon(Icons.sos),
+            //             title: const Text("Sıkça Sorulan Sorular"),
+            //             tileColor: const Color.fromARGB(255, 224, 223, 223),
+            //             onTap: () {
+            //               Get.toNamed("/FAQ");
+            //             },
+            //           ),
+            //           ListTile(
+            //             leading: const Icon(Icons.help),
+            //             title: const Text("Destek Merkezi"),
+            //             tileColor: const Color.fromARGB(255, 224, 223, 223),
+            //             onTap: () {},
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //     const Spacer(),
+            //   ],
+            // ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: SizedBox(

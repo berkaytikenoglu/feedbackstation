@@ -1,3 +1,4 @@
+import 'package:feedbackstation/app/data/models/addres_model.dart';
 import 'package:feedbackstation/app/data/models/media_model.dart';
 import 'package:feedbackstation/app/data/models/permission_model.dart';
 import 'package:feedbackstation/app/data/models/user_model.dart';
@@ -39,12 +40,49 @@ class SettingsProfileController extends GetxController
 
   var countinfooaflk = 0.obs;
 
+  var alladress = [].obs;
   // AppBarController'ı Get.find ile bulun
   final AppBarWidgetController appBarController =
       Get.find<AppBarWidgetController>();
 
   final DrawerWidgetController drawerController =
       Get.find<DrawerWidgetController>();
+
+  Future<void> fetchaddress() async {
+    final apiService = APIServices(
+      userTOKEN: AppSession.userTOKEN.toString(),
+    );
+
+    // controller.loginstatus.value = true;
+    final Map<String, dynamic> getUsersResult = await apiService.getAddress();
+    // controller.loginstatus.value = false;
+
+    if (getUsersResult['status'] != true) {
+      Get.snackbar(
+        "Sistem",
+        getUsersResult['message'].toString(),
+        colorText: Colors.white,
+        backgroundColor: Colors.black38,
+      );
+      return;
+    }
+    for (var adressInfo in getUsersResult['response']) {
+      alladress.add(
+        AddresModel(
+          description: adressInfo["description"],
+          insidedoor: adressInfo["insidedoor"],
+          outdoor: adressInfo["outdoor"],
+          neighbourhood: adressInfo["neighbourhood"],
+          street: "street",
+          city: adressInfo["city"],
+          country: adressInfo["country"],
+          province: adressInfo["province"],
+          postalcode: adressInfo["postalcode"],
+          status: adressInfo["status"] == 1 ? true : false,
+        ),
+      );
+    }
+  }
 
   void fetchvalue(User profileUser) {
     appBarController.refreshprofiledetail();
@@ -108,38 +146,30 @@ class SettingsProfileController extends GetxController
     }
 
     if (profileUser.address != null) {
-      if (profileUser.address!.streetAvenue != null) {
+      if (profileUser.address!.street != null) {
         countinfooaflk++;
-        streetAvenue.value = profileUser.address!.streetAvenue.toString();
+        streetAvenue.value = profileUser.address!.street.toString();
       }
     }
 
     if (profileUser.address != null) {
-      if (profileUser.address!.streetAvenueAlley != null) {
+      if (profileUser.address!.outdoor != null) {
         countinfooaflk++;
-        streetAvenueAlley.value =
-            profileUser.address!.streetAvenueAlley.toString();
+        outDoor.value = profileUser.address!.outdoor.toString();
       }
     }
 
     if (profileUser.address != null) {
-      if (profileUser.address!.outDoor != null) {
+      if (profileUser.address!.insidedoor != null) {
         countinfooaflk++;
-        outDoor.value = profileUser.address!.outDoor.toString();
-      }
-    }
-
-    if (profileUser.address != null) {
-      if (profileUser.address!.insideDoor != null) {
-        countinfooaflk++;
-        insideDoor.value = profileUser.address!.insideDoor.toString();
+        insideDoor.value = profileUser.address!.insidedoor.toString();
       }
     }
     if (profileUser.address != null) {
-      if (profileUser.address!.neighborhoodDirections != null) {
+      if (profileUser.address!.description != null) {
         countinfooaflk++;
         neighborhoodDirections.value =
-            profileUser.address!.neighborhoodDirections.toString();
+            profileUser.address!.description.toString();
       }
     }
   }
@@ -167,7 +197,7 @@ class SettingsProfileController extends GetxController
   Future<void> updateFirstName(User profileUser, String newName) async {
     final Map<String, String> formData = {
       "firstname": newName,
-      "name": "${firstname.value!} $newName"
+      "name": "$newName ${lastname.value!}"
     };
     await updateinfoweb(formData);
 
@@ -231,31 +261,25 @@ class SettingsProfileController extends GetxController
 
   void updatestreetAvenue(User profileUser, String newName) {
     streetAvenue.value = newName;
-    profileUser.address!.streetAvenue = newName;
-    fetchvalue(profileUser);
-  }
-
-  void updatestreetAvenueAlley(User profileUser, String newName) {
-    streetAvenueAlley.value = newName;
-    profileUser.address!.streetAvenueAlley = newName;
+    profileUser.address!.street = newName;
     fetchvalue(profileUser);
   }
 
   void updateoutDoor(User profileUser, String newName) {
     outDoor.value = newName;
-    profileUser.address!.outDoor = newName;
+    profileUser.address!.outdoor = newName;
     fetchvalue(profileUser);
   }
 
   void updateinsideDoor(User profileUser, String newName) {
     insideDoor.value = newName;
-    profileUser.address!.insideDoor = newName;
+    profileUser.address!.insidedoor = newName;
     fetchvalue(profileUser);
   }
 
   void updateneighborhoodDirections(User profileUser, String newName) {
     neighborhoodDirections.value = newName;
-    profileUser.address!.neighborhoodDirections = newName;
+    profileUser.address!.description = newName;
     fetchvalue(profileUser);
   }
 
@@ -271,6 +295,8 @@ class SettingsProfileController extends GetxController
     tabbarController = TabController(length: 2, vsync: this);
 
     fetchvalue(profileUser);
+
+    fetchaddress();
   }
 
   @override

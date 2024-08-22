@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:feedbackstation/app/appinfo.dart';
 import 'package:feedbackstation/app/data/models/feedbacks_model.dart';
 import 'package:feedbackstation/app/modules/requests/create_requestpage/controllers/create_requestspage_controller.dart';
+import 'package:feedbackstation/app/utils/session.dart';
 import 'package:feedbackstation/app/widgets/appbar/appbar_widget.dart';
 import 'package:feedbackstation/app/widgets/textfields_widget.dart';
 import 'package:flutter/material.dart';
@@ -78,6 +79,34 @@ class CreateRequestspageView extends StatelessWidget {
                           scale: 3,
                         ),
                       ),
+                      Row(
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              controller.mahalle.value.text = AppSession
+                                  .user.address!.neighbourhood!
+                                  .toString();
+                              controller.sokakCadde.value.text =
+                                  AppSession.user.address!.street!.toString();
+                              controller.disKapi.value.text =
+                                  AppSession.user.address!.outdoor!.toString();
+                              controller.icKapi.value.text = AppSession
+                                  .user.address!.insidedoor!
+                                  .toString();
+                              controller.adresTarif.value.text = AppSession
+                                  .user.address!.description!
+                                  .toString();
+                            },
+                            child: const Text(
+                              "Mevcut Adres Bilgilerimi Getir",
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
                       const Text(
                         "Adres Bilgileri",
                         style: TextStyle(
@@ -93,10 +122,6 @@ class CreateRequestspageView extends StatelessWidget {
                       TextfieldWidget.costum1(
                         controller: controller.sokakCadde.value,
                         label: "Sokak-Cadde",
-                      ),
-                      TextfieldWidget.costum1(
-                        controller: controller.sokakCaddeAra.value,
-                        label: "Sokak-Cadde Ara",
                       ),
                       TextfieldWidget.costum1(
                         controller: controller.disKapi.value,
@@ -143,68 +168,77 @@ class CreateRequestspageView extends StatelessWidget {
                         maxline: 100,
                         minline: 5,
                       ),
-                      ElevatedButton(
-                        onPressed: () async => await controller.addmedialist(),
-                        child: const Text('Dosya Seç'),
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: ElevatedButton(
+                          onPressed: () async =>
+                              await controller.addmedialist(),
+                          child: const Text('Dosya Seç'),
+                        ),
                       ),
                       const SizedBox(height: 10),
-                      Obx(() => SizedBox(
-                            height: 300,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: controller.mediaList.length,
-                              // itemCount: 0,
-                              itemBuilder: (context, index) {
-                                final file = controller.mediaList[index];
-                                log("$index - ${file.extension}");
-                                return Padding(
-                                  padding: const EdgeInsets.all(1.0),
-                                  child: SizedBox(
-                                    width: 300,
-                                    child: Column(
-                                      children: [
-                                        if (file.path != null &&
-                                            (file.extension!.toLowerCase() ==
-                                                    'jpg' ||
-                                                file.extension!.toLowerCase() ==
-                                                    'png' ||
-                                                file.extension!.toLowerCase() ==
-                                                    'jpeg'))
-                                          Container(
-                                            color: Colors.black,
-                                            child: Image.file(
-                                              File(file.path!),
-                                              height: 200,
-                                              width: 300,
-                                              fit: BoxFit.contain,
+                      Obx(() => Visibility(
+                            visible: controller.mediaList.isNotEmpty,
+                            child: SizedBox(
+                              height: 300,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: controller.mediaList.length,
+                                // itemCount: 0,
+                                itemBuilder: (context, index) {
+                                  final file = controller.mediaList[index];
+                                  log("$index - ${file.extension}");
+                                  return Padding(
+                                    padding: const EdgeInsets.all(1.0),
+                                    child: SizedBox(
+                                      width: 300,
+                                      child: Column(
+                                        children: [
+                                          if (file.path != null &&
+                                              (file.extension!.toLowerCase() ==
+                                                      'jpg' ||
+                                                  file.extension!
+                                                          .toLowerCase() ==
+                                                      'png' ||
+                                                  file.extension!
+                                                          .toLowerCase() ==
+                                                      'jpeg'))
+                                            Container(
+                                              color: Colors.black,
+                                              child: Image.file(
+                                                File(file.path!),
+                                                height: 200,
+                                                width: 300,
+                                                fit: BoxFit.contain,
+                                              ),
+                                            ),
+                                          ListTile(
+                                            title: Text(
+                                              controller.mediaList[index].name,
+                                            ),
+                                            trailing: IconButton(
+                                              icon: const Icon(Icons.close),
+                                              onPressed: () =>
+                                                  controller.removemedia(
+                                                controller.mediaList[index],
+                                              ),
                                             ),
                                           ),
-                                        ListTile(
-                                          title: Text(
-                                            controller.mediaList[index].name,
-                                          ),
-                                          trailing: IconButton(
-                                            icon: const Icon(Icons.close),
-                                            onPressed: () =>
-                                                controller.removemedia(
-                                              controller.mediaList[index],
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                );
-                              },
+                                  );
+                                },
+                              ),
                             ),
                           )),
-                      const SizedBox(height: 200),
                       ElevatedButton(
                         onPressed: () {
                           controller.addRequest();
                         },
                         child: const Text("Gönder"),
                       ),
+                      const SizedBox(height: 200),
                     ],
                   ),
                 ),

@@ -1,5 +1,5 @@
 import 'package:feedbackstation/app/appinfo.dart';
-import 'package:feedbackstation/app/data/models/adres_model.dart';
+import 'package:feedbackstation/app/data/models/addres_model.dart';
 import 'package:feedbackstation/app/data/models/media_model.dart';
 import 'package:feedbackstation/app/data/models/permission_model.dart';
 import 'package:feedbackstation/app/data/models/user_model.dart';
@@ -44,7 +44,9 @@ class LoginView extends StatelessWidget {
           SingleChildScrollView(
             child: Padding(
               padding: EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width / 5,
+                horizontal: MediaQuery.of(context).size.width < 500
+                    ? 20
+                    : MediaQuery.of(context).size.width / 5,
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -59,7 +61,7 @@ class LoginView extends StatelessWidget {
                   ),
                   const SizedBox(height: 15),
                   TextfieldWidget.costum2(
-                    controller: controller.loginController,
+                    controller: controller.loginController.value,
                     label: "TC Kimlik",
                     icon: Icons.person,
                     isDigitalNumber: true,
@@ -67,7 +69,7 @@ class LoginView extends StatelessWidget {
                   ),
                   const SizedBox(height: 15),
                   TextfieldWidget.costum2(
-                    controller: controller.passwordController,
+                    controller: controller.passwordController.value,
                     label: "Parola",
                     icon: Icons.security,
                     isPassword: true,
@@ -105,16 +107,13 @@ class LoginView extends StatelessWidget {
                               userTOKEN: AppSession.userTOKEN.toString(),
                             );
 
-                            Map<String, String> formData = {
-                              "tc_identity":
-                                  controller.loginController.value.text,
-                              "password":
-                                  controller.passwordController.value.text,
-                            };
-
                             controller.loginstatus.value = true;
                             final Map<String, dynamic> getUsersResult =
-                                await apiService.login(formData: formData);
+                                await apiService.login(
+                              tcIdentity: controller.loginController.value.text,
+                              password:
+                                  controller.passwordController.value.text,
+                            );
                             controller.loginstatus.value = false;
 
                             if (getUsersResult['status'] != true) {
@@ -193,14 +192,18 @@ class LoginView extends StatelessWidget {
                                 minUrl: userInfo["min_avatar"],
                               ),
                               gender: Gender.male,
-                              address: AddresModel(
-                                neighbourhood: "Mustafa Kemal Paşa Mahallesi",
-                                streetAvenue: "Sahil Caddesi",
-                                streetAvenueAlley: "",
-                                // insideDoor: "4",
-                                // outDoor: "441",
-                                neighborhoodDirections: "Bimin üstündeyiz",
-                              ),
+                              address: userInfo["address"] == null
+                                  ? null
+                                  : AddresModel(
+                                      neighbourhood: userInfo["address"]
+                                          ["neighbourhood"],
+                                      street: userInfo["address"]["street"],
+                                      insidedoor: userInfo["address"]
+                                          ["insidedoor"],
+                                      outdoor: userInfo["address"]["outdoor"],
+                                      description: userInfo["address"]
+                                          ["description"],
+                                    ),
                             );
 
                             Get.offNamed("/home");

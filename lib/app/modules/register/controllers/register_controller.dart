@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:feedbackstation/app/data/models/adres_model.dart';
+import 'package:feedbackstation/app/data/models/addres_model.dart';
 import 'package:feedbackstation/app/data/models/media_model.dart';
 import 'package:feedbackstation/app/data/models/permission_model.dart';
 import 'package:feedbackstation/app/data/models/user_model.dart';
@@ -36,17 +36,18 @@ class RegisterController extends GetxController {
         telnoconttroller.value.text.length != 10) {
       Get.snackbar("HATA", "TC no veya Telefon numarası eksik veya hatalı");
     }
-    Map<String, String> formData = {
-      "tc_identity": tcconttroller.value.text,
-      "email": mailconttroller.value.text,
-      "firstname": adconttroller.value.text,
-      "lastname": soyAdconttroller.value.text,
-      "password": parolaconttroller.value.text,
-      "phonenumber": telnoconttroller.value.text,
-    };
 
-    final Map<String, dynamic> getUsersResult =
-        await userApiService.addUser(formData: formData);
+    final Map<String, dynamic> getUsersResult = await userApiService.addUser(
+      bigAvatar: "",
+      normalAvatar: "",
+      minAvatar: "",
+      email: mailconttroller.value.text,
+      firstname: adconttroller.value.text,
+      lastname: soyAdconttroller.value.text,
+      password: parolaconttroller.value.text,
+      phonenumber: telnoconttroller.value.text,
+      tcIdentity: tcconttroller.value.text,
+    );
 
     if (getUsersResult['status'] != true) {
       Get.snackbar(
@@ -106,11 +107,10 @@ class RegisterController extends GetxController {
       gender: Gender.male,
       address: AddresModel(
         neighbourhood: "Mustafa Kemal Paşa Mahallesi",
-        streetAvenue: "Sahil Caddesi",
-        streetAvenueAlley: "",
-        // insideDoor: "4",
-        // outDoor: "441",
-        neighborhoodDirections: "Bimin üstündeyiz",
+        street: "Sahil Caddesi",
+        insidedoor: "4",
+        outdoor: "441",
+        description: "Bimin üstündeyiz",
       ),
     );
 

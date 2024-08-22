@@ -78,6 +78,16 @@ class DrawerWidget extends StatelessWidget implements PreferredSizeWidget {
             visible: AppSession.user.permission!.canShowAdminPanel,
             child: ListTile(
               leading: const Icon(Icons.dashboard),
+              title: const Text("Gelen Talepler"),
+              onTap: () {
+                Get.toNamed("/requests/admin/");
+              },
+            ),
+          ),
+          Visibility(
+            visible: AppSession.user.permission!.canShowAdminPanel,
+            child: ListTile(
+              leading: const Icon(Icons.dashboard),
               title: const Text('Gösterge Paneli (Admin İstatistik)'),
               onTap: () {
                 Get.toNamed("/dashboard");
@@ -102,12 +112,15 @@ class DrawerWidget extends StatelessWidget implements PreferredSizeWidget {
                   arguments: {"user": AppSession.user});
             },
           ),
-          ListTile(
-            leading: const Icon(Icons.settings),
-            title: const Text('Hizmet Yöntetim Sayfası'),
-            onTap: () {
-              Get.toNamed("/Adminsettings");
-            },
+          Visibility(
+            visible: AppSession.user.permission!.canShowAdminPanel,
+            child: ListTile(
+              leading: const Icon(Icons.dashboard),
+              title: const Text('Hizmet yönetim Paneli'),
+              onTap: () {
+                Get.toNamed("/Adminsettings");
+              },
+            ),
           ),
           ListTile(
             leading: const Icon(Icons.exit_to_app),

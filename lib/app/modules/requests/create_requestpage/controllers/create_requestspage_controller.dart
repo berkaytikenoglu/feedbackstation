@@ -1,11 +1,9 @@
 import 'dart:developer';
 
-import 'package:feedbackstation/app/data/models/adres_model.dart';
+import 'package:feedbackstation/app/data/models/addres_model.dart';
 import 'package:feedbackstation/app/data/models/feedbacks_model.dart';
-import 'package:feedbackstation/app/data/models/media_model.dart';
 import 'package:feedbackstation/app/data/models/request_model.dart';
 import 'package:feedbackstation/app/data/models/status_model.dart';
-import 'package:feedbackstation/app/data/models/user_model.dart';
 import 'package:feedbackstation/app/services/API/api.dart';
 import 'package:feedbackstation/app/utils/applist.dart';
 import 'package:feedbackstation/app/utils/session.dart';
@@ -34,16 +32,23 @@ class CreateRequestspageController extends GetxController {
       userTOKEN: AppSession.userTOKEN.toString(),
     );
 
-    Map<String, String> formData = {
-      "category_id": category.value!.id.toString(),
-      "user_id": AppSession.user.id.toString(),
-      "description": basvuruMetni.value.text,
-      "subject": konu.value.text,
-    };
-
     //controller.loginstatus.value = true;
     final Map<String, dynamic> getUsersResult =
-        await apiService.addfeedbackrequest(formData: formData);
+        await apiService.addfeedbackrequest(
+      addressDescription: adresTarif.value.text,
+      addressInsidedoor: icKapi.value.text,
+      addressNeighbourhood: mahalle.value.text,
+      addressOutdoor: disKapi.value.text,
+      addressStreet: sokakCadde.value.text,
+      addressPostalcode: "52400",
+      addressCity: "FATSA",
+      addressProvince: "ORDU",
+      addressCountry: "TÜRKİYE",
+      categoryID: category.value!.id,
+      description: basvuruMetni.value.text,
+      subject: konu.value.text,
+      userID: AppSession.user.id!,
+    );
     //controller.loginstatus.value = false;
 
     if (getUsersResult['status'] != true) {
@@ -59,30 +64,14 @@ class CreateRequestspageController extends GetxController {
     AppList.requestsList.add(
       AppRequest(
         id: 1,
-        reportuser: User(
-          id: 1,
-          avatar: Media(
-            id: 1,
-            type: MediaType.image,
-            bigUrl: "https://picsum.photos/seed/picsum/600/600",
-            normalUrl: "https://picsum.photos/seed/picsum/300/300",
-            minUrl: "https://picsum.photos/seed/picsum/100/100",
-            isLocal: false,
-          ),
-          displayname: "Test Kullanıcı",
-          email: "test@kullanici.com",
-          firstname: "Test",
-          lastname: "Kullanıcı",
-          serialNumber: "213456",
-        ),
+        reportuser: AppSession.user,
         subject: konu.value.text,
         adresses: AddresModel(
           neighbourhood: mahalle.value.text,
-          streetAvenue: sokakCadde.value.text,
-          streetAvenueAlley: sokakCaddeAra.value.text,
-          insideDoor: icKapi.value.text,
-          outDoor: disKapi.value.text,
-          neighborhoodDirections: adresTarif.value.text,
+          street: sokakCadde.value.text,
+          insidedoor: icKapi.value.text,
+          outdoor: disKapi.value.text,
+          description: adresTarif.value.text,
         ),
         category: category.value!,
         description: basvuruMetni.value.text,

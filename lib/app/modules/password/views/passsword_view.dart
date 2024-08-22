@@ -39,7 +39,9 @@ class PasswordpageView extends StatelessWidget {
             child: SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width / 5,
+                  horizontal: MediaQuery.of(context).size.width < 500
+                      ? 20
+                      : MediaQuery.of(context).size.width / 5,
                 ),
                 child: Center(
                   child: Container(

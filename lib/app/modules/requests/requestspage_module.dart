@@ -32,5 +32,10 @@ class RequestspageModule {
       page: () => const DetailRequestspageView(),
       binding: DetailRequestspageBinding(),
     ),
+    GetPage(
+      name: '$route/admin/',
+      page: () => const DetailRequestspageView(),
+      binding: DetailRequestspageBinding(),
+    ),
   ];
 }

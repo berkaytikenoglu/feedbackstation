@@ -38,7 +38,9 @@ class RegisterpageView extends StatelessWidget {
             child: SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width / 5,
+                  horizontal: MediaQuery.of(context).size.width < 500
+                      ? 20
+                      : MediaQuery.of(context).size.width / 5,
                 ),
                 child: Center(
                   child: Container(
@@ -49,7 +51,8 @@ class RegisterpageView extends StatelessWidget {
                       ),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.all(10.0),
+                      padding: EdgeInsets.all(
+                          MediaQuery.of(context).size.width < 500 ? 20 : 10),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -120,108 +123,86 @@ class RegisterpageView extends StatelessWidget {
                               isPassword: true,
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                Row(
-                                  children: [
-                                    Obx(
-                                      () => Checkbox(
-                                        value: controller.kvkkcheck.value,
-                                        onChanged: (val) {
-                                          controller.kvkkcheck.value = val!;
-                                        },
-                                      ),
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        Get.dialog(
-                                          Center(
-                                            child: SingleChildScrollView(
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(20.0),
-                                                child: Container(
-                                                  margin: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 20),
+                          Row(
+                            children: [
+                              Obx(
+                                () => Checkbox(
+                                  value: controller.kvkkcheck.value,
+                                  onChanged: (val) {
+                                    controller.kvkkcheck.value = val!;
+                                  },
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Get.dialog(
+                                    Center(
+                                      child: SingleChildScrollView(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(20.0),
+                                          child: Container(
+                                            margin: const EdgeInsets.symmetric(
+                                                horizontal: 20),
+                                            padding: const EdgeInsets.all(20),
+                                            color: Colors.white70,
+                                            child: Column(
+                                              children: [
+                                                Padding(
                                                   padding:
-                                                      const EdgeInsets.all(20),
-                                                  color: Colors.white70,
-                                                  child: Column(
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
-                                                        child: Text(
-                                                          AppInfo.kvkk.title,
-                                                          style:
-                                                              const TextStyle(
-                                                            color: Colors.black,
-                                                            decoration:
-                                                                TextDecoration
-                                                                    .none,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        AppInfo.kvkk.context,
-                                                        style: const TextStyle(
-                                                          color: Colors.black,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 15,
-                                                          decoration:
-                                                              TextDecoration
-                                                                  .none,
-                                                        ),
-                                                      ),
-                                                      ElevatedButton(
-                                                        onPressed: () {
-                                                          Get.back();
-                                                        },
-                                                        child: const Text(
-                                                            "Okudum "),
-                                                      )
-                                                    ],
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Text(
+                                                    AppInfo.kvkk.title,
+                                                    style: const TextStyle(
+                                                      color: Colors.black,
+                                                      decoration:
+                                                          TextDecoration.none,
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
+                                                Text(
+                                                  AppInfo.kvkk.context,
+                                                  style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 15,
+                                                    decoration:
+                                                        TextDecoration.none,
+                                                  ),
+                                                ),
+                                                ElevatedButton(
+                                                  onPressed: () {
+                                                    Get.back();
+                                                  },
+                                                  child: const Text("Okudum "),
+                                                )
+                                              ],
                                             ),
                                           ),
-                                          barrierDismissible: false,
-                                        );
-                                      },
-                                      child: const SingleChildScrollView(
-                                        scrollDirection: Axis.horizontal,
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              "(KVKK)",
-                                              style: TextStyle(
-                                                color: Colors.red,
-                                                decoration:
-                                                    TextDecoration.underline,
-                                                decorationColor: Colors.amber,
-                                                decorationThickness: 0.5,
-                                              ),
-                                            ),
-                                            Text(
-                                              " hakkında bilgilendirmeyi okudum onaylıyorum",
-                                              style: TextStyle(
-                                                color: Colors.amber,
-                                              ),
-                                            ),
-                                          ],
                                         ),
                                       ),
                                     ),
-                                  ],
+                                    barrierDismissible: false,
+                                  );
+                                },
+                                child: const Text(
+                                  "(KVKK)",
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    decoration: TextDecoration.underline,
+                                    decorationColor: Colors.amber,
+                                    decorationThickness: 0.5,
+                                  ),
+                                  softWrap: true,
                                 ),
-                              ],
+                              ),
+                            ],
+                          ),
+                          const Text(
+                            " hakkında bilgilendirmeyi okudum onaylıyorum",
+                            style: TextStyle(
+                              color: Colors.amber,
                             ),
+                            softWrap: true,
                           ),
                           ElevatedButton(
                             onPressed: () async => await controller.register(),
