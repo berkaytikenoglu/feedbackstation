@@ -1,4 +1,3 @@
-import 'package:feedbackstation/app/data/models/feedbacks_model.dart';
 import 'package:feedbackstation/app/data/models/status_model.dart';
 import 'package:feedbackstation/app/modules/dashboard/detailing/controllers/admin_home_controller.dart';
 import 'package:feedbackstation/app/widgets/appbar/appbar_controller.dart';
@@ -277,13 +276,13 @@ class AdminHomepageView extends StatelessWidget {
                               ),
                             ],
                             isCurved: true,
-                            color: controller
-                                .categoryList[index].category.backGrndcolor,
+                            color:
+                                controller.categoryList[index].category.color,
                             dotData: const FlDotData(show: true),
                             belowBarData: BarAreaData(
                               show: true,
                               color: controller
-                                  .categoryList[index].category.backGrndcolor
+                                  .categoryList[index].category.color
                                   .withOpacity(0.2),
                             ),
                           );

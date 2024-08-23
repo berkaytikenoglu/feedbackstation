@@ -1,8 +1,13 @@
+import 'package:feedbackstation/app/data/models/feedbacks_category_model.dart';
+import 'package:feedbackstation/app/data/models/permission_model.dart';
 import 'package:feedbackstation/app/data/models/request_model.dart';
 import 'package:feedbackstation/app/data/models/user_model.dart';
 
 class AppList {
   static List<User> userList = [];
+
+  static List<FeedbacksCategoryModel> requestcategoriesList = [];
+  static List<PermissionModel> permissionsList = [];
   static List<AppRequest> requestsList = [
     // AppRequest(
     //   id: 1,

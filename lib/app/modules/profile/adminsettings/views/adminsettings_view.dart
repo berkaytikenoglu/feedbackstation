@@ -1,4 +1,5 @@
 import 'package:feedbackstation/app/modules/profile/adminsettings/controllers/adminsettings_controller.dart';
+import 'package:feedbackstation/app/utils/applist.dart';
 import 'package:feedbackstation/app/widgets/appbar/appbar_controller.dart';
 import 'package:feedbackstation/app/widgets/appbar/appbar_widget.dart';
 import 'package:feedbackstation/app/widgets/drawer/drawer_controller.dart';
@@ -15,8 +16,6 @@ class AdminSettingsView extends StatelessWidget {
     Get.put(AppBarWidgetController());
     Get.put(DrawerWidgetController());
     final controller = Get.put(AdminsettingsController());
-
-    // final MainHomeController controller = Get.put(MainHomeController());
 
     return Scaffold(
       appBar: const AppbarWidget(title: "Hizmet Yönetim Paneli"),
@@ -118,59 +117,239 @@ class AdminSettingsView extends StatelessWidget {
             ),
             const Row(
               children: [
-                Text("Registiration Settings",
+                Text("Kategoriler",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20))
               ],
             ),
-            const Row(
+            Row(
               children: [
                 Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 20),
-                    Text("Allow New registirations",
+                    const SizedBox(height: 20),
+                    const Text("Kategoriler",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 15)),
-                    Row(
-                      children: [
-                        Checkbox(
-                          value: true,
-                          onChanged: null,
-                        ),
-                        SizedBox(height: 20),
-                        Text("dsada"),
-                      ],
+                    ...List.generate(AppList.requestcategoriesList.length,
+                        (index) {
+                      return Row(
+                        children: [
+                          const Checkbox(
+                            value: true,
+                            onChanged: null,
+                          ),
+                          const SizedBox(height: 20),
+                          Text(
+                              "${AppList.requestcategoriesList[index].name} Durumu"),
+                        ],
+                      );
+                    }),
+                  ],
+                ),
+              ],
+            ),
+            Table(
+              defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+              border: TableBorder.all(color: Colors.black12),
+              children: [
+                const TableRow(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text("Ünvan"),
                     ),
-                    Row(
-                      children: [
-                        Checkbox(
-                          value: true,
-                          onChanged: null,
-                        ),
-                        SizedBox(height: 20),
-                        Text("dsada"),
-                      ],
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text("Kategorisi"),
                     ),
-                    Row(
-                      children: [
-                        Checkbox(
-                          value: true,
-                          onChanged: null,
-                        ),
-                        SizedBox(height: 20),
-                        Text("dsada"),
-                      ],
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        "Admin Panelini Görebilir",
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                    Row(
-                      children: [
-                        Checkbox(
-                          value: true,
-                          onChanged: null,
-                        ),
-                        SizedBox(height: 20),
-                        Text("dsada"),
-                      ],
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text("Kullanıcı bilgilerini Değiştirebilir"),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text("Kullanıcı Silebilir"),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child:
+                          Text("Kullanıcı Profil Fotoğrafını Değiştirebilir "),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text("Taleplere Cevap Verebilir "),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text("Hangi Taleplere Cevap Verebilir "),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(" Talep Ekleyebilir "),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text("Talep Silebilir "),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text("Talepte Bulunabilir "),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text("Kendi Profilini Değiştirebilir "),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text("Kendi Profilini Silebilir "),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text("Kendi Profil Fotoğrafını Değiştirebilir "),
                     ),
                   ],
+                ),
+                ...List.generate(
+                  AppList.permissionsList.length,
+                  (index) {
+                    return TableRow(
+                      children: [
+                        Text(AppList.permissionsList[index].name),
+                        Text(AppList.permissionsList[index].category),
+                        Checkbox(
+                          value:
+                              AppList.permissionsList[index].canShowAdminPanel,
+                          onChanged: (value) {},
+                        ),
+                        Checkbox(
+                          value: AppList.permissionsList[index].canEditUser,
+                          onChanged: (value) {},
+                        ),
+                        Checkbox(
+                          value: AppList.permissionsList[index].canDeleteUser,
+                          onChanged: (value) {},
+                        ),
+                        Checkbox(
+                          value: AppList
+                              .permissionsList[index].canUploaduserAvatar,
+                          onChanged: (value) {},
+                        ),
+                        Checkbox(
+                          value:
+                              AppList.permissionsList[index].canResponseRequest,
+                          onChanged: (value) {},
+                        ),
+                        IconButton(
+                          color: Colors.grey,
+
+                          icon: Icon(
+                            Icons.list,
+                            color: Colors.grey,
+                          ),
+                          onPressed: () {
+                            Get.dialog(
+                              Dialog(
+                                child: Container(
+                                  width: 300,
+                                  height: 430,
+                                  color: Colors.white,
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Text(
+                                        "Yetkiler",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                          fontSize: 24,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 20),
+                                      ...List.generate(
+                                        AppList.requestcategoriesList.length,
+                                        (index2) {
+                                          bool checkboxValue = AppList
+                                                  .permissionsList[index]
+                                                  .canResponseRequestlist![
+                                              AppList
+                                                  .requestcategoriesList[index2]
+                                                  .id
+                                                  .toString()];
+
+                                          return Row(
+                                            children: [
+                                              Checkbox(
+                                                value: checkboxValue,
+                                                onChanged: (bool? value) {
+                                                  if (value != null) {
+                                                    checkboxValue = value;
+                                                  }
+                                                },
+                                              ),
+                                              const SizedBox(width: 10),
+                                              Text(
+                                                AppList
+                                                    .requestcategoriesList[
+                                                        index2]
+                                                    .name,
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      ),
+                                      const ElevatedButton(
+                                          onPressed: null,
+                                          child: Text("Kaydet"))
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                          // child: const Text("data"),
+                        ),
+                        Checkbox(
+                          value: AppList
+                              .permissionsList[index].canAddFeedbackCategory,
+                          onChanged: (value) {},
+                        ),
+                        Checkbox(
+                          value: AppList
+                              .permissionsList[index].canDeleteFeedbackCategory,
+                          onChanged: (value) {},
+                        ),
+                        Checkbox(
+                          value:
+                              AppList.permissionsList[index].canReportRequest,
+                          onChanged: (value) {},
+                        ),
+                        Checkbox(
+                          value:
+                              AppList.permissionsList[index].canEditmyProfile,
+                          onChanged: (value) {},
+                        ),
+                        Checkbox(
+                          value:
+                              AppList.permissionsList[index].canDeletemyProfile,
+                          onChanged: (value) {},
+                        ),
+                        Checkbox(
+                          value: AppList
+                              .permissionsList[index].canUploadAvatarmyProfile,
+                          onChanged: (value) {},
+                        ),
+                      ],
+                    );
+                  },
                 )
               ],
             )

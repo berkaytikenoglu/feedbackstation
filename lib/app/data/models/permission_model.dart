@@ -7,12 +7,15 @@ class PermissionModel {
   bool canEditUser = false;
   bool canDeleteUser = false;
   bool canResponseRequest = false;
-  bool canUploadAvatar = false;
+  Map<String, dynamic>? canResponseRequestlist;
+  bool canUploaduserAvatar = false;
   bool canAddFeedbackCategory = false;
   bool canDeleteFeedbackCategory = false;
   bool canReportRequest = false;
 
   bool canEditmyProfile = false;
+  bool canDeletemyProfile = false;
+  bool canUploadAvatarmyProfile = false;
 
   PermissionModel({
     required this.name,
@@ -21,11 +24,14 @@ class PermissionModel {
     required this.canEditUser,
     required this.canDeleteUser,
     required this.canResponseRequest,
-    required this.canUploadAvatar,
+    required this.canResponseRequestlist,
+    required this.canUploaduserAvatar,
     required this.canAddFeedbackCategory,
     required this.canDeleteFeedbackCategory,
     required this.canReportRequest,
     required this.canEditmyProfile,
+    required this.canDeletemyProfile,
+    required this.canUploadAvatarmyProfile,
   });
 
   // İzinleri güncelleme metodu
@@ -34,7 +40,7 @@ class PermissionModel {
     bool? canEditUser,
     bool? canDeleteUser,
     bool? canResponseRequest,
-    bool? canUploadAvatar,
+    bool? canUploaduserAvatar,
     bool? canAddFeedbackCategory,
     bool? canDeleteFeedbackCategory,
     bool? canReportRequest,
@@ -51,8 +57,8 @@ class PermissionModel {
     if (canResponseRequest != null) {
       this.canResponseRequest = canResponseRequest;
     }
-    if (canUploadAvatar != null) {
-      this.canUploadAvatar = canUploadAvatar;
+    if (canUploaduserAvatar != null) {
+      this.canUploaduserAvatar = canUploaduserAvatar;
     }
 
     if (canAddFeedbackCategory != null) {

@@ -7,13 +7,13 @@ class AdminsettingsController extends GetxController {
 
   var loginstatus = false.obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
+  // @override
+  // void onInit() {
+  //   super.onInit();
+  // }
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
+  // @override
+  // void onClose() {
+  //   super.onClose();
+  // }
 }

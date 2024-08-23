@@ -22,6 +22,11 @@ class APIServices extends GetConnect {
 
   //////////////////////////////////USER////////////////////////////////////////////
 
+  // kategori getirme
+  Future<Map<String, dynamic>> getCategories() async {
+    return await fetch('categories');
+  }
+
 // Yeni Address ekleme
   Future<Map<String, dynamic>> addAddress({
     required int userID,
@@ -48,6 +53,33 @@ class APIServices extends GetConnect {
       "postalcode": postalcode,
     };
     return await fetch('address', method: 'POST', body: formData);
+  }
+
+  // edit Address ekleme
+  Future<Map<String, dynamic>> editaddress({
+    required String addressID,
+    required String description,
+    required String insidedoor,
+    required String outdoor,
+    required String street,
+    required String neighbourhood,
+    required String city,
+    required String province,
+    required String country,
+    required String postalcode,
+  }) async {
+    Map<String, String> formData = {
+      "description": description,
+      "insidedoor": insidedoor,
+      "outdoor": outdoor,
+      "street": street,
+      "neighbourhood": neighbourhood,
+      "city": city,
+      "province": province,
+      "country": country,
+      "postalcode": postalcode,
+    };
+    return await fetch('address/$addressID', method: 'PUT', body: formData);
   }
 
 // Adresleri listele
@@ -88,15 +120,15 @@ class APIServices extends GetConnect {
     };
     return await fetch('requests', method: 'POST', body: formData);
   }
-//  Request listeleme
 
+  //  Request listeleme
   Future<Map<String, dynamic>> getfeedbackrequest() async {
-    return await fetch('requests', method: 'GET', body: null);
+    return await fetch('requests', method: 'GET');
   }
 
   // Kullanıcıları getirme
   Future<Map<String, dynamic>> getUsers() async {
-    return await fetch('users');
+    return await fetch('users', method: 'GET');
   }
 
   // Yeni kullanıcı ekleme
@@ -139,6 +171,16 @@ class APIServices extends GetConnect {
     return await fetch('users/$userID', method: 'PUT', body: formData);
   }
 
+  // Kullanıcı  silme
+  Future<Map<String, dynamic>> deleteUser({required int userID}) async {
+    return await fetch('users/$userID', method: 'DELETE');
+  }
+
+  // Kullanıcı  silme
+  Future<Map<String, dynamic>> getPermissions() async {
+    return await fetch('permissions', method: 'GET');
+  }
+
   // Giriş Yapma
   Future<Map<String, dynamic>> login({
     required String tcIdentity,
@@ -176,6 +218,14 @@ class APIServices extends GetConnect {
         response = await put(
           endpoint,
           json.encode(body),
+          headers: {
+            'Authorization': 'Bearer $userTOKEN',
+            'Content-Type': 'application/json'
+          },
+        );
+      } else if (method == 'DELETE') {
+        response = await delete(
+          endpoint,
           headers: {
             'Authorization': 'Bearer $userTOKEN',
             'Content-Type': 'application/json'

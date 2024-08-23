@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:feedbackstation/app/appinfo.dart';
 import 'package:feedbackstation/app/data/models/addres_model.dart';
 import 'package:feedbackstation/app/data/models/media_model.dart';
@@ -144,14 +146,18 @@ class LoginView extends StatelessWidget {
                                         ? true
                                         : false,
                                 canDeleteUser: true,
-                                // canDeleteUser: element['permission']['candeleteuser'] == 1 ? true : false,
                                 canResponseRequest: userInfo['permission']
                                             ['canresponserequest'] ==
                                         1
                                     ? true
                                     : false,
-                                canUploadAvatar: userInfo['permission']
-                                            ['canuploadavatar'] ==
+                                canResponseRequestlist:
+                                    userInfo['canresponserequestlist'] == null
+                                        ? null
+                                        : json.decode(
+                                            userInfo['canresponserequestlist']),
+                                canUploaduserAvatar: userInfo['permission']
+                                            ['canuploaduseravatar'] ==
                                         1
                                     ? true
                                     : false,
@@ -173,6 +179,16 @@ class LoginView extends StatelessWidget {
                                     : false,
                                 canEditmyProfile: userInfo['permission']
                                             ['caneditmyprofile'] ==
+                                        1
+                                    ? true
+                                    : false,
+                                canDeletemyProfile: userInfo['permission']
+                                            ['candeletemyprofile'] ==
+                                        1
+                                    ? true
+                                    : false,
+                                canUploadAvatarmyProfile: userInfo['permission']
+                                            ['canuploaduseravatarmyprofile'] ==
                                         1
                                     ? true
                                     : false,

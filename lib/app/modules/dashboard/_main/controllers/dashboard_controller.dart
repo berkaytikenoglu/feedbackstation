@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:feedbackstation/app/data/models/media_model.dart';
@@ -80,11 +81,17 @@ class DashboardAdminController extends GetxController
             canEditUser:
                 element['permission']['canedituser'] == 1 ? true : false,
             canDeleteUser: true,
-            // canDeleteUser: element['permission']['candeleteuser'] == 1 ? true : false,
             canResponseRequest:
                 element['permission']['canresponserequest'] == 1 ? true : false,
-            canUploadAvatar:
-                element['permission']['canuploadavatar'] == 1 ? true : false,
+            canResponseRequestlist: element['permission']
+                        ['canresponserequest'] ==
+                    null
+                ? null
+                : json.decode(element['permission']['canresponserequestlist']),
+            canUploaduserAvatar:
+                element['permission']['canuploaduseravatar'] == 1
+                    ? true
+                    : false,
             canAddFeedbackCategory:
                 element['permission']['canaddfeedbackcategory'] == 1
                     ? true
@@ -97,6 +104,12 @@ class DashboardAdminController extends GetxController
                 element['permission']['canreportrequest'] == 1 ? true : false,
             canEditmyProfile:
                 element['permission']['caneditmyprofile'] == 1 ? true : false,
+            canDeletemyProfile:
+                element['permission']['candeletemyprofile'] == 1 ? true : false,
+            canUploadAvatarmyProfile:
+                element['permission']['canuploaduseravatarmyprofile'] == 1
+                    ? true
+                    : false,
           ),
         ),
       );

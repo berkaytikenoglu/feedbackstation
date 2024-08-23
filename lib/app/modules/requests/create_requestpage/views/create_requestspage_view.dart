@@ -2,8 +2,8 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:feedbackstation/app/appinfo.dart';
-import 'package:feedbackstation/app/data/models/feedbacks_model.dart';
 import 'package:feedbackstation/app/modules/requests/create_requestpage/controllers/create_requestspage_controller.dart';
+import 'package:feedbackstation/app/utils/applist.dart';
 import 'package:feedbackstation/app/utils/session.dart';
 import 'package:feedbackstation/app/widgets/appbar/appbar_widget.dart';
 import 'package:feedbackstation/app/widgets/textfields_widget.dart';
@@ -22,7 +22,7 @@ class CreateRequestspageView extends StatelessWidget {
       () => Scaffold(
         appBar: AppbarWidget(
           title:
-              "${controller.category.value == null ? "Kategori Seçimi " : controller.category.value!.title} Formu",
+              "${controller.category.value == null ? "Kategori Seçimi " : controller.category.value!.name} Formu",
         ),
         body: controller.category.value == null
             ? Padding(
@@ -33,38 +33,52 @@ class CreateRequestspageView extends StatelessWidget {
                         MediaQuery.of(context).size.width > 600 ? 2 : 1,
                     crossAxisSpacing: 10, // Sütunlar arasındaki boşluk
                     mainAxisSpacing: 10, // Satırlar arasındaki boşluk
-                    childAspectRatio: 1.618, // Çocukların en/boy oranı
+                    childAspectRatio: 3.618, // Çocukların en/boy oranı
                   ),
                   itemBuilder: (context, index) {
                     return ListTile(
                       leading: Icon(
-                        FeedbackCategory.values[index].homepgIcon,
+                        AppList.requestcategoriesList[index].icon,
                         size: 100,
                         color: Colors.white,
                       ),
                       title: SizedBox(
                         child: Text(
-                          FeedbackCategory.values[index].title,
-                          style: const TextStyle(color: Colors.white),
+                          AppList.requestcategoriesList[index].name,
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 30),
                         ),
                       ),
                       subtitle: SizedBox(
                         height: 100,
                         child: SingleChildScrollView(
-                          child: Text(
-                            FeedbackCategory.values[index].subtitle,
-                            style: const TextStyle(color: Colors.white),
+                          child: Column(
+                            children: [
+                              Text(
+                                AppList
+                                    .requestcategoriesList[index].description,
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                              const Text(
+                                "Talebi Oluşturmak için Tıklayınız",
+                                textAlign: TextAlign.end,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 20),
+                              ),
+                            ],
                           ),
                         ),
                       ),
                       tileColor: const Color(0xFF3C4CBD),
                       onTap: () {
                         controller.category.value =
-                            FeedbackCategory.values[index];
+                            AppList.requestcategoriesList[index];
                       },
                     );
                   },
-                  itemCount: FeedbackCategory.values.length,
+                  itemCount: AppList.requestcategoriesList.length,
                 ),
               )
             : SingleChildScrollView(
@@ -81,27 +95,39 @@ class CreateRequestspageView extends StatelessWidget {
                       ),
                       Row(
                         children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              controller.mahalle.value.text = AppSession
-                                  .user.address!.neighbourhood!
-                                  .toString();
-                              controller.sokakCadde.value.text =
-                                  AppSession.user.address!.street!.toString();
-                              controller.disKapi.value.text =
-                                  AppSession.user.address!.outdoor!.toString();
-                              controller.icKapi.value.text = AppSession
-                                  .user.address!.insidedoor!
-                                  .toString();
-                              controller.adresTarif.value.text = AppSession
-                                  .user.address!.description!
-                                  .toString();
-                            },
-                            child: const Text(
-                              "Mevcut Adres Bilgilerimi Getir",
-                              style: TextStyle(fontSize: 20),
-                            ),
-                          )
+                          AppSession.user.address == null
+                              ? Container()
+                              : ElevatedButton(
+                                  onPressed: AppSession.user.address == null
+                                      ? null
+                                      : () {
+                                          if (AppSession.user.address == null) {
+                                            return;
+                                          }
+                                          controller.mahalle.value.text =
+                                              AppSession
+                                                  .user.address!.neighbourhood!
+                                                  .toString();
+                                          controller.sokakCadde.value.text =
+                                              AppSession.user.address!.street!
+                                                  .toString();
+                                          controller.disKapi.value.text =
+                                              AppSession.user.address!.outdoor!
+                                                  .toString();
+                                          controller.icKapi.value.text =
+                                              AppSession
+                                                  .user.address!.insidedoor!
+                                                  .toString();
+                                          controller.adresTarif.value.text =
+                                              AppSession
+                                                  .user.address!.description!
+                                                  .toString();
+                                        },
+                                  child: const Text(
+                                    "Mevcut Adres Bilgilerimi Getir",
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                )
                         ],
                       ),
                       const SizedBox(

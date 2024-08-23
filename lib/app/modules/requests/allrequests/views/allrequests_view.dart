@@ -1,4 +1,3 @@
-import 'package:feedbackstation/app/data/models/feedbacks_model.dart';
 import 'package:feedbackstation/app/data/models/status_model.dart';
 import 'package:feedbackstation/app/modules/requests/allrequests/controls/allrequests_controls.dart';
 
@@ -100,13 +99,13 @@ class AllrequestspageView extends StatelessWidget {
                   (index) {
                     return ListTile(
                       tileColor: Get.theme.primaryColor,
-                      leading: Icon(
-                        controller.requestsList[index].category.homepgIcon,
-                        size: 60,
-                        color: Colors.white,
-                      ),
+                      leading:
+                          Icon(controller.requestsList[index].category.icon),
+                      // size: 60,
+                      // color: Colors.white,
+                      // ),
                       title: Text(
-                        controller.requestsList[index].category.title,
+                        controller.requestsList[index].category.name,
                         style: const TextStyle(
                           color: Colors.white,
                         ),
@@ -127,7 +126,7 @@ class AllrequestspageView extends StatelessWidget {
                           arguments: {
                             "id": controller.requestsList[index].id,
                             "detail":
-                                controller.requestsList[index].category.title,
+                                controller.requestsList[index].category.name,
                           },
                         );
                       },

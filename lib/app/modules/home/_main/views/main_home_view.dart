@@ -1,4 +1,3 @@
-import 'package:feedbackstation/app/data/models/feedbacks_model.dart';
 import 'package:feedbackstation/app/data/models/status_model.dart';
 import 'package:feedbackstation/app/modules/requests/detail_requestpage/views/detail_requestspage_view.dart';
 import 'package:feedbackstation/app/utils/applist.dart';
@@ -203,10 +202,10 @@ class MainHomeView extends StatelessWidget {
                       AppList.requestsList.length,
                       (index) {
                         return ListTile(
-                          leading: Icon(
-                              AppList.requestsList[index].category.homepgIcon),
+                          leading:
+                              Icon(AppList.requestsList[index].category.icon),
                           title: Text(
-                              "${AppList.requestsList[index].category.title} - ${AppList.requestsList[index].subject}"),
+                              "${AppList.requestsList[index].category.name} - ${AppList.requestsList[index].subject}"),
                           tileColor: const Color.fromARGB(255, 224, 223, 223),
                           trailing: Icon(
                             AppList.requestsList[index].status.icon,
@@ -217,8 +216,8 @@ class MainHomeView extends StatelessWidget {
                             Get.to(() => const DetailRequestspageView(),
                                 arguments: {
                                   "id": AppList.requestsList[index].id,
-                                  "detail": AppList
-                                      .requestsList[index].category.title,
+                                  "detail":
+                                      AppList.requestsList[index].category.name,
                                 });
                           },
                         );

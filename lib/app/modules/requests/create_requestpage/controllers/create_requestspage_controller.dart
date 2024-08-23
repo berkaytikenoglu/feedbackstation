@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:feedbackstation/app/data/models/addres_model.dart';
-import 'package:feedbackstation/app/data/models/feedbacks_model.dart';
+import 'package:feedbackstation/app/data/models/feedbacks_category_model.dart';
 import 'package:feedbackstation/app/data/models/request_model.dart';
 import 'package:feedbackstation/app/data/models/status_model.dart';
 import 'package:feedbackstation/app/services/API/api.dart';
@@ -23,10 +23,10 @@ class CreateRequestspageController extends GetxController {
   var basvuruMetni = TextEditingController().obs;
   var konu = TextEditingController().obs;
 
-  var category = Rx<FeedbackCategory?>(null);
+  var category = Rx<FeedbacksCategoryModel?>(null);
 
   Future<void> addRequest() async {
-    log("${mahalle.value.text}, ${sokakCadde.value.text}, ${sokakCaddeAra.value.text}, ${disKapi.value.text},${icKapi.value.text},${adresTarif.value.text},${basvuruMetni.value.text},${konu.value.text}, ${category.value!.title} ");
+    log("${mahalle.value.text}, ${sokakCadde.value.text}, ${sokakCaddeAra.value.text}, ${disKapi.value.text},${icKapi.value.text},${adresTarif.value.text},${basvuruMetni.value.text},${konu.value.text}, ${category.value!.name} ");
 
     final apiService = APIServices(
       userTOKEN: AppSession.userTOKEN.toString(),

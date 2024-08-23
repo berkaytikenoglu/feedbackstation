@@ -1,4 +1,3 @@
-import 'package:feedbackstation/app/data/models/feedbacks_model.dart';
 import 'package:feedbackstation/app/data/models/request_category_model.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +38,7 @@ class ChartWidget {
             padding: const EdgeInsets.all(8.0),
             child: Container(
               decoration: BoxDecoration(
-                color: list[index].category.backGrndcolor,
+                color: list[index].category.color,
                 borderRadius: BorderRadius.circular(10),
               ),
               width: 300,
@@ -99,7 +98,7 @@ class ChartWidget {
                               ],
                             ),
                             Text(
-                              list[index].category.title,
+                              list[index].category.name,
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,

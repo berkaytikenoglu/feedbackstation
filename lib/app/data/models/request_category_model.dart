@@ -1,7 +1,7 @@
-import 'package:feedbackstation/app/data/models/feedbacks_model.dart';
+import 'package:feedbackstation/app/data/models/feedbacks_category_model.dart';
 
 class AppChartRequest {
-  final FeedbackCategory category;
+  final FeedbacksCategoryModel category;
   int? hourValue = 0;
   int? weeklyValue = 0;
   int? monthlyValue = 0;

@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:feedbackstation/app/data/models/addres_model.dart';
 import 'package:feedbackstation/app/data/models/user_model.dart';
 import 'package:feedbackstation/app/modules/profile/settings/controllers/settings_profile_controller.dart';
+import 'package:feedbackstation/app/utils/session.dart';
 import 'package:feedbackstation/app/widgets/appbar/appbar_widget.dart';
 import 'package:feedbackstation/app/widgets/editinglisttile_widget.dart';
 import 'package:flutter/material.dart';
@@ -135,6 +136,57 @@ class SettingsProfileView extends StatelessWidget {
                                 ],
                               ),
                             ),
+                            AppSession.user.permission!.canDeleteUser == false
+                                ? Container()
+                                : ElevatedButton(
+                                    onPressed: () {
+                                      Get.dialog(
+                                        Dialog(
+                                          child: Container(
+                                            width: 350,
+                                            height: 100,
+                                            color: Colors.white,
+                                            padding: const EdgeInsets.all(16.0),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                const Text(
+                                                    "Hesabı Silmek İstediğinizden Emin misiniz?"),
+                                                Row(
+                                                  children: [
+                                                    const Spacer(),
+                                                    ElevatedButton(
+                                                      onPressed: () {
+                                                        controller
+                                                            .deleteprofile(
+                                                                userID:
+                                                                    profileUser
+                                                                        .id!);
+                                                      },
+                                                      child: const Text("Evet"),
+                                                    ),
+                                                    const Spacer(),
+                                                    const ElevatedButton(
+                                                      onPressed: null,
+                                                      child: Text("Hayır"),
+                                                    ),
+                                                    const Spacer(),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: const Row(
+                                      children: [
+                                        Text(
+                                          "Hesabımı Sil!",
+                                        ),
+                                      ],
+                                    )),
                             ListTile(
                               leading: const Icon(
                                 Icons.person,
@@ -342,15 +394,28 @@ class SettingsProfileView extends StatelessWidget {
                                   ),
                                 ),
                                 Obx(
-                                  () => EditingListTileWidget.custom1(
-                                    title: "Cinsiyet",
-                                    text: controller.gender.value == null
-                                        ? ""
-                                        : controller.gender.value!,
-                                    function: (result) {
-                                      controller.updategender(
-                                          profileUser, result);
+                                  () => DropdownButton<String>(
+                                    value: controller.selectedGender.value,
+                                    icon: const Icon(Icons.arrow_downward),
+                                    elevation: 16,
+                                    style: const TextStyle(
+                                        color: Colors.deepPurple),
+                                    underline: Container(
+                                      height: 2,
+                                      color: Colors.deepPurpleAccent,
+                                    ),
+                                    onChanged: (String? newValue) {
+                                      controller.selectedGender.value =
+                                          newValue!;
                                     },
+                                    items: <String>["Erkek", "Kadın"]
+                                        .map<DropdownMenuItem<String>>(
+                                            (String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
                                   ),
                                 ),
                               ],
@@ -452,17 +517,69 @@ class SettingsProfileView extends StatelessWidget {
                                           subtitle: Text(
                                             address.description.toString(),
                                           ),
-                                          trailing: ElevatedButton(
-                                            onPressed: () {},
-                                            child: const Text(
-                                              "Mevcut Adres",
-                                            ),
+                                          trailing: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              ElevatedButton(
+                                                onPressed: () {},
+                                                child: const Text(
+                                                  "Mevcut Adres",
+                                                ),
+                                              ),
+                                              ElevatedButton(
+                                                onPressed: () {
+                                                  Get.dialog(
+                                                    Dialog(
+                                                      child: Container(
+                                                        width: 350,
+                                                        height: 150,
+                                                        color: Colors.white,
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(16.0),
+                                                        child: const Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                                "Mevcut Adresi Silmek İstediğinizden Emin misiniz?"),
+                                                            Row(
+                                                              children: [
+                                                                Spacer(),
+                                                                ElevatedButton(
+                                                                  onPressed:
+                                                                      null,
+                                                                  child: Text(
+                                                                      "Evet"),
+                                                                ),
+                                                                Spacer(),
+                                                                ElevatedButton(
+                                                                  onPressed:
+                                                                      null,
+                                                                  child: Text(
+                                                                      "Hayır"),
+                                                                ),
+                                                                Spacer(),
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                child: const Text(
+                                                  "Mevcut Adresi Sil",
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         );
                                       },
                                     ),
                                   ),
-                                )
+                                ),
                               ],
                             ),
                           ],

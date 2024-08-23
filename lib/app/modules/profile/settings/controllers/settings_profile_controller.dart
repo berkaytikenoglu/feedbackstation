@@ -14,7 +14,7 @@ class SettingsProfileController extends GetxController
     with GetSingleTickerProviderStateMixin {
   final User profileUser;
   SettingsProfileController({required this.profileUser});
-
+  var selectedGender = 'Erkek'.obs; // Varsayılan değer olarak 'Male' kullanıldı
   late TabController tabbarController;
 
   var userid = Rx<int?>(null);
@@ -47,6 +47,34 @@ class SettingsProfileController extends GetxController
 
   final DrawerWidgetController drawerController =
       Get.find<DrawerWidgetController>();
+
+  Future<void> deleteprofile({required int userID}) async {
+    final apiService = APIServices(
+      userTOKEN: AppSession.userTOKEN.toString(),
+    );
+
+    // controller.loginstatus.value = true;
+    final Map<String, dynamic> getUsersResult =
+        await apiService.deleteUser(userID: userID);
+    // controller.loginstatus.value = false;
+
+    if (getUsersResult['status'] != true) {
+      Get.snackbar(
+        "Sistem",
+        getUsersResult['message'].toString(),
+        colorText: Colors.white,
+        backgroundColor: Colors.black38,
+      );
+      return;
+    }
+
+    if (AppSession.user.id == userID) {
+      Get.offAll("/login");
+      return;
+    }
+    Get.back();
+    Get.back();
+  }
 
   Future<void> fetchaddress() async {
     final apiService = APIServices(
@@ -174,7 +202,7 @@ class SettingsProfileController extends GetxController
     }
   }
 
-  Future<void> updateinfoweb(Map<String, String> formData) async {
+  Future<String> updateinfoweb(Map<String, String> formData) async {
     final userApiService =
         APIServices(userTOKEN: AppSession.userTOKEN.toString());
 
@@ -190,8 +218,8 @@ class SettingsProfileController extends GetxController
         colorText: Colors.white,
         backgroundColor: Colors.black38,
       );
-      return;
     }
+    return getUsersResult['status'].toString();
   }
 
   Future<void> updateFirstName(User profileUser, String newName) async {
@@ -199,7 +227,11 @@ class SettingsProfileController extends GetxController
       "firstname": newName,
       "name": "$newName ${lastname.value!}"
     };
-    await updateinfoweb(formData);
+    var response = await updateinfoweb(formData);
+
+    if (response != "true") {
+      return;
+    }
 
     firstname.value = newName;
     profileUser.firstname = newName;
@@ -214,7 +246,11 @@ class SettingsProfileController extends GetxController
       "lastname": newName,
       "name": "${firstname.value!} $newName"
     };
-    await updateinfoweb(formData);
+    var response = await updateinfoweb(formData);
+
+    if (response != "true") {
+      return;
+    }
 
     lastname.value = newName;
     profileUser.lastname = newName;
@@ -226,7 +262,11 @@ class SettingsProfileController extends GetxController
 
   Future<void> updatetcno(User profileUser, String newName) async {
     final Map<String, String> formData = {"tc_identity": newName};
-    await updateinfoweb(formData);
+    var response = await updateinfoweb(formData);
+
+    if (response != "true") {
+      return;
+    }
     tcno.value = newName;
     profileUser.serialNumber = newName;
     fetchvalue(profileUser);
@@ -234,7 +274,11 @@ class SettingsProfileController extends GetxController
 
   Future<void> updatephone(User profileUser, String newName) async {
     final Map<String, String> formData = {"phonenumber": newName};
-    await updateinfoweb(formData);
+    var response = await updateinfoweb(formData);
+
+    if (response != "true") {
+      return;
+    }
     phone.value = newName;
     profileUser.phonenumber = newName;
     fetchvalue(profileUser);
@@ -242,7 +286,11 @@ class SettingsProfileController extends GetxController
 
   Future<void> updatemail(User profileUser, String newName) async {
     final Map<String, String> formData = {"email": newName};
-    await updateinfoweb(formData);
+    var response = await updateinfoweb(formData);
+
+    if (response != "true") {
+      return;
+    }
     mail.value = newName;
     profileUser.email = newName;
     fetchvalue(profileUser);

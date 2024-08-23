@@ -1,9 +1,9 @@
+import 'dart:convert';
 import 'dart:developer' as ll;
 import 'dart:math';
 
 import 'package:feedbackstation/app/data/models/addres_model.dart';
-import 'package:feedbackstation/app/data/models/feedbacks_model.dart';
-import 'package:feedbackstation/app/data/models/media_model.dart';
+import 'package:feedbackstation/app/data/models/feedbacks_category_model.dart';
 import 'package:feedbackstation/app/data/models/permission_model.dart';
 import 'package:feedbackstation/app/data/models/request_model.dart';
 import 'package:feedbackstation/app/data/models/status_model.dart';
@@ -18,9 +18,11 @@ import 'package:get/get.dart';
 
 class StartingpageController extends GetxController {
   Future<void> startingfunctions() async {
-    requestsListrefresh();
+    // requestsListrefresh();
     // ---- Rastgele internet kullanıcıları çek
 
+    fetchcategoryList();
+    fetchpermissionsList();
     await fetchUserRandom();
     // ----
     // randomInfoRequestFillCategory(FeedbackCategory.complaint);
@@ -33,14 +35,50 @@ class StartingpageController extends GetxController {
     // ----
   }
 
-  Future<void> requestsListrefresh() async {
+  Color colorFromHex(String hexString) {
+    final buffer = StringBuffer();
+    if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
+    buffer.write(hexString.replaceAll('#', ''));
+    return Color(int.parse(buffer.toString(), radix: 16));
+  }
+
+  IconData fromString(String iconName) {
+    switch (iconName.toLowerCase()) {
+      case 'home':
+        return Icons.home;
+      case 'star':
+        return Icons.star;
+      case 'settings':
+        return Icons.settings;
+      case 'info':
+        return Icons.info;
+      case 'assignment':
+        return Icons.assignment;
+      case 'error':
+        return Icons.error;
+      case 'engineering':
+        return Icons.engineering;
+      case 'search':
+        return Icons.search;
+
+      case 'report':
+        return Icons.report;
+
+      case 'emoji_emotions':
+        return Icons.emoji_emotions;
+
+      default:
+        return Icons.help; // Varsayılan ikon.
+    }
+  }
+
+  fetchpermissionsList() async {
     final apiService = APIServices(
       userTOKEN: AppSession.userTOKEN.toString(),
     );
-
     //controller.loginstatus.value = true;
     final Map<String, dynamic> getUsersResult =
-        await apiService.getfeedbackrequest();
+        await apiService.getPermissions();
     //controller.loginstatus.value = false;
 
     if (getUsersResult['status'] != true) {
@@ -53,30 +91,61 @@ class StartingpageController extends GetxController {
       return;
     }
 
-    AppList.requestsList.clear();
-
     for (var element in getUsersResult['response']) {
-      AppList.requestsList.add(
-        AppRequest(
+      AppList.permissionsList.add(
+        PermissionModel(
+          name: element['name'],
+          category: element['category'],
+          canShowAdminPanel: element['canshowadminpanel'] == 1 ? true : false,
+          canEditUser: element['canedituser'] == 1 ? true : false,
+          canDeleteUser: element['candeleteuser'] == 1 ? true : false,
+          canResponseRequest: element['canresponserequest'] == 1 ? true : false,
+          canResponseRequestlist: element['canresponserequestlist'] == null
+              ? null
+              : json.decode(element['canresponserequestlist']),
+          canUploaduserAvatar:
+              element['canuploaduseravatar'] == 1 ? true : false,
+          canAddFeedbackCategory:
+              element['canaddfeedbackcategory'] == 1 ? true : false,
+          canDeleteFeedbackCategory:
+              element['candeletefeedbackcategory'] == 1 ? true : false,
+          canReportRequest: element['canreportrequest'] == 1 ? true : false,
+          canEditmyProfile: element['caneditmyprofile'] == 1 ? true : false,
+          canDeletemyProfile: element['candeletemyprofile'] == 1 ? true : false,
+          canUploadAvatarmyProfile:
+              element['canuploaduseravatarmyprofile'] == 1 ? true : false,
+        ),
+      );
+    }
+  }
+
+  Future<void> fetchcategoryList() async {
+    final apiService = APIServices(
+      userTOKEN: AppSession.userTOKEN.toString(),
+    );
+
+    //controller.loginstatus.value = true;
+    final Map<String, dynamic> getUsersResult =
+        await apiService.getCategories();
+    //controller.loginstatus.value = false;
+
+    if (getUsersResult['status'] != true) {
+      Get.snackbar(
+        "Sistem",
+        getUsersResult['message'].toString(),
+        colorText: Colors.white,
+        backgroundColor: Colors.black38,
+      );
+      return;
+    }
+    for (var element in getUsersResult['response']) {
+      AppList.requestcategoriesList.add(
+        FeedbacksCategoryModel(
           id: element['id'],
-          reportuser: User(
-            avatar: Media(
-              id: element['user']['id'],
-              type: MediaType.image,
-              bigUrl: element['user']['big_avatar'],
-              normalUrl: element['user']['normal_avatar'],
-              minUrl: element['user']['min_avatar'],
-              isLocal: false,
-            ),
-          ),
-          subject: element['subject'],
-          category: FeedbackCategory.values.firstWhere(
-              (element2) => element2.id == element['feedbacks_category']['id']),
+          name: element['name'],
           description: element['description'],
-          status: AppStatus.completed,
-          date: DateTime(2024),
-          documents: [],
-          adresses: AddresModel(),
+          color: colorFromHex(element['color']),
+          icon: fromString(element['icon']),
         ),
       );
     }
@@ -115,9 +184,12 @@ class StartingpageController extends GetxController {
           canEditUser: false,
           canEditmyProfile: false,
           canReportRequest: false,
+          canResponseRequestlist: null,
           canResponseRequest: false,
           canShowAdminPanel: false,
-          canUploadAvatar: false,
+          canUploaduserAvatar: false,
+          canDeletemyProfile: false,
+          canUploadAvatarmyProfile: false,
         );
         AppList.userList.add(element);
 
@@ -142,7 +214,7 @@ class StartingpageController extends GetxController {
     ll.log("Rastgele Üyeler Getirildi.");
   }
 
-  void randomInfoRequestFillCategory(FeedbackCategory category) {
+  void randomInfoRequestFillCategory(FeedbacksCategoryModel category) {
     int rndm = Random().nextInt(50000);
 
     for (var i = 0; i < rndm; i++) {

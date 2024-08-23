@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:feedbackstation/app/data/models/addres_model.dart';
-import 'package:feedbackstation/app/data/models/feedbacks_model.dart';
 import 'package:feedbackstation/app/data/models/media_model.dart';
 import 'package:feedbackstation/app/data/models/request_model.dart';
 import 'package:feedbackstation/app/data/models/status_model.dart';
@@ -78,7 +77,7 @@ class RequestspageController extends GetxController {
             ),
           ),
           subject: element['subject'],
-          category: FeedbackCategory.values.firstWhere(
+          category: AppList.requestcategoriesList.firstWhere(
               (element2) => element2.id == element['feedbacks_category']['id']),
           description: element['description'],
           status: AppStatus.completed,
@@ -95,7 +94,7 @@ class RequestspageController extends GetxController {
   }
 
   void sortRequestsByCategory() {
-    requestsList.sort((a, b) => a.category.title.compareTo(b.category.title));
+    requestsList.sort((a, b) => a.category.name.compareTo(b.category.name));
   }
 
   void filterRequestsByName(String query) {

@@ -23,18 +23,39 @@ class RegisterController extends GetxController {
   Future<void> register() async {
     final userApiService =
         APIServices(userTOKEN: AppSession.userTOKEN.toString());
+
+    if (GetUtils.isEmail(mailconttroller.value.text)) {
+      Get.snackbar(
+        "HATA",
+        "Geçersiz e-posta adresi girdiniz!",
+      );
+      return;
+    }
     if (kvkkcheck.value == false ||
         adconttroller.value.text == "" ||
         soyAdconttroller.value.text == "" ||
         tcconttroller.value.text == "" ||
         telnoconttroller.value.text == "" ||
-        mailconttroller.value.text == "") {
-      Get.snackbar("HATA", "Tüm Alanlar Doldurulmalı Ve KVKK onaylanmalıdır");
+        mailconttroller.value.text == "" ||
+        parolaconttroller.value.text == "" ||
+        parola2conttroller.value.text == "" ||
+        parolaconttroller.value.text != parola2conttroller.value.text) {
+      Get.snackbar(
+        "HATA",
+        "Tüm Alanlar  Doğru Şekilde Doldurulmalı Ve KVKK onaylanmalıdır",
+      );
+
+      return;
     }
 
     if (tcconttroller.value.text.length != 11 ||
         telnoconttroller.value.text.length != 10) {
-      Get.snackbar("HATA", "TC no veya Telefon numarası eksik veya hatalı");
+      Get.snackbar(
+        "HATA",
+        "TC no veya Telefon numarası eksik veya hatalı",
+      );
+
+      return;
     }
 
     final Map<String, dynamic> getUsersResult = await userApiService.addUser(
@@ -72,11 +93,12 @@ class RegisterController extends GetxController {
             userInfo['permission']['canshowadminpanel'] == 1 ? true : false,
         canEditUser: userInfo['permission']['canedituser'] == 1 ? true : false,
         canDeleteUser: true,
-        // canDeleteUser: element['permission']['candeleteuser'] == 1 ? true : false,
         canResponseRequest:
             userInfo['permission']['canresponserequest'] == 1 ? true : false,
-        canUploadAvatar:
-            userInfo['permission']['canuploadavatar'] == 1 ? true : false,
+        canResponseRequestlist: userInfo['permission']
+            ['canResponseRequestlist'],
+        canUploaduserAvatar:
+            userInfo['permission']['canuploaduseravatar'] == 1 ? true : false,
         canAddFeedbackCategory:
             userInfo['permission']['canaddfeedbackcategory'] == 1
                 ? true
@@ -89,6 +111,12 @@ class RegisterController extends GetxController {
             userInfo['permission']['canreportrequest'] == 1 ? true : false,
         canEditmyProfile:
             userInfo['permission']['caneditmyprofile'] == 1 ? true : false,
+        canDeletemyProfile:
+            userInfo['permission']['candeletemyprofile'] == 1 ? true : false,
+        canUploadAvatarmyProfile:
+            userInfo['permission']['canuploaduseravatarmyprofile'] == 1
+                ? true
+                : false,
       ),
       displayname: userInfo["name"],
       email: userInfo["email"],

@@ -75,7 +75,7 @@ class StartingpageView extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      Get.to(
+                      Get.off(
                         const LoginView(),
                         transition: Transition.fade,
                         duration: const Duration(milliseconds: 1000),

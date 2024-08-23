@@ -1,6 +1,6 @@
 import 'dart:developer' as log;
 
-import 'package:feedbackstation/app/data/models/feedbacks_model.dart';
+import 'package:feedbackstation/app/data/models/feedbacks_category_model.dart';
 import 'package:feedbackstation/app/data/models/request_category_model.dart';
 import 'package:feedbackstation/app/data/models/request_status_chart_model.dart';
 import 'package:feedbackstation/app/data/models/status_model.dart';
@@ -81,7 +81,7 @@ class MainHomeController extends GetxController {
 //CATEGORYFILTER
   void fetchFeedbackCategories() {
     categoryList.clear();
-    for (var fetchelement in FeedbackCategory.values) {
+    for (FeedbacksCategoryModel fetchelement in AppList.requestcategoriesList) {
       categoryList.add(
         AppChartRequest(
           category: fetchelement,
